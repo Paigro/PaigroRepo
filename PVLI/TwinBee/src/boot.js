@@ -87,7 +87,7 @@ export default class Boot extends Phaser.Scene {
             key: 'enemyexplosion',
             frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 3 }),
             frameRate: 8,
-            repeat: 2
+            repeat: 1
         });
     }
 

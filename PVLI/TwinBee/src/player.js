@@ -11,6 +11,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         this.scene.add.existing(this); // Lo metemos en la escena.
 
+        this.movible = true;
         this.keys; // Para guardar las teclas para el movimiento.
         this.playerKeys(n); // Setear las teclas.
         this.speed = 60; // Velocidad del jugador.
@@ -27,7 +28,9 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     preUpdate(t, dt) {
         super.preUpdate(t, dt);
-        this.move(t);
+        if (this.movible) {
+            this.move(t);
+        }
         if (!this.canShoot) {
             this.shootTimer += dt / 1000;
         }
@@ -113,7 +116,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     shoot() {
         console.log("Pium pium.");
-        
+
         if (this.playerNumber === 1) {
             this.anims.play('twinshoot');
         }
@@ -138,5 +141,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     upgradeShoo() {
         this.shootLevel++;
+    }
+
+    stop() {
+        console.log("Stop player.");
+        this.body.setVelocityY(0).setVelocityX(0);
+        this.movible = false
     }
 }

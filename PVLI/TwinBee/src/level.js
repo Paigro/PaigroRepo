@@ -21,10 +21,19 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        this.endGame = 0;
+        this.winGame = false;
 
-
+        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", {
+            fontSize: '40px',
+            fill: '#fff',
+            fontFamily: 'gummy',
+            stroke: '#FF6600',
+            strokeThickness: 5
+        }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);
 
         this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1); // Ponemos el fondo.
+        this.backgroundContrast = this.add.image(0, this.cameras.main.height, 'backgroundContrast').setOrigin(0, 1).setAlpha(0).setDepth(1); // Ponemos el fondo constrastado.
         // Jugadores:
         this.players = []; // Array para guardar los jugadores.
         for (let i = 1; i <= this.numPlayers; i++) {
@@ -55,7 +64,7 @@ export default class Level extends Phaser.Scene {
             delay: 1000, // 1 segundo.
             callback: () => {
                 this.timeToNewEnemy--; // Disminuimos el tiempo.
-                if (this.timeToNewEnemy <= 0) {
+                if (this.timeToNewEnemy <= 0 && this.endGame < this.numPlayers && !this.winGame) {
                     this.spawnEnemy(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
                     this.timeToNewEnemy = Phaser.Math.Between(2, 6); // Reseteamos con un tiempo aleatorio.
                 }
@@ -68,16 +77,17 @@ export default class Level extends Phaser.Scene {
 
 
         // Colisiones:
-        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
         this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => this.enemyPlayerCollision(player, enemy));
+        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
     }
 
     update(time, delta) {
-        if (this.background.y < this.background.height) {
+        if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
             this.background.y += 0.5; // Movemos el fondo si no ha llegado hasta el final.
+            this.backgroundContrast.y += 0.5; // Movemos el fondo contrastado si no ha llegado hasta el final.
             //console.log("PosY fondo: " + this.bacground.y);
         }
-        else {
+        else if (this.background.y >= this.background.height && this.endGame < this.numPlayers) {
             this.win();
         }
     }
@@ -97,12 +107,8 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyBulletCollision(bullet, enemy) {
-        console.log("colision enemigo bala");
-
-
         enemy.anims.play('enemyexplosion').on('animationcomplete', (animation, frame) => {
             if (animation.key === 'enemyexplosion') {
-                console.log('La animación ha finalizado');
                 enemy.reset();
             }
         }, this);
@@ -110,15 +116,40 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyPlayerCollision(player, enemy) {
-        console.log("colision enemigo jugador");
-        //this.gameOver();
+        console.log("Colision enemigo jugador");
+        player.setActive(false).setVisible(false).setPosition(-100, -100);
+        player.body.setVelocityY(0).setVelocityX(0);
+        enemy.reset();
+
+        this.gameOver();
     }
 
     gameOver() {
-        console.log("HAS PERDIDO");
+        if (this.endGame <= this.numPlayers) {
+            this.endGame++;
+        }
+        if (this.endGame >= this.numPlayers) {
+            this.endText("DEFEAT");
+        }
     }
 
     win() {
-        console.log("HAS GANADO");
+        this.winGame = true;
+        for (let i = 0; i < this.numPlayers; i++) {
+            this.players[i].stop();
+        }
+        this.endText("VICTORY");
+    }
+
+    endText(text) {
+        this.finalText.setText("" + text).setVisible(true);
+        this.tweens.add({
+            targets: this.backgroundContrast,
+            alpha: { value: 1, duration: 5000, ease: 'Power1' },
+            repeat: 0,
+            onComplete: () => {
+                this.scene.start("Title");
+            }
+        });
     }
 }
