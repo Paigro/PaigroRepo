@@ -1,3 +1,5 @@
+import Bullet from "./bullet.js";
+
 export default class Player extends Phaser.GameObjects.Sprite {
 
     constructor(scene, x, y, n) {
@@ -8,12 +10,15 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.body.setSize(16, 16, true); // Para que la caja de colision sea igual al sprite.
 
         this.scene.add.existing(this); // Lo metemos en la escena.
-        //this.body.setSize(60, 60, true);
 
-        this.keys;
-        this.playerKeys(n);
-        this.speed = 60;
-        this.playerNumber = n;
+        this.keys; // Para guardar las teclas para el movimiento.
+        this.playerKeys(n); // Setear las teclas.
+        this.speed = 60; // Velocidad del jugador.
+        this.playerNumber = n; // Numero del jugador que corresponde.
+        this.shootLevel = 1;
+        this.shootTime = 1;
+        this.shootTimer = 0;
+        this.canShoot = false;
     }
 
     init() {
@@ -22,36 +27,40 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     preUpdate(t, dt) {
         super.preUpdate(t, dt);
-        this.move();
+        this.move(t);
+        if (!this.canShoot) {
+            this.shootTimer += dt / 1000;
+        }
+        if (this.shootTimer >= 1) {
+            this.canShoot = true;
+        }
     }
 
-    update() {
-
-    }
-
-    move() {
+    move(t) {
 
         this.body.setVelocity(0);
 
-        if (this.keys.up.isDown) {
+        if (this.keys.up.isDown) { // Movimiento arriba.
             this.body.setVelocityY(-this.speed);
         }
-        else if (this.keys.down.isDown) {
+        else if (this.keys.down.isDown) { // Movimiento abajo.
             this.body.setVelocityY(this.speed);
         }
 
-        if (this.keys.right.isDown) {
+        if (this.keys.right.isDown) { // Movimiento derecha.
             this.body.setVelocityX(this.speed);
         }
-        else if (this.keys.left.isDown) {
+        else if (this.keys.left.isDown) { // Movimiento izquierda.
             this.body.setVelocityX(-this.speed);
         }
-        // Disparo:
-        if (this.keys.shoot.isDown) {
-            console.log("Pium pium.");
+
+        if (this.keys.shoot.isDown && this.canShoot) { // Disparo
+            this.shootTimer = 0;
+            this.canShoot = false;
+            this.shoot();
         }
 
-        this.animations();
+        this.animations(); // Llamamos para actualizar la animacion.
     }
 
     playerKeys(player) {
@@ -82,10 +91,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.anims.play('twinleft');
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('twinright')
+                this.anims.play('twinright');
             }
             else {
-                this.anims.play('twinstraight')
+                this.anims.play('twinstraight');
             }
         }
         // Animaciones del winbee:
@@ -94,11 +103,32 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 this.anims.play('winleft');
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('winright')
+                this.anims.play('winright');
             }
             else {
-                this.anims.play('winstraight')
+                this.anims.play('winstraight');
             }
         }
+    }
+
+    shoot() {
+        console.log("Pium pium.");
+        if (this.shootLevel === 1) {
+            this.scene.shoot(this.x, this.y);
+        }
+        else if (this.shootLevel === 2) {
+            this.scene.shoot(this.x - 7, this.y);
+            this.scene.shoot(this.x + 7, this.y);
+        }
+        else {
+            this.scene.shoot(this.x - 12, this.y);
+            this.scene.shoot(this.x - 4, this.y);
+            this.scene.shoot(this.x + 4, this.y);
+            this.scene.shoot(this.x + 12, this.y);
+        }
+    }
+
+    upgradeShoo() {
+        this.shootLevel++;
     }
 }
