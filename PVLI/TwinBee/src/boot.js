@@ -77,13 +77,18 @@ export default class Boot extends Phaser.Scene {
         });
         // Animacion del enemigo:
         this.anims.create({
-            key: 'enemyRotation',
+            key: 'enemyrotation',
             frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 3 }),
             frameRate: 6,
             repeat: -1
         });
         // Animacion de la explosion del enemigo:
-
+        this.anims.create({
+            key: 'enemyexplosion',
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: 2
+        });
     }
 
 }

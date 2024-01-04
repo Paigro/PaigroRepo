@@ -21,7 +21,7 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
-        
+
 
 
         this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1); // Ponemos el fondo.
@@ -56,7 +56,7 @@ export default class Level extends Phaser.Scene {
             callback: () => {
                 this.timeToNewEnemy--; // Disminuimos el tiempo.
                 if (this.timeToNewEnemy <= 0) {
-                    this.spawnEnemy(Phaser.Math.Between(16, this.cameras.main.width),-16) // Generamos el enemigo.
+                    this.spawnEnemy(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
                     this.timeToNewEnemy = Phaser.Math.Between(2, 6); // Reseteamos con un tiempo aleatorio.
                 }
             },
@@ -67,16 +67,9 @@ export default class Level extends Phaser.Scene {
 
 
 
-
-
-
-
-
-
-
-
-
-
+        // Colisiones:
+        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
+        this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => this.enemyPlayerCollision(player, enemy));
     }
 
     update(time, delta) {
@@ -101,6 +94,24 @@ export default class Level extends Phaser.Scene {
         if (enemy) {
             enemy.setActive(true).setVisible(true).setX(x).setY(y);
         }
+    }
+
+    enemyBulletCollision(bullet, enemy) {
+        console.log("colision enemigo bala");
+
+
+        enemy.anims.play('enemyexplosion').on('animationcomplete', (animation, frame) => {
+            if (animation.key === 'enemyexplosion') {
+                console.log('La animación ha finalizado');
+                enemy.reset();
+            }
+        }, this);
+        bullet.reset();
+    }
+
+    enemyPlayerCollision(player, enemy) {
+        console.log("colision enemigo jugador");
+        //this.gameOver();
     }
 
     gameOver() {
