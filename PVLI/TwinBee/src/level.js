@@ -21,9 +21,9 @@ export default class Level extends Phaser.Scene {
         this.players = [];
 
         for (let i = 1; i <= this.numPlayers; i++) {
-            const player = new Player(this, this.cameras.main.width / 2, this.cameras.main.height - 40, i);
+            const player = new Player(this, ((this.cameras.main.width) / (this.numPlayers + 1)) * i, this.cameras.main.height - 40, i);
             this.players.push(player);
-            console.log("Buenos dias.");
+            console.log("Jugador creado:" + i);
         }
 
 

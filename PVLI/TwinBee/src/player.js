@@ -13,6 +13,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.keys;
         this.playerKeys(n);
         this.speed = 60;
+        this.playerNumber = n;
     }
 
     init() {
@@ -31,7 +32,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     move() {
 
         this.body.setVelocity(0);
-        
+
         if (this.keys.up.isDown) {
             this.body.setVelocityY(-this.speed);
         }
@@ -50,8 +51,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
             console.log("Pium pium.");
         }
 
-
-
+        this.animations();
     }
 
     playerKeys(player) {
@@ -72,6 +72,33 @@ export default class Player extends Phaser.GameObjects.Sprite {
                 left: Phaser.Input.Keyboard.KeyCodes.LEFT,
                 shoot: Phaser.Input.Keyboard.KeyCodes.ENTER
             });
+        }
+    }
+
+    animations() {
+        // Animaciones del twinbee:
+        if (this.playerNumber === 1) {
+            if (this.body.velocity.x < 0) {
+                this.anims.play('twinleft');
+            }
+            else if (this.body.velocity.x > 0) {
+                this.anims.play('twinright')
+            }
+            else {
+                this.anims.play('twinstraight')
+            }
+        }
+        // Animaciones del winbee:
+        else {
+            if (this.body.velocity.x < 0) {
+                this.anims.play('winleft');
+            }
+            else if (this.body.velocity.x > 0) {
+                this.anims.play('winright')
+            }
+            else {
+                this.anims.play('winstraight')
+            }
         }
     }
 }
