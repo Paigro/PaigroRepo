@@ -14,7 +14,7 @@ export default class Title extends Phaser.Scene {
 
     create() {
         // Titulo del juego:
-        this.tittle = this.add.text(this.cameras.main.width / 2, 40, "TwinBee", {
+        this.tittle = this.add.text(this.cameras.main.centerX, 40, "TwinBee", {
             fontSize: '40px',
             fill: '#fff',
             fontFamily: 'gummy',
@@ -32,7 +32,7 @@ export default class Title extends Phaser.Scene {
     }
 
     createButton(text, y, textColor, strokeColor, players) {
-        let button = this.add.text(this.cameras.main.width / 2, this.cameras.main.height - y, text, {
+        let button = this.add.text(this.cameras.main.centerX, this.cameras.main.height - y, text, {
             fontSize: '30px',
             fill: textColor,
             fontFamily: 'gummy',
