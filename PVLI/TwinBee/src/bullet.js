@@ -12,7 +12,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         this.speed = 60;
 
         this.on('worldbounds', () => {
-            console.log('El sprite ha salido de los límites del mundo');
+            console.log('Buenos dias');
         });
     }
 
@@ -23,6 +23,10 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     preUpdate(t, dt) {
         super.preUpdate(t, dt);
         this.move();
+        if (this.y <= 0) {
+            console.log('El sprite ha salido de los límites del mundo');
+            this.setActive(false).setVisible(false);
+        }
     }
 
     update() {

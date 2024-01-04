@@ -113,6 +113,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
     shoot() {
         console.log("Pium pium.");
+        
+        if (this.playerNumber === 1) {
+            this.anims.play('twinshoot');
+        }
+        else {
+            this.anims.play('winshoot');
+        }
+
         if (this.shootLevel === 1) {
             this.scene.shoot(this.x, this.y);
         }
