@@ -122,11 +122,12 @@ export default class Level extends Phaser.Scene {
         }
     }
 
-    shoot(x, y) {
+    shoot(x, y, desviation) {
         this.shootSound.play();
         let bullet = this.bulletsPool.get();
         if (bullet) {
             bullet.setActive(true).setVisible(true).setX(x).setY(y);
+            bullet.body.setVelocityX(desviation);
         }
     }
 

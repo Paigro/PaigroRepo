@@ -126,17 +126,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
 
         if (this.shootLevel === 1) {
-            this.scene.shoot(this.x, this.y);
+            this.scene.shoot(this.x, this.y, 0);
         }
         else if (this.shootLevel === 2) {
-            this.scene.shoot(this.x - 7, this.y);
-            this.scene.shoot(this.x + 7, this.y);
+            this.scene.shoot(this.x - 4, this.y, -1.5);
+            this.scene.shoot(this.x + 4, this.y, 1.5);
         }
         else if (this.shootLevel === 3) {
-            this.scene.shoot(this.x - 14, this.y);
-            this.scene.shoot(this.x - 6, this.y);
-            this.scene.shoot(this.x + 6, this.y);
-            this.scene.shoot(this.x + 14, this.y);
+            this.scene.shoot(this.x - 8, this.y, -4);
+            this.scene.shoot(this.x - 4, this.y, -1.5);
+            this.scene.shoot(this.x + 4, this.y, 1.5);
+            this.scene.shoot(this.x + 8, this.y, 4);
         }
     }
 
