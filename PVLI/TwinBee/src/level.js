@@ -19,20 +19,25 @@ export default class Level extends Phaser.Scene {
 
     create() {
         // CONTROL DEL JUEGO:
-        this.endGame = 0;
-        this.winGame = false;
-        this.backgroundSpeed = 5;
+        this.endGame = 0; // Para controlar el numero de jugadores muertos para la derrota.
+        this.winGame = false; // Para controlar la victoria.
+        this.backgroundSpeed = 0.5; // Distancia en Y que se va a mover el fondo y los PowerUps.
+        // SONIDOS:
+        this.shootSound = this.sound.add('shootSound'); // Metemos el sonido del disparo.
+        this.deadSound = this.sound.add('deadSound'); // Metemos el sonido de muerte del jugador.
+        this.explosionSound = this.sound.add('explosionSound'); // Metemos el sonido de la explosion del enemigo.
+        this.luckySound = this.sound.add('luckySound'); // Metemos el sonido del PowerUp.
         // TEXTO FINAL:
         this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", {
-            fontSize: '40px',
-            fill: '#fff',
-            fontFamily: 'gummy',
-            stroke: '#' + Math.floor(Math.random() * 16777215).toString(16),
-            strokeThickness: 5
+            fontSize: '40px', // Como de grande es el texto.
+            fill: '#fff', // Relleno.
+            fontFamily: 'gummy', // Fuente del texto.
+            stroke: '#' + Math.floor(Math.random() * 16777215).toString(16), // Fondo de las letras aleatorio.
+            strokeThickness: 5 // Como de grande es el fondo de las letras.
         }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);
         // FONDO:
         this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1); // Ponemos el fondo.
-        this.backgroundContrast = this.add.image(0, this.cameras.main.height, 'backgroundContrast').setOrigin(0, 1).setAlpha(0).setDepth(1); // Ponemos el fondo constrastado.
+        this.backgroundContrast = this.add.image(0, this.cameras.main.height, 'backgroundContrast').setOrigin(0, 1).setAlpha(0).setDepth(1); // Ponemos el fondo constrastado, invisible y por encima del otro fondo.
         // JUGADORES:
         this.players = []; // Array para guardar los jugadores.
         for (let i = 1; i <= this.numPlayers; i++) {
@@ -72,7 +77,7 @@ export default class Level extends Phaser.Scene {
             loop: true // Para que se haga continuamente.
         });
         // POWERUPS:
-        this.powerUpsPool = this.physics.add.group({ // Pool de enemigos.
+        this.powerUpsPool = this.physics.add.group({ // Pool de PowerUps.
             classType: PowerUp,
             maxSize: this.powerUpsPoolSize,
         });
@@ -82,7 +87,7 @@ export default class Level extends Phaser.Scene {
         }
         this.timeToNewPowerUp = Phaser.Math.Between(0, 2); // Generamos un tiempo aleatorio para el siguiente enemigo.
         this.time.addEvent({
-            delay: 1000, // 1 segundo.
+            delay: 1000, // Cada 1 segundo se ejecuta lo del callback.
             callback: () => {
                 this.timeToNewPowerUp--; // Disminuimos el tiempo.
                 if (this.timeToNewPowerUp <= 0 && this.endGame < this.numPlayers && !this.winGame) {
@@ -103,7 +108,6 @@ export default class Level extends Phaser.Scene {
         if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
             this.background.y += this.backgroundSpeed; // Movemos el fondo si no ha llegado hasta el final.
             this.backgroundContrast.y += this.backgroundSpeed; // Movemos el fondo contrastado si no ha llegado hasta el final.
-            //console.log("PosY fondo: " + this.bacground.y);
         }
         else if (this.background.y >= this.background.height && this.endGame < this.numPlayers) {
             this.win();
@@ -111,6 +115,7 @@ export default class Level extends Phaser.Scene {
     }
 
     shoot(x, y) {
+        this.shootSound.play();
         let bullet = this.bulletsPool.get();
         if (bullet) {
             bullet.setActive(true).setVisible(true).setX(x).setY(y);
@@ -132,6 +137,7 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyBulletCollision(bullet, enemy) {
+        this.explosionSound.play();
         enemy.anims.play('enemyexplosion').on('animationcomplete', (animation, frame) => {
             if (animation.key === 'enemyexplosion') {
                 enemy.reset();
@@ -141,7 +147,7 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyPlayerCollision(player, enemy) {
-        console.log("Colision enemigo jugador");
+        this.deadSound.play();
         player.setActive(false).setVisible(false).setPosition(-100, -100);
         player.body.setVelocityY(0).setVelocityX(0);
         enemy.reset();
@@ -150,7 +156,7 @@ export default class Level extends Phaser.Scene {
     }
 
     playerPowerUpCollision(player, powerUp) {
-        console.log("Colision jugador PowerUp");
+        this.luckySound.play();
         player.upgradeShoot();
         powerUp.reset();
     }

@@ -9,15 +9,21 @@ export default class Boot extends Phaser.Scene {
     }
 
     preload() {
+        // SpriteSheets:
         this.load.spritesheet('player1', './assets/images/twinbee.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('player2', './assets/images/winbee.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('enemy', './assets/images/enemy.png', { frameWidth: 16, frameHeight: 16 });
         this.load.spritesheet('explosion', './assets/images/explosion.png', { frameWidth: 16, frameHeight: 16 });
-
+        // Imagenes
         this.load.image('background', './assets/images/background.png');
         this.load.image('backgroundContrast', './assets/images/background_hcontrast.png');
         this.load.image('bullet', './assets/images/bullet.png');
         this.load.image('green', './assets/images/green.png');
+        // Sonidos:
+        this.load.audio('shootSound', './assets/sounds/shoot.wav');
+        this.load.audio('deadSound', './assets/sounds/dead.wav');
+        this.load.audio('explosionSound', './assets/sounds/explosion.wav');
+        this.load.audio('luckySound', './assets/sounds/lucky.wav');
     }
 
     create() {
