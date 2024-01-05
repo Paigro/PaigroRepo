@@ -1,7 +1,7 @@
 export default class Menu extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Menu', active: true });
+        super({ key: 'Menu', active: false });
     }
 
     init() {
@@ -9,6 +9,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     preload() {
+        //this.load.image('stars', './assets/sprites/stars.png');
 
     }
 
@@ -23,7 +24,7 @@ export default class Menu extends Phaser.Scene {
             fill: '#fff',
             fontFamily: 'arcade_classic',
         }).setOrigin(0.5, 0.5);
-        this.stars = this.add.image(0, 200, 'stars').setScale(4, 4);
+        this.stars = this.add.image(this.cameras.main.centerX, 200, 'stars').setScale(4, 4);
         // Boton facil:
         this.createButton("Easy", 40, 'white', 1);
         // Boton normal:

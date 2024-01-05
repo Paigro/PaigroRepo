@@ -1,7 +1,7 @@
 export default class Title extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Title', active: true });
+        super({ key: 'Title', active: false });
     }
 
     init() {

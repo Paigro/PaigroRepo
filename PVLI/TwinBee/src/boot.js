@@ -1,7 +1,7 @@
 export default class Boot extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Boot', active: false });
+        super({ key: 'Boot', active: true });
     }
 
     init() {
@@ -28,6 +28,7 @@ export default class Boot extends Phaser.Scene {
 
     create() {
         this.animations();
+        this.scene.start("Menu");
     }
 
     animations() {
