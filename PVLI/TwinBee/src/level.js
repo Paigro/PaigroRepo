@@ -1,6 +1,7 @@
 import Player from "./player.js";
 import Bullet from "./bullet.js";
 import Enemy from "./enemy.js";
+import PowerUp from "./powerUp.js";
 
 export default class Level extends Phaser.Scene {
 
@@ -9,21 +10,19 @@ export default class Level extends Phaser.Scene {
 
         this.bulletsPoolSize = 100; // Maxima capacidad de la pool de balas.
         this.enemiesPoolSize = 10; // Maxima capacidad de la pool de enemigos.
+        this.powerUpsPoolSize = 1; // Maxima capacidad de la pool de PowerUps.
     }
 
     init(data) {
         this.numPlayers = data.nPlayers; // Guardamos la cantidad de jugadores pasados por el menu.
-        //console.log("Numero jugadores: " + this.numPlayers);
-    }
-
-    preload() {
-
     }
 
     create() {
+        // CONTROL DEL JUEGO:
         this.endGame = 0;
         this.winGame = false;
-
+        this.backgroundSpeed = 0.5;
+        // TEXTO FINAL:
         this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", {
             fontSize: '40px',
             fill: '#fff',
@@ -31,17 +30,17 @@ export default class Level extends Phaser.Scene {
             stroke: '#FF6600',
             strokeThickness: 5
         }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);
-
+        // FONDO:
         this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1); // Ponemos el fondo.
         this.backgroundContrast = this.add.image(0, this.cameras.main.height, 'backgroundContrast').setOrigin(0, 1).setAlpha(0).setDepth(1); // Ponemos el fondo constrastado.
-        // Jugadores:
+        // JUGADORES:
         this.players = []; // Array para guardar los jugadores.
         for (let i = 1; i <= this.numPlayers; i++) {
             const player = new Player(this, ((this.cameras.main.width) / (this.numPlayers + 1)) * i, this.cameras.main.height - 40, i);
             this.players.push(player);
             console.log("Jugador creado: " + i);
         }
-        // Pool de balas:
+        // BALAS:
         this.bulletsPool = this.physics.add.group({ // Pool de balas.
             classType: Bullet,
             maxSize: this.bulletsPoolSize,
@@ -50,7 +49,7 @@ export default class Level extends Phaser.Scene {
             let bullet = this.bulletsPool.get(this, 0, 0);
             bullet.setActive(false).setVisible(false);
         }
-        // Pool de enemigos:
+        // ENEMIGOS:
         this.enemiesPool = this.physics.add.group({ // Pool de enemigos.
             classType: Enemy,
             maxSize: this.enemiesPoolSize,
@@ -72,19 +71,38 @@ export default class Level extends Phaser.Scene {
             callbackScope: this,
             loop: true // Para que se haga continuamente.
         });
-        // PowerUps:
-
-
-
-        // Colisiones:
+        // POWERUPS:
+        this.powerUpsPool = this.physics.add.group({ // Pool de enemigos.
+            classType: PowerUp,
+            maxSize: this.powerUpsPoolSize,
+        });
+        for (let i = 0; i < this.powerUpsPoolSize; i++) {
+            let enemy = this.powerUpsPool.get(this, 0, 0);
+            enemy.setActive(false).setVisible(false);
+        }
+        this.timeToNewPowerUp = Phaser.Math.Between(0, 2); // Generamos un tiempo aleatorio para el siguiente enemigo.
+        this.time.addEvent({
+            delay: 1000, // 1 segundo.
+            callback: () => {
+                this.timeToNewPowerUp--; // Disminuimos el tiempo.
+                if (this.timeToNewPowerUp <= 0 && this.endGame < this.numPlayers && !this.winGame) {
+                    this.spawnPowerUp(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
+                    this.timeToNewPowerUp = Phaser.Math.Between(0, 2); // Reseteamos con un tiempo aleatorio.
+                }
+            },
+            callbackScope: this,
+            loop: true // Para que se haga continuamente.
+        });
+        // COLISIONES:
         this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => this.enemyPlayerCollision(player, enemy));
         this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
+        this.physics.add.collider(this.players, this.powerUpsPool, (player, powerUp) => this.playerPowerUpCollision(player, powerUp));
     }
 
     update(time, delta) {
         if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
-            this.background.y += 0.5; // Movemos el fondo si no ha llegado hasta el final.
-            this.backgroundContrast.y += 0.5; // Movemos el fondo contrastado si no ha llegado hasta el final.
+            this.background.y += this.backgroundSpeed; // Movemos el fondo si no ha llegado hasta el final.
+            this.backgroundContrast.y += this.backgroundSpeed; // Movemos el fondo contrastado si no ha llegado hasta el final.
             //console.log("PosY fondo: " + this.bacground.y);
         }
         else if (this.background.y >= this.background.height && this.endGame < this.numPlayers) {
@@ -106,6 +124,13 @@ export default class Level extends Phaser.Scene {
         }
     }
 
+    spawnPowerUp(x, y) {
+        let powerUp = this.powerUpsPool.get();
+        if (powerUp) {
+            powerUp.setActive(true).setVisible(true).setX(x).setY(y);
+        }
+    }
+
     enemyBulletCollision(bullet, enemy) {
         enemy.anims.play('enemyexplosion').on('animationcomplete', (animation, frame) => {
             if (animation.key === 'enemyexplosion') {
@@ -122,6 +147,12 @@ export default class Level extends Phaser.Scene {
         enemy.reset();
 
         this.gameOver();
+    }
+
+    playerPowerUpCollision(player, powerUp){
+        console.log("Colision jugador PowerUp");
+        player.upgradeShoot();
+        powerUp.reset();
     }
 
     gameOver() {
@@ -145,7 +176,9 @@ export default class Level extends Phaser.Scene {
         this.finalText.setText("" + text).setVisible(true);
         this.tweens.add({
             targets: this.backgroundContrast,
-            alpha: { value: 1, duration: 5000, ease: 'Power1' },
+            alpha: 1,
+            duration: 5000,
+            ease: 'Power1',
             repeat: 0,
             onComplete: () => {
                 this.scene.start("Title");

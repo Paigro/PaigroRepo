@@ -20,6 +20,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.shootTime = 1;
         this.shootTimer = 0;
         this.canShoot = false;
+        this.maxUpgrades = 3;
     }
 
     init() {
@@ -34,7 +35,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if (!this.canShoot) {
             this.shootTimer += dt / 1000;
         }
-        if (this.shootTimer >= 1) {
+        if (this.shootTimer >= this.shootTime) {
             this.canShoot = true;
         }
     }
@@ -131,6 +132,12 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.scene.shoot(this.x - 7, this.y);
             this.scene.shoot(this.x + 7, this.y);
         }
+        else if (this.shootLevel === 3) {
+            this.scene.shoot(this.x - 12, this.y);
+            this.scene.shoot(this.x - 4, this.y);
+            this.scene.shoot(this.x + 4, this.y);
+            this.scene.shoot(this.x + 12, this.y);
+        }
         else {
             this.scene.shoot(this.x - 12, this.y);
             this.scene.shoot(this.x - 4, this.y);
@@ -139,13 +146,20 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    upgradeShoo() {
-        this.shootLevel++;
+    upgradeShoot() {
+        console.log("Upgrade shoot.");
+        if (this.shootLevel <= this.maxUpgrades) {
+            this.shootLevel++;
+        }
+        else if (this.shootLevel > this.maxUpgrades && this.shootTime >= 0.4) {
+            this.shootTime -= 0.2;
+            console.log(this.shootTime);
+        }
     }
 
     stop() {
         console.log("Stop player.");
         this.body.setVelocityY(0).setVelocityX(0);
-        this.movible = false
+        this.movible = false;
     }
 }
