@@ -28,7 +28,7 @@ export default class PowerUp extends Phaser.GameObjects.Sprite {
         super.preUpdate(t, dt);
         this.move();
         if (this.y >= this.scene.cameras.main.height) {
-            console.log('PowerUp sale por abajo.');
+            //console.log('PowerUp sale por abajo.');
             this.reset()
         }
     }
@@ -38,7 +38,7 @@ export default class PowerUp extends Phaser.GameObjects.Sprite {
     }
 
     reset() {
-        console.log("Reset PowerUp.");
+        //console.log("Reset PowerUp.");
         this.setActive(false).setVisible(false).setPosition(-50, -50);
         this.body.setVelocityY(0);
         this.body.setVelocityX(0);

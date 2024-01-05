@@ -41,7 +41,7 @@ export default class Title extends Phaser.Scene {
         }).setOrigin(0.5, 0.5).setInteractive();
 
         button.on("pointerdown", () => {
-            console.log("Texto boton: " + text);
+            //console.log("Texto boton: " + text);
             this.scene.start("Level", { nPlayers: players });
         });
     }

@@ -22,7 +22,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
         super.preUpdate(t, dt);
         this.move();
         if (this.y >= this.scene.cameras.main.height) {
-            console.log('Enemigo sale por abajo.');
+            //console.log('Enemigo sale por abajo.');
             this.reset();
         }
     }
@@ -32,7 +32,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     reset() {
-        console.log("Reset enemigo.");
+        //console.log("Reset enemigo.");
         this.anims.play('enemyrotation');
         this.setActive(false).setVisible(false).setPosition(-50, -50);
         this.body.setVelocityY(0);

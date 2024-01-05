@@ -20,7 +20,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
         super.preUpdate(t, dt);
         this.move();
         if (this.y <= 0) {
-            console.log('Bala sale por arriba.');
+            //console.log('Bala sale por arriba.');
             this.reset();
             //this.setActive(false).setVisible(false);
         }
@@ -31,7 +31,7 @@ export default class Bullet extends Phaser.GameObjects.Sprite {
     }
 
     reset() {
-        console.log("Reset bala.");
+        //console.log("Reset bala.");
         this.setActive(false).setVisible(false).setPosition(-10, -10);
         this.body.setVelocityY(0);
     }

@@ -11,6 +11,8 @@ export default class Level extends Phaser.Scene {
         this.bulletsPoolSize = 100; // Maxima capacidad de la pool de balas.
         this.enemiesPoolSize = 10; // Maxima capacidad de la pool de enemigos.
         this.powerUpsPoolSize = 1; // Maxima capacidad de la pool de PowerUps.
+
+
     }
 
     init(data) {
@@ -18,6 +20,12 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        // CHEAT KEYS:
+        this.cheatKeys = this.input.keyboard.addKeys({
+            C: Phaser.Input.Keyboard.KeyCodes.C,
+            P: Phaser.Input.Keyboard.KeyCodes.P,
+            U: Phaser.Input.Keyboard.KeyCodes.U
+        });
         // CONTROL DEL JUEGO:
         this.endGame = 0; // Para controlar el numero de jugadores muertos para la derrota.
         this.winGame = false; // Para controlar la victoria.
@@ -43,7 +51,6 @@ export default class Level extends Phaser.Scene {
         for (let i = 1; i <= this.numPlayers; i++) {
             const player = new Player(this, ((this.cameras.main.width) / (this.numPlayers + 1)) * i, this.cameras.main.height - 40, i);
             this.players.push(player);
-            console.log("Jugador creado: " + i);
         }
         // BALAS:
         this.bulletsPool = this.physics.add.group({ // Pool de balas.
@@ -68,7 +75,7 @@ export default class Level extends Phaser.Scene {
             delay: 1000, // 1 segundo.
             callback: () => {
                 this.timeToNewEnemy--; // Disminuimos el tiempo.
-                if (this.timeToNewEnemy <= 0 && this.endGame < this.numPlayers && !this.winGame) {
+                if (this.timeToNewEnemy <= 0 && this.endGame < this.numPlayers && !this.winGame) { // Cuando toque y no sea final de partida.
                     this.spawnEnemy(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
                     this.timeToNewEnemy = Phaser.Math.Between(2, 6); // Reseteamos con un tiempo aleatorio.
                 }
@@ -85,14 +92,14 @@ export default class Level extends Phaser.Scene {
             let enemy = this.powerUpsPool.get(this, 0, 0);
             enemy.setActive(false).setVisible(false);
         }
-        this.timeToNewPowerUp = Phaser.Math.Between(0, 2); // Generamos un tiempo aleatorio para el siguiente enemigo.
+        this.timeToNewPowerUp = Phaser.Math.Between(6, 10); // Generamos un tiempo aleatorio para el siguiente enemigo.
         this.time.addEvent({
             delay: 1000, // Cada 1 segundo se ejecuta lo del callback.
             callback: () => {
                 this.timeToNewPowerUp--; // Disminuimos el tiempo.
-                if (this.timeToNewPowerUp <= 0 && this.endGame < this.numPlayers && !this.winGame) {
-                    this.spawnPowerUp(Phaser.Math.Between(16, this.cameras.main.width - 16), -16) // Generamos el enemigo.
-                    this.timeToNewPowerUp = Phaser.Math.Between(0, 2); // Reseteamos con un tiempo aleatorio.
+                if (this.timeToNewPowerUp <= 0 && this.endGame < this.numPlayers && !this.winGame) { // Cuando toque y no sea final de partida.
+                    this.spawnPowerUp(Phaser.Math.Between(32, this.cameras.main.width - 32), -16) // Generamos el enemigo.
+                    this.timeToNewPowerUp = Phaser.Math.Between(6, 10); // Reseteamos con un tiempo aleatorio.
                 }
             },
             callbackScope: this,
@@ -105,6 +112,7 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time, delta) {
+        this.checkCheatKeys();
         if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
             this.background.y += this.backgroundSpeed; // Movemos el fondo si no ha llegado hasta el final.
             this.backgroundContrast.y += this.backgroundSpeed; // Movemos el fondo contrastado si no ha llegado hasta el final.
@@ -172,24 +180,46 @@ export default class Level extends Phaser.Scene {
 
     win() {
         this.winGame = true;
-        for (let i = 0; i < this.numPlayers; i++) {
-            this.players[i].stop();
-            this.players[i].goAway();
+        for (let i = 0; i < this.numPlayers; i++) { // Recorremos todos los jugadores.
+            this.players[i].stop(); // Hacemos que el jugador no pueda moverse.
+            this.players[i].goAway(); // El tween que hace que los jugadores salgan de la partida.
         }
         this.endText("VICTORY");
     }
 
     endText(text) {
-        this.finalText.setText("" + text).setVisible(true);
+        this.finalText.setText("" + text).setVisible(true); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
         this.tweens.add({
-            targets: this.backgroundContrast,
-            alpha: 1,
-            duration: 5000,
+            targets: this.backgroundContrast, // Target.
+            alpha: 1, // Para que haga la imagen completamente visible.
+            duration: 5000, // Duracion: 5 segundos.
             ease: 'Power1',
-            repeat: 0,
+            repeat: 0, // Para que no se repita.
+            yoyo: false, // No queremos que haga yoyo.
             onComplete: () => {
-                this.scene.start("Title");
+                this.scene.start("Title"); // Vuelta al menu principal cuando se acabe el tween. Pone que dure 3 segundos esto pero lo pongo 5 porque si.
             }
         });
+    }
+
+    fasterBackground() {
+        this.backgroundSpeed += 0.5;
+    }
+
+    checkCheatKeys() {
+        if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.C)) { // Cheat show/hide colliders.
+            console.log("Cheat: colliders.")
+            this.physics.world.colliders.visible = !this.physics.world.colliders.visible;
+        }
+        else if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.P)) { // Cheat faster.
+            console.log("Cheat: background speed.")
+            this.fasterBackground();
+        }
+        else if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.U)) { // Cheat upgrade player shoot.
+            if (this.players[0]) {
+                console.log("Cheat: upgrade player.")
+                this.players[0].upgradeShoot();
+            }
+        }
     }
 }
