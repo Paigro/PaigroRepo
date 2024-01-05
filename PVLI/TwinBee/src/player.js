@@ -120,6 +120,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         if (this.playerNumber === 1) {
             this.anims.play('twinshoot', true);
+            /*// Temporizador para detener la animación después de 3 segundos
+            this.scene.time.delayedCall(1000, () => {
+                this.anims.play('twinstraight');
+            }, [], this);*/
         }
         else {
             this.anims.play('winshoot', true);
