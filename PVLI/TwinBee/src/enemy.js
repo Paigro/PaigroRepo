@@ -11,7 +11,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
         this.speed = 60;
 
-        this.anims.play('enemyrotation');
+        this.anims.play('enemyrotation', true);
     }
 
     init() {
@@ -33,7 +33,7 @@ export default class Enemy extends Phaser.GameObjects.Sprite {
 
     reset() {
         //console.log("Reset enemigo.");
-        this.anims.play('enemyrotation');
+        this.anims.play('enemyrotation', true);
         this.setActive(false).setVisible(false).setPosition(-50, -50);
         this.body.setVelocityY(0);
     }

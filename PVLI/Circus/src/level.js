@@ -1,7 +1,7 @@
 export default class Level extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Level', active: true });
+        super({ key: 'Level', active: false });
     }
 
     init() {
@@ -17,10 +17,6 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time, delta) {
-
-    }
-
-    createButton(text, y, textColor, strokeColor, players) {
 
     }
 

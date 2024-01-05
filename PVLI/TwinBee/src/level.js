@@ -147,7 +147,7 @@ export default class Level extends Phaser.Scene {
 
     enemyBulletCollision(bullet, enemy) {
         this.explosionSound.play();
-        enemy.anims.play('enemyexplosion').on('animationcomplete', (animation, frame) => {
+        enemy.anims.play('enemyexplosion', true).on('animationcomplete', (animation, frame) => {
             if (animation.key === 'enemyexplosion') {
                 enemy.reset();
             }

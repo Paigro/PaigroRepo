@@ -13,19 +13,23 @@ export default class Menu extends Phaser.Scene {
     }
 
     create() {
+        /*// Musica:
+        this.sound.stopAll(); // Quitamos el resto de sonidos.
+        this.menuMusic = this.sound.add('menuMusic', { loop: true });
+        this.menuMusic.play();*/
         // Titulo del juego:
         this.tittle = this.add.text(this.cameras.main.centerX, 200, "Circus", {
-            fontSize: '40px',
+            fontSize: 40,
             fill: '#fff',
             fontFamily: 'arcade_classic',
         }).setOrigin(0.5, 0.5);
-        this.stars = this.add.image(this.cameras.main.centerX, 200, 'stars'); // Ponemos las estrellas.
+        this.stars = this.add.image(0, 200, 'stars').setScale(4, 4);
         // Boton facil:
-        this.createButton("Easy", 40, 'white', 'orange', 1);
+        this.createButton("Easy", 40, 'white', 1);
         // Boton normal:
-        this.createButton("Normal", 100, 'white', 'orange', 2);
+        this.createButton("Normal", 100, 'white', 2);
         // Boton dificil:
-        this.createButton("Hard", 160, 'white', 'orange', 2);
+        this.createButton("Hard", 160, 'white', 2);
     }
 
     update(time, delta) {
@@ -34,7 +38,7 @@ export default class Menu extends Phaser.Scene {
 
     createButton(text, y, textColor, dif) {
         let button = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + y, text, {
-            fontSize: '30px',
+            fontSize: 30,
             fill: textColor,
             fontFamily: 'arcade_classic',
         }).setOrigin(0.5, 0.5).setInteractive();

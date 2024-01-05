@@ -1,7 +1,7 @@
 export default class Boot extends Phaser.Scene {
 
     constructor() {
-        super({ key: 'Boot', active: true });
+        super({ key: 'Boot', active: false });
     }
 
     init() {
@@ -11,18 +11,14 @@ export default class Boot extends Phaser.Scene {
     preload() {
         // Imagenes:
         this.load.image('stars', './assets/sprites/stars.png');
+        console.log(this.textures.exists('stars'));
+        // SpriteSheets:
+
+        // Musica:
+        this.load.audio('menuMusic', './assets/sounds/menu.mp3');
     }
 
     create() {
 
     }
-
-    update(time, delta) {
-
-    }
-
-    createButton(text, y, textColor, strokeColor, players) {
-
-    }
-
 }

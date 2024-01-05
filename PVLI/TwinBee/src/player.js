@@ -92,25 +92,25 @@ export default class Player extends Phaser.GameObjects.Sprite {
         // Animaciones del twinbee:
         if (this.playerNumber === 1) {
             if (this.body.velocity.x < 0) {
-                this.anims.play('twinleft');
+                this.anims.play('twinleft', true);
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('twinright');
+                this.anims.play('twinright', true);
             }
             else {
-                this.anims.play('twinstraight');
+                this.anims.play('twinstraight', true);
             }
         }
         // Animaciones del winbee:
         else {
             if (this.body.velocity.x < 0) {
-                this.anims.play('winleft');
+                this.anims.play('winleft', true);
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('winright');
+                this.anims.play('winright', true);
             }
             else {
-                this.anims.play('winstraight');
+                this.anims.play('winstraight', true);
             }
         }
     }
@@ -119,10 +119,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         //console.log("Pium pium.");
 
         if (this.playerNumber === 1) {
-            this.anims.play('twinshoot');
+            this.anims.play('twinshoot', true);
         }
         else {
-            this.anims.play('winshoot');
+            this.anims.play('winshoot', true);
         }
 
         if (this.shootLevel === 1) {
