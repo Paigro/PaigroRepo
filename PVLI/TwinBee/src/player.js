@@ -157,6 +157,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
+    goAway() {
+        this.body.setCollideWorldBounds(false);
+        this.scene.tweens.add({
+            targets: this,
+            y: -100,
+            duration: 3000,
+            ease: 'Power1',
+            repeat: 0
+        });
+    }
+
     stop() {
         console.log("Stop player.");
         this.body.setVelocityY(0).setVelocityX(0);

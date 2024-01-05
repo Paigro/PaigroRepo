@@ -18,7 +18,7 @@ export default class Title extends Phaser.Scene {
             fontSize: '40px',
             fill: '#fff',
             fontFamily: 'gummy',
-            stroke: '#FF6600',
+            stroke: '#' + Math.floor(Math.random() * 16777215).toString(16),
             strokeThickness: 5
         }).setOrigin(0.5, 0.5);
         // Boton de 1 jugador:

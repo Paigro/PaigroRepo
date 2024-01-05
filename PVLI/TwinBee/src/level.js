@@ -21,13 +21,13 @@ export default class Level extends Phaser.Scene {
         // CONTROL DEL JUEGO:
         this.endGame = 0;
         this.winGame = false;
-        this.backgroundSpeed = 0.5;
+        this.backgroundSpeed = 5;
         // TEXTO FINAL:
         this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", {
             fontSize: '40px',
             fill: '#fff',
             fontFamily: 'gummy',
-            stroke: '#FF6600',
+            stroke: '#' + Math.floor(Math.random() * 16777215).toString(16),
             strokeThickness: 5
         }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);
         // FONDO:
@@ -149,7 +149,7 @@ export default class Level extends Phaser.Scene {
         this.gameOver();
     }
 
-    playerPowerUpCollision(player, powerUp){
+    playerPowerUpCollision(player, powerUp) {
         console.log("Colision jugador PowerUp");
         player.upgradeShoot();
         powerUp.reset();
@@ -168,6 +168,7 @@ export default class Level extends Phaser.Scene {
         this.winGame = true;
         for (let i = 0; i < this.numPlayers; i++) {
             this.players[i].stop();
+            this.players[i].goAway();
         }
         this.endText("VICTORY");
     }
