@@ -1,15 +1,19 @@
 export default class Meteor extends Phaser.GameObjects.Sprite {
 
-    /*constructor(scene, x, y) {
-        super(scene, x, y, 'fuel'); // Llamada a la constructora padre.
+    constructor(scene, x, y) {
+        super(scene, x, y, 'meteor'); // Llamada a la constructora padre.
 
         scene.physics.add.existing(this); // Le ponemos fisicas.
 
         this.scene.add.existing(this); // Lo metemos en la escena.
 
+        this.body.setSize(18, 16, true); // Para que la caja de colision sea igual al sprite.
+
         this.movible = true;
 
         this.body.setImmovable(true);
+
+        this.anims.play('meteor', true);
     }
 
     preUpdate(t, dt) {
@@ -18,11 +22,31 @@ export default class Meteor extends Phaser.GameObjects.Sprite {
     }
 
     checkBounds() {
-        if (this.x >= this.scene.cameras.main.width) {
-            this.x = 0;
+        if (this.x > this.scene.cameras.main.width - 2) {
+            this.x = 2;
         }
-        else if (this.x <= 0) {
-            this.x = this.scene.cameras.main.width;
+        else if (this.x < 2) {
+            this.x = this.scene.cameras.main.width - 2;
         }
-    }*/
+    }
+
+    reset() {
+        console.log("reset")
+        this.body.allowGravity = false;
+        this.anims.play('meteor', true);
+        this.setActive(false).setVisible(false).setPosition(-50, -50);
+        this.body.setVelocityY(0);
+        this.body.setVelocityX(0);
+
+    }
+
+    explode() {
+        this.body.allowGravity = false;
+        this.body.setVelocityX(0);
+        this.anims.play('explosion', true).on('animationcomplete', (animation, frame) => {
+            if (animation.key === 'explosion') {
+                this.reset();
+            }
+        }, this);
+    }
 }

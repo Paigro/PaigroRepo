@@ -17,7 +17,7 @@ window.onload = () => {
             default: 'arcade',
             arcade: {
                 gravity: { y: 480 },
-                debug: true
+                debug: false
             }
         },
         scene: [Boot, Menu, Level],

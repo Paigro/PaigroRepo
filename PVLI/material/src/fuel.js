@@ -42,7 +42,7 @@ export default class Fuel extends Phaser.GameObjects.Sprite {
     }
 
     disappear() {
-        this.setActive(false).setVisible(false).setPosition(0, 0);
+        this.setActive(false).setVisible(false).setPosition(-10, -10);
         this.body.allowGravity = false;
     }
 }

@@ -74,10 +74,10 @@ export default class Player extends Phaser.GameObjects.Container {
 
     checkBounds() {
         if (this.x > this.scene.cameras.main.width - 2) {
-            this.x = 0;
+            this.x = 2;
         }
         else if (this.x < 2) {
-            this.x = this.scene.cameras.main.width;
+            this.x = this.scene.cameras.main.width - 2;
         }
     }
 
@@ -90,9 +90,10 @@ export default class Player extends Phaser.GameObjects.Container {
         this.remove(this.fuelSprite);
     }
 
-    stop() {
-        //console.log("Stop player.");
+    die() {
+        this.setActive(false).setVisible(false).setPosition(-100, -100);
         this.body.setVelocityY(0).setVelocityX(0);
-        this.movible = false;
+        this.body.allowGravitY = false;
+        this.scene.defeat();
     }
 }

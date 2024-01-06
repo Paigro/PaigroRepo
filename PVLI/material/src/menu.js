@@ -5,7 +5,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     init() {
-
+        this.sound.stopAll(); // Quitamos el resto de sonidos.
     }
 
     create() {

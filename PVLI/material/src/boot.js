@@ -18,8 +18,13 @@ export default class Boot extends Phaser.Scene {
         this.load.spritesheet('player', './assets/sprites/jetpac.png', { frameWidth: 17, frameHeight: 24 });
         this.load.spritesheet('meteor', './assets/sprites/meteor.png', { frameWidth: 16, frameHeight: 14 });
         // Musica:
-        //this.load.audio('', '');
+        this.load.audio('dropSound', './assets/sounds/drop.wav');
+        this.load.audio('explosionSound', './assets/sounds/explosion.wav');
+        this.load.audio('loseSound', './assets/sounds/lose.wav');
+        this.load.audio('pickSound', './assets/sounds/pick.wav');
+        this.load.audio('winSound', './assets/sounds/win.wav');
     }
+
 
     create() {
         this.scene.start("Menu");
@@ -44,6 +49,18 @@ export default class Boot extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
             frameRate: 6,
             repeat: -1
+        });
+        this.anims.create({
+            key: 'meteor',
+            frames: this.anims.generateFrameNumbers('meteor', { start: 0, end: 3 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'explosion',
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 2 }),
+            frameRate: 6,
+            repeat: 0
         });
     }
 }
