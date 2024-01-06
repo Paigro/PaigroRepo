@@ -23,9 +23,9 @@ export default class Meteor extends Phaser.GameObjects.Sprite {
 
     checkBounds() {
         if (this.x > this.scene.cameras.main.width - 2) {
-            this.x = 2;
+            this.x = -10;
         }
-        else if (this.x < 2) {
+        else if (this.x < -10) {
             this.x = this.scene.cameras.main.width - 2;
         }
     }

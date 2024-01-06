@@ -74,9 +74,9 @@ export default class Player extends Phaser.GameObjects.Container {
 
     checkBounds() {
         if (this.x > this.scene.cameras.main.width - 2) {
-            this.x = 2;
+            this.x = -10;
         }
-        else if (this.x < 2) {
+        else if (this.x < -10) {
             this.x = this.scene.cameras.main.width - 2;
         }
     }
