@@ -4,8 +4,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
         super(scene, x, y, 'player'); // Llamada a la constructora padre.
 
         scene.physics.add.existing(this); // Le ponemos fisicas.
-        this.body.setCollideWorldBounds(); // Para que no salga de los limites del mundo.
-        //this.body.setSize(16, 16, true); // Para que la caja de colision sea igual al sprite.
 
         this.scene.add.existing(this); // Lo metemos en la escena.
 
@@ -14,10 +12,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         this.playerKeys(); // Setear las teclas.
         this.speed = 60; // Velocidad del jugador.
 
-
-
-
-
+        this.anims.play('playerIdle', true);
     }
 
     init() {
@@ -28,6 +23,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
         super.preUpdate(t, dt);
         if (this.movible) {
             this.move();
+            this.checkBounds();
         }
         /*if (!this.canShoot) {
             this.shootTimer += dt / 1000;
@@ -35,6 +31,10 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if (this.shootTimer >= this.shootTime) {
             this.canShoot = true;
         }*/
+    }
+
+    update() {
+        console.log("buenos dias");
     }
 
     move() {
@@ -46,51 +46,52 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         if (this.keys.right.isDown) { // Movimiento derecha.
             this.body.setVelocityX(this.speed);
+            this.setFlip(false); // Poner el jugador flipeado en la posicion normal.
         }
         else if (this.keys.left.isDown) { // Movimiento izquierda.
             this.body.setVelocityX(-this.speed);
+            this.setFlip(true); // Flipear al jugador.
         }
-        if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left)) {
+        if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left) /*&& !this.keys.up.isDown*/) {
             this.body.setVelocity(0);
         }
 
-        /* this.animations(); // Llamamos para actualizar la animacion.*/
+        this.animations(); // Llamamos para actualizar la animacion.
 
     }
 
     playerKeys() {
         this.keys = this.scene.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
+            up: Phaser.Input.Keyboard.KeyCodes.UP,
+            right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+            left: Phaser.Input.Keyboard.KeyCodes.LEFT,
         });
     }
 
     animations() {
-        /*// Animaciones del twinbee:
-        if (this.playerNumber === 1) {
+        if (this.body.velocity.y >= 0) {
             if (this.body.velocity.x < 0) {
-                this.anims.play('twinleft', true);
+                this.anims.play('playerWalk', true);
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('twinright', true);
+                this.anims.play('playerWalk', true);
             }
             else {
-                this.anims.play('twinstraight', true);
+                this.anims.play('playerIdle', true);
             }
         }
-        // Animaciones del winbee:
         else {
-            if (this.body.velocity.x < 0) {
-                this.anims.play('winleft', true);
-            }
-            else if (this.body.velocity.x > 0) {
-                this.anims.play('winright', true);
-            }
-            else {
-                this.anims.play('winstraight', true);
-            }
-        }*/
+            this.anims.play('playerFlight'); // No funciona bien.
+        }
+    }
+
+    checkBounds() {
+        if (this.x >= this.scene.cameras.main.width) {
+            this.x = 0;
+        }
+        else if (this.x <= 0) {
+            this.x = this.scene.cameras.main.width;
+        }
     }
 
     shoot() {

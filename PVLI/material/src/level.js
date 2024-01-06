@@ -21,6 +21,8 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        //this.physics.world.setBounds(0, 0, 256, 192);
+
         console.log("Fuel necesario: " + this.fuelNeedded);
         console.log("Meteroritos time: " + this.timeToMeteor);
         // TILEMAP:
@@ -29,10 +31,12 @@ export default class Level extends Phaser.Scene {
         const groundLayer = map.createLayer('ground', tileset, 0, 0); // Se pueden meter layers, metemos la del suelo.
         //worldLayer.setCollisionByProperty({ collides: true }); // Colision por propiedades de los tiles.
 
-        this.player = new Player(this, 0, 0)
+        this.player = new Player(this, 50, 50)
 
         groundLayer.setCollisionBetween(0, 3); // Metemos la colision de los tiles para que el jugador choque con ellos.
         this.physics.add.collider(this.player, groundLayer);
+
+        //this.physics.world.wrap(this.player, 0); // 16 es el margen opcional para evitar rebotes inmediatos al envolver. no parece funcionar.
         // CHEAT KEYS:
         /*this.cheatKeys = this.input.keyboard.addKeys({
             C: Phaser.Input.Keyboard.KeyCodes.C,
@@ -125,6 +129,8 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time, delta) {
+        //console.log("X: " + this.player.x + " Y: " + this.player.y);
+
         /*this.checkCheatKeys();
         if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
             this.background.y += this.backgroundSpeed; // Movemos el fondo si no ha llegado hasta el final.

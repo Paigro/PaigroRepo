@@ -26,7 +26,24 @@ export default class Boot extends Phaser.Scene {
         this.loadAnimations();
     }
 
-    loadAnimations(){
-
+    loadAnimations() {
+        this.anims.create({
+            key: 'playerIdle',
+            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 4 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'playerWalk',
+            frames: this.anims.generateFrameNumbers('player', { start: 4, end: 7 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'playerFlight',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+            frameRate: 6,
+            repeat: -1
+        });
     }
 }
