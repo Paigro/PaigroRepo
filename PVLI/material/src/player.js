@@ -1,18 +1,22 @@
-export default class Player extends Phaser.GameObjects.Sprite {
+export default class Player extends Phaser.GameObjects.Container {
 
     constructor(scene, x, y) {
-        super(scene, x, y, 'player'); // Llamada a la constructora padre.
+        super(scene, x, y,); // Llamada a la constructora padre.
 
         scene.physics.add.existing(this); // Le ponemos fisicas.
 
-        this.scene.add.existing(this); // Lo metemos en la escena.
+        this.body.setSize(17, 24);
+        //this.scene.add.existing(this); // Lo metemos en la escena.
 
         this.movible = true;
         this.keys; // Para guardar las teclas para el movimiento.
         this.playerKeys(); // Setear las teclas.
         this.speed = 60; // Velocidad del jugador.
 
-        this.anims.play('playerIdle', true);
+        this.playerSprite = scene.add.sprite(0, 0, 'player').setOrigin(0, 0);
+        this.add([this.playerSprite]);
+        scene.add.existing(this)
+        this.playerSprite.anims.play('playerIdle', true);
     }
 
     init() {
@@ -20,7 +24,6 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     preUpdate(t, dt) {
-        super.preUpdate(t, dt);
         if (this.movible) {
             this.move();
             this.checkBounds();
@@ -46,11 +49,11 @@ export default class Player extends Phaser.GameObjects.Sprite {
 
         if (this.keys.right.isDown) { // Movimiento derecha.
             this.body.setVelocityX(this.speed);
-            this.setFlip(false); // Poner el jugador flipeado en la posicion normal.
+            this.playerSprite.setFlip(false); // Poner el jugador flipeado en la posicion normal.
         }
         else if (this.keys.left.isDown) { // Movimiento izquierda.
             this.body.setVelocityX(-this.speed);
-            this.setFlip(true); // Flipear al jugador.
+            this.playerSprite.setFlip(true); // Flipear al jugador.
         }
         if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left) /*&& !this.keys.up.isDown*/) {
             this.body.setVelocity(0);
@@ -71,17 +74,17 @@ export default class Player extends Phaser.GameObjects.Sprite {
     animations() {
         if (this.body.velocity.y >= 0) {
             if (this.body.velocity.x < 0) {
-                this.anims.play('playerWalk', true);
+                this.playerSprite.anims.play('playerWalk', true);
             }
             else if (this.body.velocity.x > 0) {
-                this.anims.play('playerWalk', true);
+                this.playerSprite.anims.play('playerWalk', true);
             }
             else {
-                this.anims.play('playerIdle', true);
+                this.playerSprite.anims.play('playerIdle', true);
             }
         }
         else {
-            this.anims.play('playerFlight'); // No funciona bien.
+            this.playerSprite.anims.play('playerFlight'); // No funciona bien.
         }
     }
 

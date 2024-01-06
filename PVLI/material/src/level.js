@@ -1,4 +1,5 @@
 import Player from "./player.js";
+import Fuel from "./fuel.js";
 /*import Bullet from "./bullet.js";
 import Enemy from "./enemy.js";
 import PowerUp from "./powerUp.js";*/
@@ -32,9 +33,14 @@ export default class Level extends Phaser.Scene {
         //worldLayer.setCollisionByProperty({ collides: true }); // Colision por propiedades de los tiles.
 
         this.player = new Player(this, 50, 50)
+        this.fuel = new Fuel(this, 100, 100).setActive(false).setVisible(false);
 
         groundLayer.setCollisionBetween(0, 3); // Metemos la colision de los tiles para que el jugador choque con ellos.
         this.physics.add.collider(this.player, groundLayer);
+        this.physics.add.collider(this.fuel, groundLayer);
+        this.physics.add.collider(this.fuel, groundLayer);
+        this.physics.add.collider(this.player, this.fuel, (player, fuel) => this.playerFuleCollision(player, fuel));
+
 
         //this.physics.world.wrap(this.player, 0); // 16 es el margen opcional para evitar rebotes inmediatos al envolver. no parece funcionar.
         // CHEAT KEYS:
@@ -44,11 +50,13 @@ export default class Level extends Phaser.Scene {
             U: Phaser.Input.Keyboard.KeyCodes.U
         });*/
         // CONTROL DEL JUEGO:
-        /*this.endGame = 0; // Para controlar el numero de jugadores muertos para la derrota.
+        this.fuelActive = false;
+
+        this.endGame = 0; // Para controlar el numero de jugadores muertos para la derrota.
         this.winGame = false; // Para controlar la victoria.
         this.backgroundSpeed = 0.5; // Distancia en Y que se va a mover el fondo y los PowerUps.
         // SONIDOS:
-        this.shootSound = this.sound.add('shootSound'); // Metemos el sonido del disparo.
+        /*this.shootSound = this.sound.add('shootSound'); // Metemos el sonido del disparo.
         this.deadSound = this.sound.add('deadSound'); // Metemos el sonido de muerte del jugador.
         this.explosionSound = this.sound.add('explosionSound'); // Metemos el sonido de la explosion del enemigo.
         this.luckySound = this.sound.add('luckySound'); // Metemos el sonido del PowerUp.*/
@@ -129,6 +137,7 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time, delta) {
+        this.spawnFuel();
         //console.log("X: " + this.player.x + " Y: " + this.player.y);
 
         /*this.checkCheatKeys();
@@ -141,27 +150,24 @@ export default class Level extends Phaser.Scene {
         }*/
     }
 
-    shoot(x, y, desviation) {
-        /*this.shootSound.play();
-        let bullet = this.bulletsPool.get();
-        if (bullet) {
-            bullet.setActive(true).setVisible(true).setX(x).setY(y);
-            bullet.body.setVelocityX(desviation);
-        }*/
+    spawnFuel() {
+        if (!this.fuelActive) {
+            this.fuel.appear();
+            this.fuelActive = true;
+        }
     }
 
-    spawnEnemy(x, y) {
-        /*let enemy = this.enemiesPool.get();
-        if (enemy) {
-            enemy.setActive(true).setVisible(true).setX(x).setY(y);
-        }*/
+    playerFuleCollision(player, fuel) {
+        fuel.appear();
+        // hacer por contenedor y no así
     }
 
-    spawnPowerUp(x, y) {
-        /*let powerUp = this.powerUpsPool.get();
+
+    /*spawnPowerUp(x, y) {
+        let powerUp = this.powerUpsPool.get();
         if (powerUp) {
             powerUp.setActive(true).setVisible(true).setX(x).setY(y);
-        }*/
+        }
     }
 
     enemyBulletCollision(bullet, enemy) {
@@ -171,7 +177,7 @@ export default class Level extends Phaser.Scene {
                 enemy.reset();
             }
         }, this);
-        bullet.reset();*/
+        bullet.reset();
     }
 
     enemyPlayerCollision(player, enemy) {
@@ -180,13 +186,13 @@ export default class Level extends Phaser.Scene {
         player.body.setVelocityY(0).setVelocityX(0);
         enemy.reset();
     
-        this.gameOver();*/
+        this.gameOver();
     }
 
     playerPowerUpCollision(player, powerUp) {
         /*this.luckySound.play();
         player.upgradeShoot();
-        powerUp.reset();*/
+        powerUp.reset();
     }
 
     gameOver() {
@@ -195,7 +201,7 @@ export default class Level extends Phaser.Scene {
         }
         if (this.endGame >= this.numPlayers) {
             this.endText("DEFEAT");
-        }*/
+        }
     }
 
     win() {
@@ -204,7 +210,7 @@ export default class Level extends Phaser.Scene {
             this.players[i].stop(); // Hacemos que el jugador no pueda moverse.
             this.players[i].goAway(); // El tween que hace que los jugadores salgan de la partida.
         }
-        this.endText("VICTORY");*/
+        this.endText("VICTORY");
     }
 
     endText(text) {
@@ -219,11 +225,11 @@ export default class Level extends Phaser.Scene {
             onComplete: () => {
                 this.scene.start("Title"); // Vuelta al menu principal cuando se acabe el tween. Pone que dure 3 segundos esto pero lo pongo 5 porque si.
             }
-        });*/
+        });
     }
 
     fasterBackground() {
-        /*this.backgroundSpeed += 0.5;*/
+        /*this.backgroundSpeed += 0.5;
     }
 
     checkCheatKeys() {
@@ -240,6 +246,6 @@ export default class Level extends Phaser.Scene {
                 console.log("Cheat: upgrade player.")
                 this.players[0].upgradeShoot();
             }
-        }*/
-    }
+        }
+    }*/
 }
