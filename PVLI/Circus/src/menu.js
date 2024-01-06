@@ -9,15 +9,14 @@ export default class Menu extends Phaser.Scene {
     }
 
     preload() {
-        //this.load.image('stars', './assets/sprites/stars.png');
 
     }
 
     create() {
-        /*// Musica:
+        // Musica:
         this.sound.stopAll(); // Quitamos el resto de sonidos.
-        this.menuMusic = this.sound.add('menuMusic', { loop: true });
-        this.menuMusic.play();*/
+        this.menuMusic = this.sound.add('menuMusic');
+        this.menuMusic.play({ volume: 0.1, loop: true });
         // Titulo del juego:
         this.tittle = this.add.text(this.cameras.main.centerX, 200, "Circus", {
             fontSize: 40,
@@ -26,11 +25,11 @@ export default class Menu extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
         this.stars = this.add.image(this.cameras.main.centerX, 200, 'stars').setScale(4, 4);
         // Boton facil:
-        this.createButton("Easy", 40, 'white', 1);
+        this.createButton("Easy", 40, 'white', 50);
         // Boton normal:
-        this.createButton("Normal", 100, 'white', 2);
+        this.createButton("Normal", 100, 'white', 100);
         // Boton dificil:
-        this.createButton("Hard", 160, 'white', 2);
+        this.createButton("Hard", 160, 'white', 200);
     }
 
     update(time, delta) {

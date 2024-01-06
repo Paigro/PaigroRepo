@@ -4,8 +4,10 @@ export default class Level extends Phaser.Scene {
         super({ key: 'Level', active: false });
     }
 
-    init() {
-
+    init(data) {
+        this.timeToMeteor = data.timeToMeteor; // Guardamos el tiempo entre meteoritos.
+        this.fuelNeedded = data.fuelNeedded; // Guardamos el fuel necesario para superar el nivel.
+        this.sound.stopAll(); // Quitamos el resto de sonidos.
     }
 
     preload() {
@@ -13,6 +15,7 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        this.floor = this.add.sprite(0, this.cameras.main.height - 100, 'none')
 
     }
 
