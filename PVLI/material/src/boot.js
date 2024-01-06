@@ -14,9 +14,9 @@ export default class Boot extends Phaser.Scene {
         this.load.image('fuel', './assets/sprites/fuel.png');
         //console.log(this.textures.exists());
         // SpriteSheets:
-        this.load.spritesheet('explosion', './assets/images/explosion.png', { frameWidth: 24, frameHeight: 17 });
-        this.load.spritesheet('player', './assets/images/jetpac.png', { frameWidth: 17, frameHeight: 24 });
-        this.load.spritesheet('meteor', './assets/images/meteor.png', { frameWidth: 16, frameHeight: 14 });
+        this.load.spritesheet('explosion', './assets/sprites/explosion.png', { frameWidth: 24, frameHeight: 17 });
+        this.load.spritesheet('player', './assets/sprites/jetpac.png', { frameWidth: 17, frameHeight: 24 });
+        this.load.spritesheet('meteor', './assets/sprites/meteor.png', { frameWidth: 16, frameHeight: 14 });
         // Musica:
         //this.load.audio('', '');
     }

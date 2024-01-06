@@ -13,7 +13,16 @@ window.onload = () => {
             autoCenter: Phaser.Scale.Center.CENTER_HORIZONTALLY
         },
         pixelArt: true,
-        scene: [Boot, Menu, Level]
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 480 },
+                debug: true
+            }
+        },
+        scene: [Boot, Menu, Level],
+        title: "Examen extraordinario 2021-2022 PVLI",
+        version: "1.0.0"
     };
 
     new Phaser.Game(config);

@@ -37,7 +37,7 @@ export default class Menu extends Phaser.Scene {
 
         button.on("pointerdown", () => {
             //console.log("Texto boton: " + text);
-            this.scene.start("Level", { fuelNeedded: fuel, timeToMetteorite: time });
+            this.scene.start("Level", { fuelNeedded: fuel, timeToMeteor: time });
         });
     }
 

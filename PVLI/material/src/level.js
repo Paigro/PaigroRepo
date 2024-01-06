@@ -1,5 +1,5 @@
-/*import Player from "./player.js";
-import Bullet from "./bullet.js";
+import Player from "./player.js";
+/*import Bullet from "./bullet.js";
 import Enemy from "./enemy.js";
 import PowerUp from "./powerUp.js";*/
 
@@ -16,31 +16,23 @@ export default class Level extends Phaser.Scene {
     }
 
     init(data) {
-        this.timeToNewMetteorite = data.timeToMetteorite; // Guardamos el tiempo entre meteoritos.
-        this.fuelRequired = data.fuelNeedded; // Guardamos el fuel necesario para superar el nivel.
+        this.timeToMeteor = data.timeToMeteor; // Guardamos el tiempo entre meteoritos.
+        this.fuelNeedded = data.fuelNeedded; // Guardamos el fuel necesario para superar el nivel.
     }
 
     create() {
-        console.log("Fuel necesario: " + this.fuelRequired);
-        console.log("Meteroritos time " + this.timeToNewMetteorite);
+        console.log("Fuel necesario: " + this.fuelNeedded);
+        console.log("Meteroritos time: " + this.timeToMeteor);
         // TILEMAP:
-        this.map = this.make.tilemap({ key: 'map' });
-        this.tileset = this.map.addTilesetImage('room', 'room');
-        this.layer = this.map.createLayer('ground', this.tileset, 0, 0);
+        const map = this.make.tilemap({ key: 'map' }); // Creacion del tilemap.
+        const tileset = map.addTilesetImage('ground_ts', 'tileset'); // Metemos el tileset (lo primero mirar en el json, lo segundo la imagen del tileset).
+        const groundLayer = map.createLayer('ground', tileset, 0, 0); // Se pueden meter layers, metemos la del suelo.
+        //worldLayer.setCollisionByProperty({ collides: true }); // Colision por propiedades de los tiles.
 
+        this.player = new Player(this, 0, 0)
 
-
-
-
-
-
-
-
-
-
-
-
-
+        groundLayer.setCollisionBetween(0, 3); // Metemos la colision de los tiles para que el jugador choque con ellos.
+        this.physics.add.collider(this.player, groundLayer);
         // CHEAT KEYS:
         /*this.cheatKeys = this.input.keyboard.addKeys({
             C: Phaser.Input.Keyboard.KeyCodes.C,
