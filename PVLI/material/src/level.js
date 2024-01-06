@@ -1,8 +1,7 @@
 import Player from "./player.js";
 import Fuel from "./fuel.js";
-/*import Bullet from "./bullet.js";
-import Enemy from "./enemy.js";
-import PowerUp from "./powerUp.js";*/
+import Ship from "./ship.js";
+import Meteor from "./meteor.js";
 
 export default class Level extends Phaser.Scene {
 
@@ -22,27 +21,36 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
-        //this.physics.world.setBounds(0, 0, 256, 192);
-
+        // LOGS INICIALES:
         console.log("Fuel necesario: " + this.fuelNeedded);
         console.log("Meteroritos time: " + this.timeToMeteor);
         // TILEMAP:
         const map = this.make.tilemap({ key: 'map' }); // Creacion del tilemap.
         const tileset = map.addTilesetImage('ground_ts', 'tileset'); // Metemos el tileset (lo primero mirar en el json, lo segundo la imagen del tileset).
         const groundLayer = map.createLayer('ground', tileset, 0, 0); // Se pueden meter layers, metemos la del suelo.
-        //worldLayer.setCollisionByProperty({ collides: true }); // Colision por propiedades de los tiles.
-
-        this.player = new Player(this, 50, 50)
-        this.fuel = new Fuel(this, 100, 100).setActive(false).setVisible(false);
-
+        // OBJETOS:
+        this.player = new Player(this, 50, 50) // Metemos el jugador
+        this.fuel = new Fuel(this, 100, 100).setActive(false).setVisible(false); // Metemos el fuel.
+        this.ship = new Ship(this, this.cameras.main.centerX + 20, this.cameras.main.height - 8, this.fuelNeedded) // Metemos la nave.
+        // COLISIONES:
         groundLayer.setCollisionBetween(0, 3); // Metemos la colision de los tiles para que el jugador choque con ellos.
-        this.physics.add.collider(this.player, groundLayer);
-        this.physics.add.collider(this.fuel, groundLayer);
-        this.physics.add.collider(this.fuel, groundLayer);
-        this.physics.add.collider(this.player, this.fuel, (player, fuel) => this.playerFuleCollision(player, fuel));
+        this.physics.add.collider(this.player, groundLayer); // Metemos la colision del jugador con los tiles del suelo.
+        this.physics.add.collider(this.fuel, groundLayer); // Metemos la colision del fuel con los tiles del suelo.
+        this.physics.add.collider(this.player, this.fuel, () => this.playerFuelCollision()); // Colision entre jugador y fuel.
+
+        this.physics.add.overlap(this.player, this.ship, () => { // Comprobar que el jugador interactua con el trigger de la nave.
+            this.playerShipCollision();
+        });
 
 
-        //this.physics.world.wrap(this.player, 0); // 16 es el margen opcional para evitar rebotes inmediatos al envolver. no parece funcionar.
+        /*
+        Cosas que podrian servir:
+        this.physics.world.setBounds(0, 0, 256, 192);
+        worldLayer.setCollisionByProperty({ collides: true }); // Colision por propiedades de los tiles.
+        this.physics.world.wrap(this.player, 0); // 16 es el margen opcional para evitar rebotes inmediatos al envolver. No parece funcionar.
+        */
+
+
         // CHEAT KEYS:
         /*this.cheatKeys = this.input.keyboard.addKeys({
             C: Phaser.Input.Keyboard.KeyCodes.C,
@@ -50,42 +58,42 @@ export default class Level extends Phaser.Scene {
             U: Phaser.Input.Keyboard.KeyCodes.U
         });*/
         // CONTROL DEL JUEGO:
-        this.fuelActive = false;
+        this.fuelActive = false; // Para saber si hay fuel activo (en el suelo o con el jugador).
+        this.playerHasFuel = false; // Para comprobar la posesion de fuel del jugador.
 
-        this.endGame = 0; // Para controlar el numero de jugadores muertos para la derrota.
+
+
+
+
+
+
         this.winGame = false; // Para controlar la victoria.
-        this.backgroundSpeed = 0.5; // Distancia en Y que se va a mover el fondo y los PowerUps.
+
+
+
+
+
+
+
+
+
+
         // SONIDOS:
         /*this.shootSound = this.sound.add('shootSound'); // Metemos el sonido del disparo.
         this.deadSound = this.sound.add('deadSound'); // Metemos el sonido de muerte del jugador.
         this.explosionSound = this.sound.add('explosionSound'); // Metemos el sonido de la explosion del enemigo.
         this.luckySound = this.sound.add('luckySound'); // Metemos el sonido del PowerUp.*/
-        // TEXTO FINAL:
-        /*this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", {
-            fontSize: '40px', // Como de grande es el texto.
+        // TEXTOS:
+        this.countText = this.add.text(this.ship.x + 30, this.ship.y - 40, this.ship.actualFuel + "/" + this.fuelNeedded, { // Texto para llevar la cuenta del fuel que lleva el jugador.
+            fontSize: 10, // Como de grande es el texto.
             fill: '#fff', // Relleno.
-            fontFamily: 'gummy', // Fuente del texto.
-            stroke: '#' + Math.floor(Math.random() * 16777215).toString(16), // Fondo de las letras aleatorio.
-            strokeThickness: 5 // Como de grande es el fondo de las letras.
-        }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);*/
-        // FONDO:
-        /* this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1); // Ponemos el fondo.
-         this.backgroundContrast = this.add.image(0, this.cameras.main.height, 'backgroundContrast').setOrigin(0, 1).setAlpha(0).setDepth(1); // Ponemos el fondo constrastado, invisible y por encima del otro fondo.
-         // JUGADORES:
-         this.players = []; // Array para guardar los jugadores.
-         for (let i = 1; i <= this.numPlayers; i++) {
-             const player = new Player(this, ((this.cameras.main.width) / (this.numPlayers + 1)) * i, this.cameras.main.height - 40, i);
-             this.players.push(player);
-         }*/
-        // BALAS:
-        /*this.bulletsPool = this.physics.add.group({ // Pool de balas.
-            classType: Bullet,
-            maxSize: this.bulletsPoolSize,
-        });
-        for (let i = 0; i < this.bulletsPoolSize; i++) {
-            let bullet = this.bulletsPool.get(this, 0, 0);
-            bullet.setActive(false).setVisible(false);
-        }*/
+            fontFamily: 'Pixeled', // Fuente del texto.
+        }).setOrigin(0.5, 0.5).setDepth(2);
+        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "", { // Texto final de derrota o victoria.
+            fontSize: 25, // Como de grande es el texto.
+            fill: '#fff', // Relleno.
+            fontFamily: 'Pixeled', // Fuente del texto.
+        }).setOrigin(0.5, 0.5).setVisible(false).setDepth(2);
         // ENEMIGOS:
         /*this.enemiesPool = this.physics.add.group({ // Pool de enemigos.
             classType: Enemy,
@@ -108,132 +116,68 @@ export default class Level extends Phaser.Scene {
             callbackScope: this,
             loop: true // Para que se haga continuamente.
         });*/
-        // POWERUPS:
-        /*this.powerUpsPool = this.physics.add.group({ // Pool de PowerUps.
-            classType: PowerUp,
-            maxSize: this.powerUpsPoolSize,
-        });
-        for (let i = 0; i < this.powerUpsPoolSize; i++) {
-            let enemy = this.powerUpsPool.get(this, 0, 0);
-            enemy.setActive(false).setVisible(false);
-        }
-        this.timeToNewPowerUp = Phaser.Math.Between(6, 10); // Generamos un tiempo aleatorio para el siguiente enemigo.
-        this.time.addEvent({
-            delay: 1000, // Cada 1 segundo se ejecuta lo del callback.
-            callback: () => {
-                this.timeToNewPowerUp--; // Disminuimos el tiempo.
-                if (this.timeToNewPowerUp <= 0 && this.endGame < this.numPlayers && !this.winGame) { // Cuando toque y no sea final de partida.
-                    this.spawnPowerUp(Phaser.Math.Between(32, this.cameras.main.width - 32), -16) // Generamos el enemigo.
-                    this.timeToNewPowerUp = Phaser.Math.Between(6, 10); // Reseteamos con un tiempo aleatorio.
-                }
-            },
-            callbackScope: this,
-            loop: true // Para que se haga continuamente.
-        });*/
-        // COLISIONES:
-        /*this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => this.enemyPlayerCollision(player, enemy));
-        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
-        this.physics.add.collider(this.players, this.powerUpsPool, (player, powerUp) => this.playerPowerUpCollision(player, powerUp));*/
     }
 
     update(time, delta) {
-        this.spawnFuel();
-        //console.log("X: " + this.player.x + " Y: " + this.player.y);
-
-        /*this.checkCheatKeys();
-        if (this.background.y < this.background.height && this.endGame < this.numPlayers) {
-            this.background.y += this.backgroundSpeed; // Movemos el fondo si no ha llegado hasta el final.
-            this.backgroundContrast.y += this.backgroundSpeed; // Movemos el fondo contrastado si no ha llegado hasta el final.
+        if (!this.fuelActive) { // Solo si no hay fuel en la escena activo (en el suelo o con el jugador) generamos otro.
+            this.spawnFuel();
         }
-        else if (this.background.y >= this.background.height && this.endGame < this.numPlayers) {
-            this.win();
-        }*/
+
+        //this.checkCheatKeys();
     }
 
     spawnFuel() {
-        if (!this.fuelActive) {
-            this.fuel.appear();
-            this.fuelActive = true;
-        }
+        this.fuel.appear();
+        this.fuelActive = true;
     }
 
-    playerFuleCollision(player, fuel) {
-        fuel.appear();
-        // hacer por contenedor y no así
+    playerFuelCollision() {
+        this.player.addFuel(); // LE ponemos el fuel al contenedor del jugador.
+        this.fuel.disappear(); // Hacemos que el fuel desaparezca.
+        this.playerHasFuel = true; // Actualizamos la posesion de fuel del jugador.
     }
 
-
-    /*spawnPowerUp(x, y) {
-        let powerUp = this.powerUpsPool.get();
-        if (powerUp) {
-            powerUp.setActive(true).setVisible(true).setX(x).setY(y);
-        }
-    }
-
-    enemyBulletCollision(bullet, enemy) {
-        /*this.explosionSound.play();
-        enemy.anims.play('enemyexplosion', true).on('animationcomplete', (animation, frame) => {
-            if (animation.key === 'enemyexplosion') {
-                enemy.reset();
-            }
-        }, this);
-        bullet.reset();
-    }
-
-    enemyPlayerCollision(player, enemy) {
-        /*this.deadSound.play();
-        player.setActive(false).setVisible(false).setPosition(-100, -100);
-        player.body.setVelocityY(0).setVelocityX(0);
-        enemy.reset();
-    
-        this.gameOver();
-    }
-
-    playerPowerUpCollision(player, powerUp) {
-        /*this.luckySound.play();
-        player.upgradeShoot();
-        powerUp.reset();
-    }
-
-    gameOver() {
-        /*if (this.endGame <= this.numPlayers) {
-            this.endGame++;
-        }
-        if (this.endGame >= this.numPlayers) {
-            this.endText("DEFEAT");
+    playerShipCollision() {
+        if (this.playerHasFuel) {
+            this.ship.addFuel(); // Le ponemos fuel a la nave.
+            this.player.removeFuel(); // Quitamos el fuel del contenedor del jugador.
+            this.fuel.appear(); // Hacemos que aparezca otro fuel.
+            this.playerHasFuel = false; // Actualizamos la posesion de fuel del jugador.
+            this.countText.setText(this.ship.actualFuel + "/" + this.fuelNeedded); // Actualizamos el texto contador.
         }
     }
 
     win() {
-        /*this.winGame = true;
-        for (let i = 0; i < this.numPlayers; i++) { // Recorremos todos los jugadores.
-            this.players[i].stop(); // Hacemos que el jugador no pueda moverse.
-            this.players[i].goAway(); // El tween que hace que los jugadores salgan de la partida.
-        }
         this.endText("VICTORY");
-    }
-
-    endText(text) {
-        /*this.finalText.setText("" + text).setVisible(true); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
-        this.tweens.add({
-            targets: this.backgroundContrast, // Target.
-            alpha: 1, // Para que haga la imagen completamente visible.
-            duration: 5000, // Duracion: 5 segundos.
-            ease: 'Power1',
-            repeat: 0, // Para que no se repita.
-            yoyo: false, // No queremos que haga yoyo.
+        this.tweens.add({ // Hacer que la nave se vaya cuando se complete el objetivo.
+            targets: this.ship,
+            scaleX: 0.4,
+            scaleY: 0.4,
+            y: -200,
+            duration: 4000,
+            ease: 'linear',
+            repeat: 0,
             onComplete: () => {
-                this.scene.start("Title"); // Vuelta al menu principal cuando se acabe el tween. Pone que dure 3 segundos esto pero lo pongo 5 porque si.
+                this.exitMenu();
             }
         });
     }
 
-    fasterBackground() {
-        /*this.backgroundSpeed += 0.5;
+    defeat() {
+        this.endText("DEFEAT");
     }
 
-    checkCheatKeys() {
-        /*if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.C)) { // Cheat show/hide colliders.
+    endText(text) {
+        this.finalText.setText("" + text).setVisible(true); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
+        this.countText.setVisible(false); // Quitamos el texto que lleva la cuenta del fuel.
+    }
+
+    exitMenu() {
+        this.scene.start("Menu"); // Volvemos al menu.
+    }
+
+    /*checkCheatKeys() {
+        if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.C)) { // Cheat show/hide colliders.
             console.log("Cheat: colliders.")
             this.physics.world.colliders.visible = !this.physics.world.colliders.visible;
         }
