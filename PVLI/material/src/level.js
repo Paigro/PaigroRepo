@@ -26,10 +26,9 @@ export default class Level extends Phaser.Scene {
         const tileset = map.addTilesetImage('ground_ts', 'tileset'); // Metemos el tileset (lo primero mirar en el json, lo segundo la imagen del tileset).
         const groundLayer = map.createLayer('ground', tileset, 0, 0); // Se pueden meter layers, metemos la del suelo.
         // OBJETOS:
-        this.player = new Player(this, 50, 50) // Metemos el jugador
+        this.player = new Player(this, this.cameras.main.centerX, this.cameras.main.height - 32) // Metemos el jugador
         this.fuel = new Fuel(this, 100, 100).setActive(false).setVisible(false); // Metemos el fuel.
         this.ship = new Ship(this, this.cameras.main.centerX + 20, this.cameras.main.height - 8, this.fuelNeedded) // Metemos la nave.
-
 
 
         /*
@@ -121,24 +120,7 @@ export default class Level extends Phaser.Scene {
     spawnMeteor(x, y) {
         let meteor = this.meteorsPool.get();
         if (meteor) {
-
-
-
-
-
-
-
-
-
-            // Eso de abajo se puede hacer en un metodo de meteor al igual que desactivarlo:
-
-
-
-
-
-            meteor.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
-            meteor.body.allowGravity = true; // Le volvemos a poner gravedad
-            meteor.body.setVelocityX(50); // Para que tenga movimiento horizontal.
+            meteor.activate(x, y);
         }
     }
 

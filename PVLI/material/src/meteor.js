@@ -30,14 +30,18 @@ export default class Meteor extends Phaser.GameObjects.Sprite {
         }
     }
 
-    reset() {
-        console.log("reset")
+    activate(x, y) {
+        this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
+        this.body.allowGravity = true; // Le volvemos a poner gravedad
+        this.body.setVelocityX(50); // Para que tenga movimiento horizontal.
+    }
+
+    deactivate() {
         this.body.allowGravity = false;
         this.anims.play('meteor', true);
         this.setActive(false).setVisible(false).setPosition(-50, -50);
         this.body.setVelocityY(0);
         this.body.setVelocityX(0);
-
     }
 
     explode() {
@@ -45,7 +49,7 @@ export default class Meteor extends Phaser.GameObjects.Sprite {
         this.body.setVelocityX(0);
         this.anims.play('explosion', true).on('animationcomplete', (animation, frame) => {
             if (animation.key === 'explosion') {
-                this.reset();
+                this.deactivate();
             }
         }, this);
     }
