@@ -16,7 +16,7 @@ export default class Menu extends Phaser.Scene {
         // Musica:
         this.sound.stopAll(); // Quitamos el resto de sonidos.
         this.menuMusic = this.sound.add('menuMusic');
-        this.menuMusic.play({ volume: 0.1, loop: true });
+        //this.menuMusic.play({ volume: 0.1, loop: true });
         // Titulo del juego:
         this.tittle = this.add.text(this.cameras.main.centerX, 200, "Circus", {
             fontSize: 40,
