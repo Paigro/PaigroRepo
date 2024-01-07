@@ -3,41 +3,29 @@ export default class Player extends Phaser.GameObjects.Container {
     constructor(scene, x, y) {
         super(scene, x, y,); // Llamada a la constructora padre.
 
-        scene.physics.add.existing(this);
-        //this.body.enable = false;
-        //this.body.allowGravity = false;
-        this.body.setSize(36 * 3.5, 16 * 3.5);
-
+        scene.physics.add.existing(this); // Metemos fisicas al contenedor.
+        this.body.setSize(36 * 3.5, 16 * 3.5); // HAcemos el boddy igual a como si fuese el del leon solo.
+        
+        this.lionSprite = scene.add.sprite(0, 0, 'lion').setOrigin(0, 0).setScale(3.5, 3.5); // Guardamos el sprite del leon.
+        this.clownSprite = scene.add.sprite(18, 24, 'clown').setOrigin(0.5, 1).setScale(3.5, 3.5); // Guardamos el sprite del payaso.
+        this.add([this.lionSprite, this.clownSprite]); // Metemos al contenedor el sprite del payaso.
+        scene.physics.add.existing(this.clownSprite); // Metemos fisicas al payaso. Al leon no porque estamos haciendo que el boddy del contenedor sea igual al que tendria el leon para ahorrar en boddies.
+        this.clownSprite.body.allowGravity = false; // Quitamos la gravedad del payaso.
+        
+        scene.add.existing(this); // Metemos el contenedor en la escena.
+        
         this.keys; // Para guardar las teclas para el movimiento.
         this.playerKeys(); // Setear las teclas.
         this.ySpeed = 400; // Velocidad del jugador.
         this.xSpeed = 200;
         this.isJumping = false;
 
-        this.lionSprite = scene.add.sprite(0, 0, 'lion').setOrigin(0, 0).setScale(3.5, 3.5); // Guardamos el sprite del leon.
-        this.clownSprite = scene.add.sprite(18, 24, 'clown').setOrigin(0.5, 1).setScale(3.5, 3.5); // Guardamos el sprite del payaso.
-        this.add([this.lionSprite, this.clownSprite]); // Metemos al contenedor el sprite del payaso.
-        // Metemos las fisicas al leon y al payaso para que tengan sus propios colliders y les quitamos la gravedad para que no se caigan:
-        scene.physics.add.existing(this.clownSprite);
-        this.clownSprite.body.allowGravity = false;
-
-        scene.add.existing(this); // Metemos el contenedor en la escena.
-        //this.playerSprite.anims.play('playerIdle', true);
+        this.lionSprite.anims.play('lionIdle', true); // En principio daria igual poner esto aqui porque el jugador cae y cuando llegue al suelo ya se pondran pero por si acaso.
+        this.clownSprite.anims.play('clownIdle', true);
     }
 
     preUpdate(t, dt) {
         this.move();
-        //this.checkBounds();
-        /*if (this.body.velocity.y < 0 || this.body.velocity.y > 0) {
-            this.isJumping = true;
-        }
-        else {
-            this.isJumping = false;
-        }
-
-        if (!this.isJumping) {
-            this.body.setVelocityX(0);
-        }*/
     }
 
     playerKeys() {
@@ -49,7 +37,7 @@ export default class Player extends Phaser.GameObjects.Container {
     }
 
     move() {
-        if (!this.isJumping) {
+        if (!this.isJumping) { // Solo se puede modificar el movimiento si no se esta saltando.
             if (this.keys.up.isDown) { // Movimiento arriba.
                 this.body.setVelocityY(-this.ySpeed);
                 this.isJumping = true;
@@ -59,62 +47,43 @@ export default class Player extends Phaser.GameObjects.Container {
                 this.body.setVelocityX(this.xSpeed);
             }
             else if (this.keys.left.isDown) { // Movimiento izquierda.
-                this.body.setVelocityX(-this.xSpeed);
+                this.body.setVelocityX(-this.xSpeed / 2); // La velocidad hacia atras es mas lenta.
             }
 
             if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left)) {
-                this.body.setVelocityX(0);
+                this.body.setVelocityX(0); // Cuando se dejan de pulsar las teclas se para.
             }
         }
 
-
-        //this.animations(); // Llamamos para actualizar la animacion.
+        this.animations(); // Llamamos para actualizar la animacion de cada cosa.
 
     }
 
-    /*animations() {
-        if (this.body.velocity.y >= 0) {
-            if (this.body.velocity.x < 0) {
-                this.playerSprite.anims.play('playerWalk', true);
-            }
-            else if (this.body.velocity.x > 0) {
-                this.playerSprite.anims.play('playerWalk', true);
+    animations() {
+        if (this.body.velocity.y == 0) { // Si la velocidad en Y es 0 (no esta saltando) entoces se pueden dar las situaciones de idle y caminar.
+            if (this.body.velocity.x > 0 || this.body.velocity.x < 0) {
+                this.lionSprite.anims.play('lionWalk', true);
             }
             else {
-                this.playerSprite.anims.play('playerIdle', true);
+                this.lionSprite.anims.play('lionIdle', true);
+                this.clownSprite.anims.play('clownIdle', true);
             }
         }
-        else {
-            this.playerSprite.anims.play('playerFlight'); // No funciona bien.
+        else { // Sino, esta saltando.
+            this.lionSprite.anims.play('lionJump', true);
+            this.clownSprite.anims.play('clownJump', true);
         }
-    }
-
-    checkBounds() {
-        if (this.x > this.scene.cameras.main.width - 2) {
-            this.x = -10;
-        }
-        else if (this.x < -10) {
-            this.x = this.scene.cameras.main.width - 2;
-        }
-    }
-
-    addFuel() {
-        this.fuelSprite = this.scene.add.sprite(0, -10, 'fuel').setOrigin(0, 0);
-        this.add([this.fuelSprite]);
-    }
-
-    removeFuel() {
-        this.remove(this.fuelSprite);
     }
 
     die() {
-        this.setActive(false).setVisible(false).setPosition(-100, -100);
-        this.body.setVelocityY(0).setVelocityX(0);
-        this.body.allowGravitY = false;
-        this.scene.defeat();
-    }*/
+        this.lionSprite.anims.play('lionDead', true); // Animacion de muerte del leon.
+        this.clownSprite.anims.play('clownDead', true); // Animacion de muerte del payaso.
+        this.body.setVelocityY(0).setVelocityX(0); // Quitamos las velocidades para que se quede en el sitio.
+        this.body.allowGravitY = false; // Quitamos la gravedad para que se quede en el sitio.
+        //this.scene.defeat();
+    }
 
-    jumpFinished() {
+    jumpFinished() { // Reseteo del salto cuando toca el suelo.
         this.isJumping = false;
     }
 }

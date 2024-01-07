@@ -2,13 +2,10 @@ export default class Boot extends Phaser.Scene {
 
     constructor() {
         super({ key: 'Boot', active: true });
-
-
-
     }
 
     init() {
-
+        console.log("buenos dias")
     }
 
     preload() {
@@ -34,11 +31,58 @@ export default class Boot extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start("Menu");
         this.loadAnimations();
+        this.scene.start("Menu");
     }
 
     loadAnimations() {
-
+        this.anims.create({
+            key: 'lionIdle',
+            frames: this.anims.generateFrameNumbers('lion', { start: 2, end: 2 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'lionWalk',
+            frames: this.anims.generateFrameNumbers('lion', { start: 0, end: 2 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'lionJump',
+            frames: this.anims.generateFrameNumbers('lion', { start: 0, end: 0 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'lionDead',
+            frames: this.anims.generateFrameNumbers('lion', { start: 3, end: 3 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'clownIdle',
+            frames: this.anims.generateFrameNumbers('clown', { start: 0, end: 0 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'clownJump',
+            frames: this.anims.generateFrameNumbers('clown', { start: 1, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'clownDead',
+            frames: this.anims.generateFrameNumbers('clown', { start: 4, end: 4 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'clownWin',
+            frames: this.anims.generateFrameNumbers('clown', { start: 2, end: 3 }),
+            frameRate: 6,
+            repeat: -1
+        });
     }
 }

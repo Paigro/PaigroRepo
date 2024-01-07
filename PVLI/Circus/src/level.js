@@ -21,17 +21,6 @@ export default class Level extends Phaser.Scene {
         //this.stageMusic.play({ volume: 0.1, loop: true });
         // Suelo:
         this.createFloor();
-
-
-
-
-
-
-
-
-
-
-        //this.floor = this.add.sprite(0, this.cameras.main.height - 100, 'none');
         // Fondos:
         this.background1 = this.add.image(-800, this.cameras.main.height, 'background1').setOrigin(0, 1);
         this.background2 = this.add.image(this.background1.x + this.background1.width, this.cameras.main.height, 'background1').setOrigin(0, 1);
