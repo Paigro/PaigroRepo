@@ -83,20 +83,28 @@ export default class Player extends Phaser.GameObjects.Container {
     }
 
     die() { // Cuando el jugador muere.
-        this.isMovible = false; // No se puede mover.
+        this.stop();
         this.lionSprite.anims.play('lionDead', true); // Animacion de muerte del leon.
         this.clownSprite.anims.play('clownDead', true); // Animacion de muerte del payaso.
-        this.body.setVelocityY(0).setVelocityX(0); // Quitamos las velocidades para que se quede en el sitio.
-        this.body.setAllowGravity(false); // Quitamos la gravedad para que se quede en el sitio.
     }
 
     victory() { // Cuando el jugador gana.
-        this.isMovible = false; // No se puede mover.
+        this.stop();
         this.lionSprite.anims.play('lionIdle', true); // Animacion de victoria del leon.
         this.clownSprite.anims.play('clownWin', true); // Animacion de victoria del payaso.
     }
 
     jumpFinished() { // Reseteo del salto cuando toca el suelo.
         this.isJumping = false;
+    }
+
+    cheatVelocidad() {
+        this.xSpeed += 100;
+    }
+
+    stop() {
+        this.isMovible = false; // No se puede mover.
+        this.body.setVelocityY(0).setVelocityX(0); // Quitamos las velocidades para que se quede en el sitio.
+        this.body.setAllowGravity(false); // Quitamos la gravedad para que se quede en el sitio.
     }
 }

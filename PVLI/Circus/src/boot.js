@@ -5,7 +5,7 @@ export default class Boot extends Phaser.Scene {
     }
 
     init() {
-        console.log("buenos dias")
+
     }
 
     preload() {
