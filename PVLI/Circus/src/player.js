@@ -5,27 +5,30 @@ export default class Player extends Phaser.GameObjects.Container {
 
         scene.physics.add.existing(this); // Metemos fisicas al contenedor.
         this.body.setSize(36 * 3.5, 16 * 3.5); // HAcemos el boddy igual a como si fuese el del leon solo.
-        
+
         this.lionSprite = scene.add.sprite(0, 0, 'lion').setOrigin(0, 0).setScale(3.5, 3.5); // Guardamos el sprite del leon.
-        this.clownSprite = scene.add.sprite(18, 24, 'clown').setOrigin(0.5, 1).setScale(3.5, 3.5); // Guardamos el sprite del payaso.
+        this.clownSprite = scene.add.sprite((36 * 3.5) / 2, 0, 'clown').setOrigin(0.5, 1).setScale(3.5, 3.5); // Guardamos el sprite del payaso.
         this.add([this.lionSprite, this.clownSprite]); // Metemos al contenedor el sprite del payaso.
         scene.physics.add.existing(this.clownSprite); // Metemos fisicas al payaso. Al leon no porque estamos haciendo que el boddy del contenedor sea igual al que tendria el leon para ahorrar en boddies.
         this.clownSprite.body.allowGravity = false; // Quitamos la gravedad del payaso.
-        
+
         scene.add.existing(this); // Metemos el contenedor en la escena.
-        
+
         this.keys; // Para guardar las teclas para el movimiento.
         this.playerKeys(); // Setear las teclas.
         this.ySpeed = 400; // Velocidad del jugador.
         this.xSpeed = 200;
         this.isJumping = false;
+        this.isMovible = true;
 
         this.lionSprite.anims.play('lionIdle', true); // En principio daria igual poner esto aqui porque el jugador cae y cuando llegue al suelo ya se pondran pero por si acaso.
         this.clownSprite.anims.play('clownIdle', true);
     }
 
     preUpdate(t, dt) {
-        this.move();
+        if (this.isMovible) {
+            this.move();
+        }
     }
 
     playerKeys() {
@@ -45,9 +48,14 @@ export default class Player extends Phaser.GameObjects.Container {
 
             if (this.keys.right.isDown) { // Movimiento derecha.
                 this.body.setVelocityX(this.xSpeed);
+                this.lionSprite.setFlip(false); // Flipear al jugador.
+                this.clownSprite.setFlip(false); // Flipear al jugador.
             }
             else if (this.keys.left.isDown) { // Movimiento izquierda.
                 this.body.setVelocityX(-this.xSpeed / 2); // La velocidad hacia atras es mas lenta.
+                this.lionSprite.setFlip(true); // Flipear al jugador.
+                this.clownSprite.setFlip(true); // Flipear al jugador.
+
             }
 
             if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left)) {
@@ -76,14 +84,24 @@ export default class Player extends Phaser.GameObjects.Container {
     }
 
     die() {
+        this.isMovible = false;
         this.lionSprite.anims.play('lionDead', true); // Animacion de muerte del leon.
         this.clownSprite.anims.play('clownDead', true); // Animacion de muerte del payaso.
         this.body.setVelocityY(0).setVelocityX(0); // Quitamos las velocidades para que se quede en el sitio.
-        this.body.allowGravitY = false; // Quitamos la gravedad para que se quede en el sitio.
+        this.body.setAllowGravity(false); // Quitamos la gravedad para que se quede en el sitio.
         //this.scene.defeat();
     }
 
     jumpFinished() { // Reseteo del salto cuando toca el suelo.
         this.isJumping = false;
+    }
+
+    handleCollision(collisionee) {
+        this.scene.physics.add.existing(this.clownSprite, collisionee, () => {
+
+        });
+        this.scene.physics.add.existing(this.body, collisionee, () => {
+
+        });
     }
 }

@@ -84,5 +84,17 @@ export default class Boot extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         });
+        this.anims.create({
+            key: 'fireAnim',
+            frames: this.anims.generateFrameNumbers('fire', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'ringAnim',
+            frames: this.anims.generateFrameNumbers('ring', { start: 0, end: 1 }),
+            frameRate: 6,
+            repeat: -1
+        })
     }
 }
