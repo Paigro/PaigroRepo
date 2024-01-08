@@ -106,9 +106,15 @@ export default class Level extends Phaser.Scene {
             loop: true // Para que se haga continuamente.
         });
         // COLISIONES:
-        this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => this.enemyPlayerCollision(player, enemy));
-        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => this.enemyBulletCollision(bullet, enemy));
-        this.physics.add.collider(this.players, this.powerUpsPool, (player, powerUp) => this.playerPowerUpCollision(player, powerUp));
+        this.physics.add.collider(this.players, this.enemiesPool, (player, enemy) => {
+            this.enemyPlayerCollision(player, enemy);
+        });
+        this.physics.add.collider(this.bulletsPool, this.enemiesPool, (bullet, enemy) => {
+            this.enemyBulletCollision(bullet, enemy);
+        });
+        this.physics.add.collider(this.players, this.powerUpsPool, (player, powerUp) => {
+            this.playerPowerUpCollision(player, powerUp);
+        });
     }
 
     update(time, delta) {
@@ -123,7 +129,7 @@ export default class Level extends Phaser.Scene {
     }
 
     shoot(x, y, desviation) {
-        this.shootSound.play();
+        this.shootSound.play({ volume: 0.1, loop: false });
         let bullet = this.bulletsPool.get();
         if (bullet) {
             bullet.setActive(true).setVisible(true).setX(x).setY(y);
@@ -146,7 +152,7 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyBulletCollision(bullet, enemy) {
-        this.explosionSound.play();
+        this.explosionSound.play({ volume: 0.1, loop: false });
         enemy.anims.play('enemyexplosion', true).on('animationcomplete', (animation, frame) => {
             if (animation.key === 'enemyexplosion') {
                 enemy.reset();
@@ -156,7 +162,7 @@ export default class Level extends Phaser.Scene {
     }
 
     enemyPlayerCollision(player, enemy) {
-        this.deadSound.play();
+        this.deadSound.play({ volume: 0.1, loop: false });
         player.setActive(false).setVisible(false).setPosition(-100, -100);
         player.body.setVelocityY(0).setVelocityX(0);
         enemy.reset();
@@ -165,7 +171,7 @@ export default class Level extends Phaser.Scene {
     }
 
     playerPowerUpCollision(player, powerUp) {
-        this.luckySound.play();
+        this.luckySound.play({ volume: 0.1, loop: false });
         player.upgradeShoot();
         powerUp.reset();
     }

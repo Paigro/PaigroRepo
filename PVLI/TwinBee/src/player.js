@@ -38,6 +38,8 @@ export default class Player extends Phaser.GameObjects.Sprite {
         if (this.shootTimer >= this.shootTime) {
             this.canShoot = true;
         }
+        console.log(/*this.shootLevel <= this.maxUpgrades + "/" + */this.shootTime);
+        console.log("Level: " + this.shootLevel);
     }
 
     move(t) {
@@ -116,7 +118,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     shoot() {
-        //console.log("Pium pium.");
+        console.log("Pium pium.");
 
         if (this.playerNumber === 1) {
             this.anims.play('twinshoot', true);
@@ -136,7 +138,7 @@ export default class Player extends Phaser.GameObjects.Sprite {
             this.scene.shoot(this.x - 4, this.y, -1.5);
             this.scene.shoot(this.x + 4, this.y, 1.5);
         }
-        else if (this.shootLevel === 3) {
+        else if (this.shootLevel >= 3) {
             this.scene.shoot(this.x - 8, this.y, -4);
             this.scene.shoot(this.x - 4, this.y, -1.5);
             this.scene.shoot(this.x + 4, this.y, 1.5);
@@ -145,13 +147,14 @@ export default class Player extends Phaser.GameObjects.Sprite {
     }
 
     upgradeShoot() {
-        //console.log("Upgrade shoot.");
+        console.log("Upgrade shoot.");
         if (this.shootLevel <= this.maxUpgrades) {
             this.shootLevel++;
+            console.log("Update por debajo de max.");
         }
         else if (this.shootLevel > this.maxUpgrades && this.shootTime >= 0.4) {
             this.shootTime -= 0.2;
-            //console.log(this.shootTime);
+            console.log("Update por encima de max");
         }
     }
 

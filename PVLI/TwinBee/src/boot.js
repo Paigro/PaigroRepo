@@ -28,7 +28,7 @@ export default class Boot extends Phaser.Scene {
 
     create() {
         this.animations();
-        this.scene.start("Menu");
+        this.scene.start("Title");
     }
 
     animations() {
@@ -92,7 +92,7 @@ export default class Boot extends Phaser.Scene {
         // Animacion de la explosion del enemigo:
         this.anims.create({
             key: 'enemyexplosion',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 2 }),
             frameRate: 8,
             repeat: 1
         });

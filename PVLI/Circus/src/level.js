@@ -69,7 +69,6 @@ export default class Level extends Phaser.Scene {
             fontFamily: 'arcade_classic', // Fuente del texto.
 
         }).setOrigin(0.5, 0.5).setVisible(false).setDepth(3);
-        this.textsExist = true;
         //------POOL DE AROS:
         this.ringsPool = this.physics.add.group({ // Pool de enemigos.
             classType: Ring,
@@ -114,8 +113,13 @@ export default class Level extends Phaser.Scene {
         this.physics.add.collider(this.player, this.stage, (player, stage) => { // Colision jugador con plataforma.
             this.playerStageCollision();
         })
+        this.physics.add.overlap(this.player, this.ringsPool, () => { // Comprobar que todos lo sprites del contenedor del jugador con body chocan con el body del aro.
+            console.log("Colision payaso aro.")
+            //this.playerShipCollision();
+        });
+        //------PUNTUACION DESCENDENTE.
         this.time.addEvent({
-            delay: 1000, // 3.5 segundos.
+            delay: 1000, // 1 segundo.
             callback: () => {
                 if (!this.endGame) {
                     /*if (this.score > 0) { this.score -= 50; }*/ // Me la pela que aparezca puntuacion negativa o no.
@@ -131,6 +135,7 @@ export default class Level extends Phaser.Scene {
         //------RECTANGULO FINAL:
         this.rect = this.add.graphics();
         this.rect.fillStyle(0x000000).fillRect(0, 0, this.cameras.main.width, this.cameras.main.height).setDepth(2).setAlpha(0);
+        this.textsExist = true;
     }
 
     update(time, delta) {
@@ -146,6 +151,7 @@ export default class Level extends Phaser.Scene {
         }
         if (this.textsExist) {
             this.updateTexts();
+            //this.checkCollisions();
         }
         //console.log("x: " + this.finalText.x + "/y: " + this.finalText.y);
     }
@@ -189,6 +195,17 @@ export default class Level extends Phaser.Scene {
             ring.activate(x, y);
         }
     }
+
+    /*checkCollisions() {
+        console.log("Chezcollision.")
+        this.ringsPool.children.each((child) => { // Foreach que recorre todos los hijos del grupo y que usamos para que todos se paren y no se sigan moviendo.
+            this.physics.add.overlap(this.player.clownSprite, child, (player, ring) => { // Comprobar que todos lo sprites del contenedor del jugador con body chocan con el body del aro.
+                console.log("Colision payaso aro.")
+                this.playerRingCollision(player, ring);
+            });
+            child.stop();
+        }, this);
+    }*/
 
     playerRingCollision(player, ring) { // Colision jugador con los aros de fuego.
         this.endGame = true;
@@ -281,6 +298,9 @@ export default class Level extends Phaser.Scene {
     exitMenu() { // Para salir al menu.
         if (this.score > this.highScore) { // Si la puntuacion de esta partida es mayor a la guardada en el highscore esta se actualiza y llama a la animacion to wapa wapa.
             this.highScoreData = this.score;
+            this.highScore = 0;
+            this.highscoreText.setText("HIGHSCORE: " + this.highScore) // Actualizamos el texto de highscore.
+
             this.scoreAnimation();
         }
         else {
