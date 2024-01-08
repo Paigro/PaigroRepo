@@ -39,21 +39,27 @@ export default class Level extends Phaser.Scene {
         //------LIMITES IZQUIERDO E INFERIOR:
         this.createLimits();
         //------FONDOS:
-        this.backgrounds = [];
-        this.leftBackground = 0;
-        this.rightBackground = 3
+        this.backgrounds = [];      // Array de fondos
+        this.leftBackground = 0;    // Fondo de la izquieda
+        this.rightBackground = 3;   // Fondo de la derecha
         for (let i = 1; i <= 4; i++) {
-            let x = 0;// Calcula la posicion x
+            // Calcula la posicion x
+            let x = 0;
+            // x es 0 si el fondo que se esta creando es 0, si no se hace el if
             if (i - 1 > 0) {
-                x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;
+                x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;  // como i-1 es el fondo que estamos creando, cogemos la posicion x del i-2 que es el anterior, 
+                //y le sumamos el ancho de una imagen, para ver la posicion x del actual
             }
+
+            // si i es par entonces se coloca el fondo 2, si no el fondo 1
             if (i % 2 === 0) {
                 const background = (this.add.image(x, this.cameras.main.height, 'background2').setOrigin(0, 1));
-                this.backgrounds.push(background);
+                this.backgrounds.push(background); // añade el background al array
             } else {
-                const background = (this.add.image(x, this.cameras.main.height, 'background1').setOrigin(0, 1));
-                this.backgrounds.push(background);
+                const background = (this.add.image(x, this.cameras.main.height, 'background').setOrigin(0, 1));
+                this.backgrounds.push(background); // añade el background al array
             }
+            // -----actualizacion de posiciones de los fondos en el update-----
         }
         //------MARCAS DE DISTANCIA:
         for (let i = 0; i <= this.goal; i += 10) {
@@ -178,20 +184,19 @@ export default class Level extends Phaser.Scene {
         //console.log("x: " + this.finalText.x + "/y: " + this.finalText.y);
     }
 
-    torosDelFondo() {
-        // el toro del fondo izquierdo
+    torosDelFondo() { // Movimiento del fondo hecho por Andres.
+        // si la posicion mas a la izquierda que ve la camara es mayor o igual que la posicion x del fondo mas a la izquierda + el ancho de un fondo.
+        // (es decir, el fondo de mas a la izquierda se sale de pantalla) el fondo de la izquierda se pone a la derecha
         if (this.cameras.main.worldView.left >= this.backgrounds[this.leftBackground].x + this.backgrounds[this.leftBackground].width) {
-            console.log(this.leftBackground);
-            //indice del ultimo background
-            let indice = this.leftBackground - 1;
-            if (indice < 0) { indice = 3; }
 
-            // Pone el ultimo fondo a la derecha del todo
-            this.backgrounds[this.leftBackground].x = this.backgrounds[indice].x + this.backgrounds[this.leftBackground].width;
+            // Pone el fondo de la izquierda a la derecha del fondo mas a la derecha
+            this.backgrounds[this.leftBackground].x = this.backgrounds[this.rightBackground].x + this.backgrounds[this.leftBackground].width;
 
-            // Actualizacion del last background
+            // Actualizacion del fondo de la derecha e izquierda
             this.leftBackground++;
             this.rightBackground++;
+
+            //Si los indices se salen de los limites se resetean
             if (this.leftBackground >= this.backgrounds.length) {
                 this.leftBackground = 0;
             } if (this.rightBackground >= this.backgrounds.length) {
@@ -199,19 +204,18 @@ export default class Level extends Phaser.Scene {
             }
         }
 
-        // el toro del fondo derecho
+        // si la posicion mas a la izquierda que ve la camara es menor que la posicion x del fondo mas a la izquierda.
+        // (es decir, el limite del fondo de la izquierda se ve en pantalla) el fondo de la derecha se pone a la izquierda
         if (this.cameras.main.worldView.left < this.backgrounds[this.leftBackground].x) {
-            console.log("toro derecho");
-            //indice del ultimo background
-            let indice = this.rightBackground;
-            if (indice < 0) { indice = 3; }
 
-            // Pone el ultimo fondo a la derecha del todo
+            // Pone el fondo de la derecha a la izquierda del fondo mas a la izquierda
             this.backgrounds[this.rightBackground].x = this.backgrounds[this.leftBackground].x - this.backgrounds[this.leftBackground].width;
 
-            // Actualizacion del last background
+            // Actualizacion del fondo de la derecha e izquierda
             this.rightBackground--;
             this.leftBackground--;
+
+            //Si los indices se salen de los limites se resetean
             if (this.rightBackground < 0) {
                 this.rightBackground = this.backgrounds.length - 1;
             } if (this.leftBackground < 0) {
@@ -361,7 +365,7 @@ export default class Level extends Phaser.Scene {
         }
     }
 
-    checkCheatKeys() {
+    checkCheatKeys() { // Truquitos.
         if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.V)) { // Cheat velocidad jugador.
             console.log("Cheat: velocidad.");
             this.player.cheatVelocidad();
