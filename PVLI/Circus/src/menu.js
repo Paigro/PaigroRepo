@@ -4,8 +4,8 @@ export default class Menu extends Phaser.Scene {
         super({ key: 'Menu', active: false });
     }
 
-    init() {
-
+    init(data) {
+        this.highscore = data.highScore; // Guardamos el highscore que le pase el Level.
     }
 
     preload() {
@@ -16,7 +16,7 @@ export default class Menu extends Phaser.Scene {
         // Musica:
         this.sound.stopAll(); // Quitamos el resto de sonidos.
         this.menuMusic = this.sound.add('menuMusic');
-        //this.menuMusic.play({ volume: 0.1, loop: true });
+        this.menuMusic.play({ volume: 0.1, loop: true });
         // Titulo del juego:
         this.tittle = this.add.text(this.cameras.main.centerX, 200, "Circus", {
             fontSize: 40,
@@ -44,8 +44,7 @@ export default class Menu extends Phaser.Scene {
         }).setOrigin(0.5, 0.5).setInteractive();
 
         button.on("pointerdown", () => {
-            //console.log("Texto boton: " + text);
-            this.scene.start("Level", { difficulty: dif });
+            this.scene.start("Level", { difficulty: dif, highScore: this.highscore }); // Mandamos la dificultad del nivel y el highscore que haya.
         });
     }
 

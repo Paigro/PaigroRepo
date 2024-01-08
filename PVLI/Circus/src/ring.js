@@ -3,46 +3,43 @@ export default class Ring extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'ring'); // Llamada a la constructora padre.
 
-        scene.physics.add.existing(this); // Metemos fisicas al contenedor.
-        this.body.setSize(20, 30).setOffset(6, 70).setImmovable(true); // Cambiamos el body dependiendo del que sea.
+        scene.physics.add.existing(this); // Metemos las fisicas.
+        this.body.setSize(20, 30).setOffset(6, 70).setImmovable(true).setAllowGravity(false); // Cambiamos el body, le ponemos un offset, lo hacemos inmovible a las colisiones y desactivamos la gravedad..
 
-        this.setScale(3.5, 3.5);
-
-        this.body.setAllowGravity(false); // Quitamos la gravedad.
+        this.setScale(3.5, 3.5); // Cambiamos la escala.
 
         scene.add.existing(this); // Metemos el sprite en la escena.
 
-        this.speed = 100;
-        this.isMovible = true;
+        this.speed = 100; // Velocidad a la que se va a mover.
+        this.isMovible = true; // Para que no sea afectado por las colisiones con otros objetos.
 
-        this.anims.play('ringAnim');
+        this.anims.play('ringAnim'); // Ponemos la animacion del aro.
     }
 
     preUpdate(t, dt) {
-        super.preUpdate(t, dt);
+        super.preUpdate(t, dt); // Llamamos al preupdate del padre.
         if (this.isMovible) {
-            this.move();
+            this.move(); // Si se puede mover se mueve.
         }
         if (this.x < this.scene.cameras.main.worldView.left - 30) {
-            this.deactivate();
+            this.deactivate(); // Si ha salido por la izquierda de la camara una distancia lo desactivamos.
         }
     }
 
-    move() {
-        this.body.setVelocityX(-this.speed);
+    move() { // Movimiento.
+        this.body.setVelocityX(-this.speed); // Hacia la izquierda.
     }
 
-    activate(x, y) {
+    activate(x, y) { // Activa el objeto, su visibilidad y modifica su posicion.
         this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
-        this.body.setAllowGravity(false); // Le volvemos a poner gravedad
     }
 
-    deactivate() {
+    deactivate() { // Desactiva el objeto, su visibilidad, modifica su posicion y para su movimiento.
         this.setActive(false).setVisible(false).setPosition(0, -50); // Lo desactivamos.
-        this.body.setAllowGravity(false).setVelocity(0, 0); // Le quitamos la gravedad.
+        this.body.setVelocity(0, 0); // Lo paramos.
     }
 
-    stop() {
+    stop() { // Para el objeto completamente.
         this.isMovible = false;
         this.body.setVelocity(0, 0);
     }

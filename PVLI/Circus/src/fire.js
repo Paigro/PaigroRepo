@@ -4,27 +4,16 @@ export default class Fire extends Phaser.GameObjects.Sprite {
         super(scene, x, y, 'fire'); // Llamada a la constructora padre.
 
         scene.physics.add.existing(this); // Metemos fisicas al contenedor.
-        this.body.setSize(25, 31); // Cambiamos el body dependiendo del que sea.
+        this.body.setSize(25, 31).setAllowGravity(false).setImmovable(true); // Cambiamos el body, le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
 
-        this.body.setAllowGravity(false).setImmovable(true);
-
-        this.setScale(3.5, 3.5);
+        this.setScale(3, 3); // Cambiamos su escala que sino es muy chico.
 
         scene.add.existing(this); // Metemos el sprite en la escena.
 
-        this.anims.play('fireAnim');
+        this.anims.play('fireAnim'); // Ponemos la animacion del fuego.
     }
 
-    preUpdate(t, dt) {
-    }
-
-    activate(x, y) {
+    activate(x, y) { // Activa el objeto, su visibilidad y lo pone en la posicion recibida.
         this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
-        this.body.setAllowGravity(false); // Le volvemos a poner gravedad
-    }
-
-    deactivate() {
-        this.setActive(false).setVisible(false).setPosition(0, -50); // Lo desactivamos.
-        this.body.setAllowGravity(false); // Le quitamos la gravedad.
     }
 }
