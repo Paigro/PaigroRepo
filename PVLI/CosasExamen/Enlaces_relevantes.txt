@@ -1,0 +1,22 @@
+--Crear y cargar un tilemap--
+https://medium.com/@michaelwesthadley/modular-game-worlds-in-phaser-3-tilemaps-1-958fc7e6bbd6
+
+--Ejemplos de phaser para tilemaps--
+https://phaser.io/examples/v3/category/tilemap
+
+--Lectura de JSON--
+https://newdocs.phaser.io/docs/3.54.0/focus/Phaser.Loader.LoaderPlugin-json
+
+--Ejemplos de eventos--
+https://phaser.io/examples/v3/category/events
+para ver una lista de eventos abrir el inspector y buscar Event Listeners
+
+
+--Guardado local de de archivos-- se puede hacer lo mismo con session storage (session es solo hasta que cierras la ventana)
+https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+
+--API de contenedores--
+https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Container.html
+
+--Ejemplos de contenedores--
+https://phaser.io/examples/v3/category/game-objects/container

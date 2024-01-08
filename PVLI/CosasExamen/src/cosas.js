@@ -83,5 +83,24 @@ Phaser.Math.RND.realInRange(n, m); // Numero decimales entre n y m.
 Phaser.math.RND.bool() // Booleano aleatorio.
 Phaser.Math.RND.color(); // Genera un color aleatorio en formato hexadecimal.
 Phaser.Math.RND.string(5); // Genera una cadena de 5 caracteres aleatorios.
-Phaser.Math.between(n, m) // Me gusta mas este para generar numeros aleatorios entre n y m.
+Phaser.Math.between(n, m); // Me gusta mas este para generar numeros aleatorios entre n y m.
+//------PONER SONIDOS:
+this.pickSound.play({ volume: 0.2, loop: false }); // Sonido de coger cosas.
+//------ACTIVATE Y DESACTIVATE:
+activate(x, y, velX, velY)  // Activa el objeto, su visibilidad y modifica su posicion.
+{
+    this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
+    this.body.setAllowGravity(false).setVelocityX(velX).setVelocityY(velY); // Po si acaso.
+}
+deactivate()  // Desactiva el objeto, su visibilidad, modifica su posicion y para su movimiento.
+{
+    this.setActive(false).setVisible(false).setPosition(0, -50); // Lo desactivamos.
+    this.body.setVelocity(0, 0); // Lo paramos.
+}
+//------RECTANUGULOS: se les pueden añadir fisicas y demas cosas, ver Circus.
+this.rect = this.add.graphics();
+this.rect.fillStyle(0x000000).fillRect(0, 0, this.cameras.main.width, this.cameras.main.height).setDepth(2).setAlpha(0);
+//------GUARDADO LOCAL:
+this.highScore = sessionStorage.getItem('highScoreData'); // Cargarlos.
+sessionStorage.setItem('highScoreData', this.highScoreData); // Guardarlos.
 
