@@ -40,14 +40,13 @@ export default class Level extends Phaser.Scene {
         this.createLimits();
         //------FONDOS:
         this.backgrounds = [];
-        this.lastbackground = 0;
-        for (let i = 1; i <= 3; i++) {
-            // Calcula la posicion x
-            let x = 0;
+        this.leftBackground = 0;
+        this.rightBackground = 3
+        for (let i = 1; i <= 4; i++) {
+            let x = 0;// Calcula la posicion x
             if (i - 1 > 0) {
                 x = this.backgrounds[i - 2].x + this.backgrounds[i - 2].width;
             }
-
             if (i % 2 === 0) {
                 const background = (this.add.image(x, this.cameras.main.height, 'background2').setOrigin(0, 1));
                 this.backgrounds.push(background);
@@ -55,6 +54,24 @@ export default class Level extends Phaser.Scene {
                 const background = (this.add.image(x, this.cameras.main.height, 'background1').setOrigin(0, 1));
                 this.backgrounds.push(background);
             }
+        }
+        //------MARCAS DE DISTANCIA:
+        for (let i = 0; i <= this.goal; i += 10) {
+            let mark = this.add.graphics(); // Grafico de marca.
+            // Configurar las propiedades del objeto mark.
+            mark.fillStyle(0x000000, 1); // Relleno negro con opacidad 1.
+            mark.fillRect(0, 0, 100, 50); // Rectangulo en la posiciOn (0, 0) y size 100*50.
+            mark.lineStyle(4, 0xFF0000, 1); // LInea roja con grosor 4 y opacidad 1.
+            mark.strokeRect(0, 0, 100, 50); // Contorno del rectángulo en la posición (0, 0) con tamaño 100*50.
+            mark.setPosition(80 * i, this.cameras.main.height - 100); // setea la posicion.
+
+            // Poner el texto:
+            this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 125, this.goal - i + "M", {
+                fontSize: '20px',
+                color: 'red',
+                fontFamily: 'arcade_classic',
+
+            }).setOrigin(0, 0).setPosition(80 * i + 5, this.cameras.main.height - 95);
         }
         //------TEXTOS:
         this.highscoreText = this.add.text(this.cameras.main.centerX, 40, "HIGHSCORE: " + this.highScore, { // Texto para llevar la cuenta del fuel que lleva el jugador.
@@ -152,22 +169,55 @@ export default class Level extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (this.cameras.main.worldView.left >= this.backgrounds[this.lastbackground].x + this.backgrounds[this.lastbackground].width) {
-            // Pone el ultimo fondo a la derecha del todo
-            this.backgrounds[this.lastbackground].x = this.backgrounds[this.backgrounds.length - this.lastbackground - 1].x + this.backgrounds[this.lastbackground].width;
-
-            // Actualizacion del last background
-            this.lastbackground++;
-            if (this.lastbackground >= this.backgrounds.length) {
-                this.lastbackground = 0;
-            }
-        }
         if (this.endCreate) {
+            this.torosDelFondo();
             this.updateTexts();
             this.checkCheatKeys();
             //this.checkCollisions();
         }
         //console.log("x: " + this.finalText.x + "/y: " + this.finalText.y);
+    }
+
+    torosDelFondo() {
+        // el toro del fondo izquierdo
+        if (this.cameras.main.worldView.left >= this.backgrounds[this.leftBackground].x + this.backgrounds[this.leftBackground].width) {
+            console.log(this.leftBackground);
+            //indice del ultimo background
+            let indice = this.leftBackground - 1;
+            if (indice < 0) { indice = 3; }
+
+            // Pone el ultimo fondo a la derecha del todo
+            this.backgrounds[this.leftBackground].x = this.backgrounds[indice].x + this.backgrounds[this.leftBackground].width;
+
+            // Actualizacion del last background
+            this.leftBackground++;
+            this.rightBackground++;
+            if (this.leftBackground >= this.backgrounds.length) {
+                this.leftBackground = 0;
+            } if (this.rightBackground >= this.backgrounds.length) {
+                this.rightBackground = 0;
+            }
+        }
+
+        // el toro del fondo derecho
+        if (this.cameras.main.worldView.left < this.backgrounds[this.leftBackground].x) {
+            console.log("toro derecho");
+            //indice del ultimo background
+            let indice = this.rightBackground;
+            if (indice < 0) { indice = 3; }
+
+            // Pone el ultimo fondo a la derecha del todo
+            this.backgrounds[this.rightBackground].x = this.backgrounds[this.leftBackground].x - this.backgrounds[this.leftBackground].width;
+
+            // Actualizacion del last background
+            this.rightBackground--;
+            this.leftBackground--;
+            if (this.rightBackground < 0) {
+                this.rightBackground = this.backgrounds.length - 1;
+            } if (this.leftBackground < 0) {
+                this.leftBackground = this.backgrounds.length - 1;
+            }
+        }
     }
 
     createLimits() { // Crea los limites izquierdo e inferior de la partida.
