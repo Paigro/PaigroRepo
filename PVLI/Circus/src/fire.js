@@ -4,7 +4,7 @@ export default class Fire extends Phaser.GameObjects.Sprite {
         super(scene, x, y, 'fire'); // Llamada a la constructora padre.
 
         scene.physics.add.existing(this); // Metemos fisicas al contenedor.
-        this.body.setSize(20, 29).setAllowGravity(false).setImmovable(true); // Cambiamos el body, le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
+        this.body.setSize(16, 27).setOffset(5, 6).setAllowGravity(false).setImmovable(true); // Cambiamos el body, le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
 
         this.setScale(3, 3); // Cambiamos su escala que sino es muy chico.
 

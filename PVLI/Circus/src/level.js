@@ -56,7 +56,7 @@ export default class Level extends Phaser.Scene {
                 const background = (this.add.image(x, this.cameras.main.height, 'background2').setOrigin(0, 1));
                 this.backgrounds.push(background); // añade el background al array
             } else {
-                const background = (this.add.image(x, this.cameras.main.height, 'background').setOrigin(0, 1));
+                const background = (this.add.image(x, this.cameras.main.height, 'background1').setOrigin(0, 1));
                 this.backgrounds.push(background); // añade el background al array
             }
             // -----actualizacion de posiciones de los fondos en el update-----
@@ -124,7 +124,7 @@ export default class Level extends Phaser.Scene {
         this.player = new Player(this, 50, this.cameras.main.height - 260);
         this.camera = this.cameras.main.startFollow(this.player, true, 1, 0, -460, 120);
         //------PUNTO FINAL:
-        this.stage = this.add.sprite((this.goal * 800) / 10, this.cameras.main.height - 120, 'platform').setScale(3.5, 3.5).setOrigin(0, 1);
+        this.stage = this.add.sprite(((this.goal * 800) / 10) + 40, this.cameras.main.height - 120, 'platform').setScale(3.5, 3.5).setOrigin(0, 1);
         this.physics.add.existing(this.stage);
         this.stage.body.setImmovable(true).setAllowGravity(false).setSize(37, 30);
         //------COLISIONES:
@@ -230,9 +230,15 @@ export default class Level extends Phaser.Scene {
         this.floor.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2); // Le asignamos propiedades.
         this.floor.setPosition(0, this.cameras.main.height - 120) // Lo ponemos en la posicion adecuada.
         this.physics.add.existing(this.floor); // Ponemos las fisicas.
-        this.floor.body.setSize((this.goal * 800) / 10, 120); // Cambiamos como de grande es dependiendo del nivel que sea.
+        this.floor.body.setSize(((this.goal * 800) / 10) + 200, 120); // Cambiamos como de grande es dependiendo del nivel que sea.
         this.floor.body.setAllowGravity(false).setImmovable(true); // Le quitamos la gravedad y que sea afectado por las colisiones de otros objetos.
         this.floor.setVisible(false); // Lo hacemos invisible.
+        //------ por sprite:
+        /*this.floorGraphic = this.add.graphics(); // Hacemos el graphic que usaremos como textura
+        this.floorGraphic.fillStyle(0xFF6600).generateTexture('floorTexture', this.cameras.main.width, 120); // Creamos la textura.
+        this.floor = this.add.sprite(0, this.cameras.main.height, 'floorTexture').setDepth(3).setOrigin(0, 1); // Creamos el sprite que usaremos como suelo y le ponemos la nueva textura.
+        this.physics.add.existing(this.floor); // Le ponemos fisicas al suelo.
+        this.floor.body.setAllowGravity(false).setImmovable(true); // Desactivamos la gravedad y su movilidad para que el jugador no lo mueva.*/
         //------Lo mismo pero con la pared:
         this.wall = this.add.graphics();
         this.wall.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2);
@@ -240,19 +246,14 @@ export default class Level extends Phaser.Scene {
         this.wall.body.setSize(10, this.cameras.main.height);
         this.wall.body.setAllowGravity(false).setImmovable(true)//setCollideWorldBounds(true);
         this.wall.setVisible(false);
-        //------ por sprite:
-        /*this.floorGraphic = this.add.graphics(); // Hacemos el graphic que usaremos como textura
-        this.floorGraphic.fillStyle(0xFF6600).generateTexture('floorTexture', this.cameras.main.width, 120); // Creamos la textura.
-        this.floor = this.add.sprite(0, this.cameras.main.height, 'floorTexture').setDepth(3).setOrigin(0, 1); // Creamos el sprite que usaremos como suelo y le ponemos la nueva textura.
-        this.physics.add.existing(this.floor); // Le ponemos fisicas al suelo.
-        this.floor.body.setAllowGravity(false).setImmovable(true); // Desactivamos la gravedad y su movilidad para que el jugador no lo mueva.*/
     }
 
     spawnFires() { // Spawnea fuegos dependiendo del nivel cada cierta distancias tras pasar 30 metros.
-        for (let i = 0; i < (this.goal - 30) / 10; i++) { // Metemos los fuegos necesarios dependiendo del nivel.
+        for (let i = 0; i < (this.goal - 20) / 10; i++) { // Metemos los fuegos necesarios dependiendo del nivel.
             let fire = new Fire(this, 1600 + (800 * (i + 1)), this.cameras.main.height - 170); // Empiezan a los 30 metros y depues cada 10.
             //console.log(800 * (3 * (i + 1))) // Antigua cuenta que no funciona.
             //console.log(1600 + (800 * (i + 1)))
+            //console.log((this.goal - 20) / 10)
             this.fires[i] = fire; // Los metemos en el array de fuegos.
         }
     }
