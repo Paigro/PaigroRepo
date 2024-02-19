@@ -4,9 +4,7 @@
 
 
 //------Constructora y destructora:
-Data::Data() {
-
-}
+Data::Data() {}
 Data::Data(int mon, int cas, int sou, list<int>maz, list<int>dra, list<int>def)
 	:currentMoney(mon), currentSouls(sou), currentCase(cas), maze(maz), drawer(dra), defeatedNPCS(def)
 {};
@@ -144,6 +142,7 @@ void Data::read() {
 		file >> number;
 		defeatedNPCS.push_back(number);
 	}
+
 	file.close();
 }
 
