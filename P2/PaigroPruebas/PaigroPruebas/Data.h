@@ -8,16 +8,12 @@ using namespace std;
 class Data
 {
 private:
-
 	int currentMoney = 0,
 		currentCase = 0,
 		currentSouls = 0;
 	list<int> maze;
 	list<int> drawer;
 	list<int> defeatedNPCS;
-	int sizemaze, 
-		sizedrawer, 
-		sizenpcs;
 
 public:
 
@@ -45,17 +41,17 @@ public:
 
 	//------Getters:
 	//----Mazo:
-	list<int> GetMaze(int id) { return maze; }
+	const list<int> GetMaze(int id) { return maze; }
 	//----Cajon:
-	list<int> GetDrawer(int id) { return drawer; }
+	const list<int> GetDrawer(int id) { return drawer; }
 	//----NPCs:
-	list<int> GetDefeatedNPC(int id) { return defeatedNPCS; }
+	const list<int> GetDefeatedNPC(int id) { return defeatedNPCS; }
 	//----Dinero:
-	int GetMoney() { return currentMoney; }
+	const int GetMoney() { return currentMoney; }
 	//----Almas:
-	int GetSouls() { return currentSouls; };
+	const int GetSouls() { return currentSouls; };
 	//----Caso:
-	int GetCurrentCase() { return currentCase; };
+	const int GetCurrentCase() { return currentCase; };
 
 	//------Busqueda:
 	//----Mazo:
@@ -66,13 +62,13 @@ public:
 	bool IdIsInDefeatedNPC(int id);
 
 	//------Escritura:
-	void write();
+	void Write();
 	//------Lectura:
-	void read();
+	void Read();
 
 	//------Vaciar:
-	void emptylists();
+	void EmptyLists();
+	void EmptyMaze();
+	void EmptyDrawer();
+	void EmptyNPCS();
 };
-
-
-

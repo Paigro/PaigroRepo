@@ -13,25 +13,20 @@ Data::~Data() {};
 //----Mazo:
 void Data::AddCardToMaze(int id) {
 	maze.push_back(id);
-	sizemaze++;
 }
 void Data::SubtractCardFromMaze(int id) {
 	maze.remove(id);
-	sizemaze--;
 }
 //----Cajon:
 void Data::AddCardToDrawer(int id) {
 	drawer.push_back(id);
-	sizedrawer++;
 }
 void Data::SubtractCardFromDrawer(int id) {
 	drawer.remove(id);
-	sizedrawer--;
 }
 //----NPCs:
 void Data::AddDefeatedNPC(int id) {
 	defeatedNPCS.push_back(id);
-	sizenpcs++;
 }
 //----Dinero:
 void Data::AddMoney(int m) {
@@ -55,13 +50,6 @@ bool Data::IdIsInMaze(int id) {
 	auto it = std::find(maze.begin(), maze.end(), id);
 
 	return (it != maze.end()) ? true : false;
-
-	/*if (it != maze.end()) {
-		return true;
-	}
-	else {
-		return false;
-	}*/
 }
 ;
 //----Cajon:
@@ -78,7 +66,7 @@ bool Data::IdIsInDefeatedNPC(int id) {
 };
 
 //------Escribir en el archivo:
-void Data::write() {
+void Data::Write() {
 	ofstream file;
 	file.open("guardado/save.txt");
 
@@ -86,15 +74,15 @@ void Data::write() {
 	file << currentCase << "\n";
 	file << currentSouls << "\n";
 
-	file << sizemaze << "\n";
+	file << maze.size() << "\n";
 	for (const auto it : maze) {
 		file << it << "\n";
 	}
-	file << sizedrawer << "\n";
+	file << drawer.size() << "\n";
 	for (const auto it : drawer) {
 		file << it << "\n";
 	}
-	file << sizenpcs << "\n";
+	file << defeatedNPCS.size() << "\n";
 	for (const auto it : defeatedNPCS) {
 		file << it << "\n";
 	}
@@ -102,42 +90,31 @@ void Data::write() {
 }
 
 //------Lectura del archivo:
-void Data::read() {
-	emptylists();
+void Data::Read() {
+	EmptyLists();
 
 	ifstream file;
 	file.open("guardado/save.txt");
 
-	int number;
+	int number, iterations;
 
-	file >> number;
-	currentMoney = number;
+	file >> currentMoney >> currentCase >> currentSouls >> iterations;
 
-	file >> number;
-	currentCase = number;
-
-	file >> number;
-	currentSouls = number;
-
-	file >> number;
-	sizemaze = number;
-	for (int i = 0; i < sizemaze; i++)
+	for (int i = 0; i < iterations; i++)
 	{
 		file >> number;
 		maze.push_back(number);
 	}
 
-	file >> number;
-	sizedrawer = number;
-	for (int i = 0; i < sizedrawer; i++)
+	file >> iterations;
+	for (int i = 0; i < iterations; i++)
 	{
 		file >> number;
 		drawer.push_back(number);
 	}
 
-	file >> number;
-	sizenpcs = number;
-	for (int i = 0; i < sizenpcs; i++)
+	file >> iterations;
+	for (int i = 0; i < iterations; i++)
 	{
 		file >> number;
 		defeatedNPCS.push_back(number);
@@ -147,11 +124,17 @@ void Data::read() {
 }
 
 //------Vaciar:
-void Data::emptylists() {
+void Data::EmptyLists() {
+	EmptyMaze();
+	EmptyDrawer();
+	EmptyNPCS();
+}
+void Data::EmptyMaze() {
 	maze.clear();
+}
+void Data::EmptyDrawer() {
 	drawer.clear();
+}
+void Data::EmptyNPCS() {
 	defeatedNPCS.clear();
-	sizemaze = 0;
-	sizedrawer = 0;
-	sizenpcs = 0;
 }
