@@ -11,6 +11,7 @@
 #include "AIPaddle.h"
 #include "BounceOnBorder.h"
 #include "EmptyRectangleRenderer.h"
+#include "FighterCtrl.h"
 #include "GameCtrl.h"
 #include "ImageRenderer.h"
 #include "InfoMsgs.h"
@@ -41,17 +42,24 @@ void Game::init() {
 	// initialize the SDL singleton
 	SDLUtils::init("Ping Pong", 800, 600, "resources/config/test.resources.json");
 
-#pragma region PARTE1:
+#pragma region PARTE1,PARTE2:
 	//----Fighter:
 	fighter_ = new Container(); // Creamos un nuevo contenedor y se lo asignamos al fighter_.
 	fighter_->setWidth(50.0); // Cambiamos su ancho.
 	fighter_->setHeight(50.0f); // Cambiamos su alto.
 	fighter_->getPos().set(sdlutils().width() / 2 - 5, sdlutils().height() / 2 - 5); // Cambiamos su posicion para que aparezca en el medio.
 	fighter_->addComponent(new ImageRenderer(&sdlutils().images().at("fighter"))); // Le ponemos el componente para que renderice el fighter.
-
-	objs_.push_back(fighter_); // Lo metemos al vector de objetos.
 #pragma endregion
 
+#pragma region PARTE2:
+	fighter_->setRotation(90.0); // Cambiamos la rotacion del fighter.
+#pragma endregion
+
+#pragma region PARTE3:
+	fighter_->addComponent(new FighterCtrl());
+#pragma endregion
+
+	objs_.push_back(fighter_); // Lo metemos al vector de objetos.
 #pragma region Cosas que habia antes:
 	/*// the ball
 	ball_ = new Container();

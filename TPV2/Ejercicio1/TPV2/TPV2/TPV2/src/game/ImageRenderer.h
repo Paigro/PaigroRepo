@@ -6,12 +6,12 @@
 
 class Texture;
 
-class ImageRenderer: public RenderComponent {
+class ImageRenderer : public RenderComponent {
 public:
-	ImageRenderer(Texture *img);
+	ImageRenderer(Texture* img);
 	virtual ~ImageRenderer();
-	void render(Container *o) override;
+	void render(Container* o) override;
 private:
-	Texture *img_;
+	Texture* img_;
 };
 

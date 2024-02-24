@@ -42,6 +42,13 @@ public:
 	inline void setWidth(float width) {
 		width_ = width;
 	}
+	//------PARTE2:
+	inline float getRotation() { // Devuelve la rotacion del objeto.
+		return rot_;
+	}
+	inline void setRotation(float rot) { // Setea la rotacion del objeto.
+		rot_ = rot;
+	}
 
 protected:
 
@@ -49,5 +56,7 @@ protected:
 	Vector2D vel_;
 	float width_;
 	float height_;
+	//------PARTE2:
+	float rot_;
 };
 
