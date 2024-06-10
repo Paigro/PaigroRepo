@@ -18,7 +18,6 @@ PlayState::PlayState(SDLApplication* _sdlApp, bool guardado)
 	}
 	else
 	{
-
 		map = map + "original.txt";
 	}
 	readMap();
@@ -116,10 +115,10 @@ void PlayState::readMap()
 	mother->setAlienCount(nAliens);
 }
 
-void PlayState::addSceneObject(SceneObject* obj) {
+void PlayState::addSceneObject(SceneObject* obj) 
+{
 	addObject(obj);
-	entities.push_back(obj); // Metemos la nueva entidad en la lista
-
+	entities.push_back(obj); // Metemos la nueva entidad en la lista.
 }
 
 #pragma endregion
