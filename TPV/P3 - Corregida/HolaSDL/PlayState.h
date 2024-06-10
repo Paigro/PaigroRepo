@@ -13,7 +13,8 @@
 #include "ShooterAlien.h"
 #include "InfoBar.h"
 #include "SceneObject.h"
-
+#include "Weapon.h"
+#include "Kamikaze.h"
 
 #include "GameState.h"
 #include "EventHandler.h"
@@ -77,11 +78,12 @@ public:
 	std::string getStateID() const override { return"PlayST"; }
 
 	//Metodos de clase
-	bool damage(SDL_Rect _rect, char c);
+	bool damage(SDL_Rect _rect, Weapon c);
 	void hasDied(GameList<SceneObject, false>::anchor scAnch, GameList<GameObject, true>::anchor objAnch);
 	void fireLaser(const Point2D<double>& position, char c);
 	void fireBomb(const Point2D<double>& position);
 	void fireReward(const Point2D<double>& position);
+	void fireKamikaze(const Point2D<double>& position); // Para generar un kamikaze.
 	bool mayGrantReward(SDL_Rect rect);
 	void gameOver();
 	void cargado();
@@ -90,10 +92,14 @@ public:
 	//void hasDied(GameList<GameObject, true>::anchor);
 	void saveGame();
 
+
 	//Getters
 	int getRandomRange(int min, int max);
 	int getCannonLives() const { return canion->getLives(); }
 	int returnScore() const { return score; }
-	const double getCannonYPos() const { return canion->getPos().getY(); }
+	
+	const Point2D<double> getCanonPos(); // Devuelve la posicion de la nave.
+	const double getCannonYPos() const { return canion->getPos().getY(); } 
+	const double getCannonXPos() const { return canion->getPos().getX(); } 
 };
 

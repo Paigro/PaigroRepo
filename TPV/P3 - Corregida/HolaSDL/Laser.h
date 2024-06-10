@@ -13,7 +13,7 @@ WIDTH_LASER(3), HEIGHT_LASER(21);
 class Laser : public Weapon, public SceneObject
 {
 private:
-	char entity = 'l';
+	char entity;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Color color;
 	Vector2D<double> velocidad;

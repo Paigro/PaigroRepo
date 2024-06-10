@@ -120,6 +120,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Kamikaze.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStateMachine.h">
@@ -210,6 +213,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Kamikaze.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

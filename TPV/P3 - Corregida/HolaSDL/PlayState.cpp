@@ -182,20 +182,25 @@ void PlayState::fireReward(const Point2D<double>& position)
 	//entities.push_back(new Reward(this, position, [this]() { canion->setInvincible(); }, sdlApp->getTexture(SHIELD)));
 }
 
+void PlayState::fireKamikaze(const Point2D<double>& position)
+{
+	addSceneObject(new Kamikaze(this, position, sdlApp->getTexture(KAMIKAZE), 'a'));
+}
+
 bool PlayState::mayGrantReward(SDL_Rect rect)
 {
 	SDL_Rect canionRect = canion->getRect();
 	return SDL_HasIntersection(&rect, &canionRect);
 }
 
-bool PlayState::damage(SDL_Rect _rect, char c)
+bool PlayState::damage(SDL_Rect _rect, Weapon c)
 {
 	bool end = false;
 
 	//comprueba el hit de todos los objetos o hasta que encuentra un objeto con el que choca
 	for (auto& i : entities)
 	{
-		if (!end) end = i.hit(_rect, c);
+		if (!end) end = i.hit(_rect, c.getEntityType());
 		//else i.hit(_rect, c);
 	}
 
@@ -223,6 +228,12 @@ void PlayState::saveGame()
 
 	save(file);
 }
+
+Point2D<double> const PlayState::getCanonPos()
+{
+	return canion->getPos();
+}
+
 void PlayState::save(std::ostream& file) const
 {
 	for (auto& i : entities)

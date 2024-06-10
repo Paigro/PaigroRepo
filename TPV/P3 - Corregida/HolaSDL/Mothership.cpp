@@ -1,12 +1,17 @@
 #include "checkML.h"
 #include "Mothership.h"
 #include "PlayState.h"
+#include "SDLApplication.h"
+#include "sdl.h"
 
 using namespace std;
 
-Mothership::Mothership(PlayState* plST, SDLApplication* appl) 
+Mothership::Mothership(PlayState* plST, SDLApplication* appl)
 	:GameObject(plST), playST(plST)
-{}
+{
+	timeToKamikaze = playST->getRandomRange(50, 100);
+	nextKamikazePosX = playST->getRandomRange(32, SCRWIDTH - 32);
+}
 bool Mothership::shouldMove()
 {
 	//comprueba si se puede mover el alien (se mueve tambien si esta terminando de hacer el spin)
@@ -49,7 +54,7 @@ void Mothership::haveLanded()
 	playST->gameOver();
 }
 void Mothership::update()
-{	
+{
 	//cout << "Start: " << _state << endl;
 	switch (_state)
 	{
@@ -61,7 +66,7 @@ void Mothership::update()
 	case Mothership::SPIN:	// Cambia de direccon, va al estado STOP, y aumenta el nivel de altura.
 		direction = -direction;
 		_state = STOP;
-		level ++;
+		level++;
 		//velocidadAlien += level;
 		break;
 	case Mothership::LANDED:
@@ -71,10 +76,13 @@ void Mothership::update()
 		break;
 	}
 
-
-	//cout << "End: " << _state << endl;
-	//cout << "Etime: " << elapsedTime << endl;
-
+	if (elapsedKamikaze >= timeToKamikaze&& !kamikeze)
+	{
+		kamikeze = true;
+		generateKamikaze();
+		elapsedTime = 0;
+	}
+	elapsedKamikaze++;
 }
 
 void Mothership::render() const
@@ -97,3 +105,12 @@ void Mothership::setAlienCount(int _nAliens)
 	nAliens = _nAliens;
 }
 
+void Mothership::generateKamikaze()
+{
+	playST->fireKamikaze(Point2D<double>(nextKamikazePosX, 0.0));
+
+	elapsedKamikaze = 0;
+	timeToKamikaze = playST->getRandomRange(50, 100);
+	nextKamikazePosX = playST->getRandomRange(32, SCRWIDTH - 32);
+	cout << "Nuevo kamikaze." << endl;
+}

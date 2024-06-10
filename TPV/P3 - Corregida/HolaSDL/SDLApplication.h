@@ -20,7 +20,7 @@
 //using namespace std;
 
 const std::string TEXTURE_ROOT = "assets/images/";
-const int NUM_TEXTURES = 18;
+const int NUM_TEXTURES = 19;
 
 const double SCRWIDTH = 800;
 const double SCRHEIGHT = 600;
@@ -32,7 +32,8 @@ const double TIMEBETWEENFRAMES = 1000 / FRAMERATE;
 // el UFO se llama UFOT para no confundirlo con la clase.
 enum TextureName {
 	ALIENS, BUNKER, SPACESHIP, STARS, UFOT, BOMB, NUMS, MENUFONDO, NUEVAP,
-	CARGARP, SALIR, CONTINUARP, GUARDARP, FONDOP, VOLVERM, GOV, WIN, SHIELD
+	CARGARP, SALIR, CONTINUARP, GUARDARP, FONDOP, VOLVERM, GOV, WIN, SHIELD,
+	KAMIKAZE
 };
 
 
@@ -66,7 +67,8 @@ private:
 			textureInfo{"assets/textos/volverAlMenu.png", 1,1},
 			textureInfo{"assets/textos/gameOver.png", 1,1},
 			textureInfo{"assets/textos/hasGanado.png", 1,1},
-			textureInfo{"assets/objetos/shield_reward.png", 1, 1}
+			textureInfo{"assets/objetos/shield_reward.png", 1, 1},
+			textureInfo{"assets/images/kamikaze.png", 1, 1}
 
 
 	};

@@ -26,6 +26,13 @@ private:
 
 	// Nivel de altura.
 	int level = 0;
+
+	double timeToKamikaze;
+	double elapsedKamikaze = 0;
+	double nextKamikazePosX;
+
+	bool kamikeze = false;
+
 public:
 
 	// Constructora / Destructora.
@@ -50,5 +57,7 @@ public:
 
 	void setMotherParams(int sta, int lev, int esp);
 	void setAlienCount(int _nAliens);
+
+	void generateKamikaze();
 };
 

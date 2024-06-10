@@ -9,7 +9,6 @@ using namespace std;
 Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
 	: SceneObject(playST, pos, WIDTH_LASER, HEIGHT_LASER, nullptr),
 	Weapon(ent),
-	entity(ent),
 	velocidad(velocidadLaser),
 	renderer(playST->getGame()->getRenderer())
 {
@@ -25,17 +24,18 @@ Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
 		color.g = COL_ALIEN_G;
 		color.b = COL_ALIEN_B;
 	}
+	entity = getEntityType();
 }
 
 //Laser::~Laser(){}
 
 void Laser::update()
 {
-	if (getEntityType() == 'a') // Disparo de Alien.
+	if (entity == 'a') // Disparo de Alien.
 	{
 		position = position + velocidad;
 	}
-	else if (getEntityType() == 'c') // Disparo de cannon.
+	else if (entity == 'c') // Disparo de cannon.
 	{
 		position = position - velocidad;
 	}
@@ -46,7 +46,7 @@ void Laser::update()
 	//Salida de limites de la bala.
 	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - HEIGHT_LASER) playST->hasDied(scAnch, objAnch);
 	//Comprueba si la bala choca.
-	if (playST->damage(rect, getEntityType())) playST->hasDied(scAnch, objAnch);
+	if (playST->damage(rect, entity)) playST->hasDied(scAnch, objAnch);
 
 }
 
@@ -62,7 +62,7 @@ void Laser::renderRect() const {
 
 bool Laser::hit(SDL_Rect _rect, char c)
 {
-	if ((&_rect) != (&rect) && c != getEntityType() && SDL_HasIntersection(&rect, &_rect))
+	if ((&_rect) != (&rect) && c != entity && SDL_HasIntersection(&rect, &_rect))
 	{
 		return true;
 	}
@@ -71,6 +71,5 @@ bool Laser::hit(SDL_Rect _rect, char c)
 
 void Laser::save(ostream& fil) const // Guarda: tipo-posicion-quienHaDisparado.
 {
-
 	fil << ID_LASER << " " << position.getX() << " " << position.getY() << " " << entity << "\n";
 }

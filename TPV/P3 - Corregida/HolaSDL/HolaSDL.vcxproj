@@ -77,6 +77,7 @@
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="FileFormatError.cpp" />
     <ClCompile Include="FileNotFoundError.cpp" />
+    <ClCompile Include="Kamikaze.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Reward.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="FileFormatError.h" />
     <ClInclude Include="FileNotFoundError.h" />
+    <ClInclude Include="Kamikaze.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Reward.h" />
