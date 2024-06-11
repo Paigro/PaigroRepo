@@ -36,6 +36,9 @@ void Cannon::handleEvent(const SDL_Event& event)
 		case SDLK_LEFT: // Cambio de direccion a la izquierda.
 			direction = -1;
 			break;
+		case SDLK_i:
+			invincible = true;
+			break;
 		default:
 			direction = 0;
 			break;

@@ -6,23 +6,22 @@
 
 constexpr int
 ID_LASER(6),
-COL_CANNON_R(255), COL_CANNON_G(87), COL_CANNON_B(51),
+COL_CANNON_R(255), COL_CANNON_G(128), COL_CANNON_B(0),
 COL_ALIEN_R(53), COL_ALIEN_G(255), COL_ALIEN_B(255),
 WIDTH_LASER(3), HEIGHT_LASER(21);
 
 class Laser : public Weapon, public SceneObject
 {
 private:
+
 	char entity;
 	SDL_Renderer* renderer = nullptr;
 	SDL_Color color;
 	Vector2D<double> velocidad;
 
-
-
 public:
 
-	//Constructoras / destructoras
+	// Constructoras / destructoras
 	Laser(PlayState* playST, Point2D<double> pos, char ent);
 	//~Laser();
 

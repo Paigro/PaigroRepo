@@ -12,6 +12,8 @@ Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
 	velocidad(velocidadLaser),
 	renderer(playST->getGame()->getRenderer())
 {
+	entity = getEntityType();
+
 	if (entity == 'c')
 	{
 		color.r = COL_CANNON_R;
@@ -24,7 +26,6 @@ Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
 		color.g = COL_ALIEN_G;
 		color.b = COL_ALIEN_B;
 	}
-	entity = getEntityType();
 }
 
 //Laser::~Laser(){}
@@ -55,7 +56,8 @@ void Laser::render() const
 	renderRect();
 }
 
-void Laser::renderRect() const {
+void Laser::renderRect() const
+{
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
 	SDL_RenderFillRect(renderer, &rect);
 }
