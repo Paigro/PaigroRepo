@@ -57,7 +57,8 @@ bool Kamikaze::hit(SDL_Rect _rect, char c)
 {
 	if ((&_rect) != (&rect) && c != getEntityType() && SDL_HasIntersection(&rect, &_rect))
 	{
-		std::cout << "COLISIOOOOOOOOOOOOOOOOOOOOOON" << std::endl;
+		//std::cout << "COLISIOOOOOOOOOOOOOOOOOOOOOON" << std::endl;
+		playST->addScore(5);
 		playST->hasDied(scAnch, objAnch);
 		return true;
 	}
@@ -91,9 +92,10 @@ void Kamikaze::updatePosition()
 	position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY());
 
 	// Actualiza posicion del rect.
-	/*std::cout << canionPosX << " :x,canon,y:" << canionPosY << std::endl;
 	rect.x = position.getX();
-	rect.y = position.getY();*/
-	std::cout << position.getX() << " :x,y:" << position.getY() << std::endl;
-	std::cout << " direction:" << direction << std::endl;
+	rect.y = position.getY();
+	
+	//std::cout << canionPosX << " :x,canon,y:" << canionPosY << std::endl;
+	//std::cout << position.getX() << " :x,y:" << position.getY() << std::endl;
+	//std::cout << " direction:" << direction << std::endl;
 }
