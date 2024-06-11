@@ -1,14 +1,23 @@
 #include "SceneObject.h"
 #include "PlayState.h"
 
-SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei, const Texture* tex) // Constructora.
-	:GameObject(plST), playST(plST), position(pos), width(wid), height(hei), texture(tex)
+SceneObject::SceneObject(GameState* state, Point2D<double> pos, int wid, int hei, const Texture* tex) :
+	GameObject(state),
+	position(pos), width(wid), height(hei), texture(tex)
 {
 	rect.w = wid;
 	rect.h = hei;
 }
 
-void SceneObject::update(){}
+SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei, const Texture* tex) :
+	GameObject(plST),
+	playST(plST), position(pos), width(wid), height(hei), texture(tex)
+{
+	rect.w = wid;
+	rect.h = hei;
+}
+
+void SceneObject::update() {}
 
 void SceneObject::render() const {}
 

@@ -20,7 +20,7 @@
 //using namespace std;
 
 const std::string TEXTURE_ROOT = "assets/images/";
-const int NUM_TEXTURES = 19;
+const int NUM_TEXTURES = 20;
 
 const double SCRWIDTH = 800;
 const double SCRHEIGHT = 600;
@@ -33,7 +33,7 @@ const double TIMEBETWEENFRAMES = 1000 / FRAMERATE;
 enum TextureName {
 	ALIENS, BUNKER, SPACESHIP, STARS, UFOT, BOMB, NUMS, MENUFONDO, NUEVAP,
 	CARGARP, SALIR, CONTINUARP, GUARDARP, FONDOP, VOLVERM, GOV, WIN, SHIELD,
-	KAMIKAZE
+	KAMIKAZE, SCROLL
 };
 
 
@@ -50,6 +50,7 @@ private:
 
 	textureInfo texturesList[NUM_TEXTURES]
 	{
+
 			textureInfo{"assets/images/aliens.png", 3, 2},
 			textureInfo{"assets/images/bunker.png", 1, 4},
 			textureInfo{"assets/images/spaceship.png", 1, 2},
@@ -68,8 +69,8 @@ private:
 			textureInfo{"assets/textos/gameOver.png", 1,1},
 			textureInfo{"assets/textos/hasGanado.png", 1,1},
 			textureInfo{"assets/objetos/shield_reward.png", 1, 1},
-			textureInfo{"assets/images/kamikaze.png", 1, 1}
-
+			textureInfo{"assets/images/kamikaze.png", 1, 1},
+			textureInfo{"assets/images/scroll.png", 1, 1}
 
 	};
 #pragma endregion
@@ -93,7 +94,7 @@ public:
 	SDLApplication();
 	~SDLApplication();
 
-	//Metodos base
+	// Metodos base
 	void update() { stateMachine->update(); }
 	void render() const;
 	void run();
@@ -104,7 +105,7 @@ public:
 	//Cambio de estado
 	GameStateMachine* getStMachine() const { return stateMachine; }
 
-	//Getters
+	// Getters
 	Texture* getTexture(TextureName _texNam) const { return textures[_texNam]; }
 };
 

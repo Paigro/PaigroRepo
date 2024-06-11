@@ -26,6 +26,3 @@ public:
 	bool hit(SDL_Rect rect, char c) override;
 	void save(std::ostream& fil) const override;
 };
-
-
-

@@ -20,9 +20,10 @@ protected:
 
 public:
 
+	SceneObject(GameState* state, Point2D<double> pos, int wid, int hei, const Texture* tex);
 	SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei, const Texture* tex); // Constructora.
 
-	//Metodos heredados
+	// Metodos heredados
 	virtual void update();
 	virtual void render() const;
 	virtual void save(std::ostream& fil) const;

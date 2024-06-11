@@ -5,6 +5,7 @@
 #include "GameState.h"
 #include "MainMenuState.h"
 #include "PlayState.h"
+#include "ScrollingState.h"
 #include <list>
 
 //using namespace std;
@@ -18,7 +19,7 @@ public:
 	~GameStateMachine();
 
 	// Metodos para manejar estados.
-	void pushState(GameState* pState); // Anade estado sin eliminar el anterior.
+	void pushState(GameState* pState); // Anyade estado sin eliminar el anterior.
 	void replaceState(GameState* pState); // Sustituye el estado anterior por uno nuevo.
 	void popState(); // Elimina el estado actual sin reemplazarlo por otro.
 	void deleteStates();
@@ -28,4 +29,3 @@ public:
 	void render() const;
 	void handleEvent(const SDL_Event& event);
 };
-

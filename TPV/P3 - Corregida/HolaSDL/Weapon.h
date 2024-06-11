@@ -8,6 +8,7 @@
 class Weapon
 {
 private:
+
 	char entity;
 
 public:

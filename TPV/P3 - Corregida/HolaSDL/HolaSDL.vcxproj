@@ -81,6 +81,8 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
     <ClCompile Include="Reward.cpp" />
+    <ClCompile Include="ScrollImage.cpp" />
+    <ClCompile Include="ScrollingState.cpp" />
     <ClCompile Include="SDLApplication.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="GameState.cpp" />
@@ -112,6 +114,8 @@
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="PauseState.h" />
     <ClInclude Include="Reward.h" />
+    <ClInclude Include="ScrollImage.h" />
+    <ClInclude Include="ScrollingState.h" />
     <ClInclude Include="SDLApplication.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="gameList.h" />

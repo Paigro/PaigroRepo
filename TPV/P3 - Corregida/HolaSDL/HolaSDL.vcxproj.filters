@@ -108,19 +108,25 @@
     <ClCompile Include="EventHandler.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="ScrollingState.cpp">
+      <Filter>Archivos de código fuente\Estados</Filter>
+    </ClCompile>
     <ClCompile Include="Button.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Clases base</Filter>
     </ClCompile>
     <ClCompile Include="Bomb.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Reward.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>Archivos de código fuente</Filter>
+      <Filter>Archivos de código fuente\Clases base</Filter>
     </ClCompile>
     <ClCompile Include="Kamikaze.cpp">
+      <Filter>Archivos de código fuente\Clases base</Filter>
+    </ClCompile>
+    <ClCompile Include="Reward.cpp">
+      <Filter>Archivos de código fuente\Clases base</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>Archivos de código fuente\Clases base</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollImage.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
@@ -203,19 +209,25 @@
     <ClInclude Include="EventHandler.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="ScrollingState.h">
+      <Filter>Archivos de encabezado\Estados</Filter>
     </ClInclude>
     <ClInclude Include="Bomb.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Clases Base</Filter>
     </ClInclude>
-    <ClInclude Include="Reward.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Archivos de encabezado</Filter>
+    <ClInclude Include="Button.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
     </ClInclude>
     <ClInclude Include="Kamikaze.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Reward.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollImage.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

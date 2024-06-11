@@ -48,58 +48,91 @@ const int velocidadReward = 4;
 class PlayState : public GameState
 {
 private:
-	GameList<SceneObject> entities;
+	
+	GameList<SceneObject> entities; // Lista de SceneObjects de las entidades del juego.
 	SDL_Renderer* renderer;
 
 
-	Cannon* canion = nullptr;
-	Mothership* mother = new Mothership(this, getGame());
-	InfoBar* info = nullptr;
-	std::mt19937_64 randomGenerator;
+	Cannon* canion = nullptr; // Referencia a la nave.
+	Mothership* mother = new Mothership(this, getGame()); // Referencia a la mothership.
+	InfoBar* info = nullptr; // Referencia al infobar.
+	
+	std::mt19937_64 randomGenerator; // Generador de numeros aleatorios.
 
-	std::string map = MAP_PATH;
-	int score = 0;
+	
+	std::string map = MAP_PATH; // La ruta hasta los mapas.
+	int score = 0; // Score de la partida.
 
 	void readMap();
 	void addSceneObject(SceneObject* obj);
 
 public:
+	// Constructora.
 	PlayState(SDLApplication* _sdlApp, bool guardado);
 
-	//Metodos overrided
+
+	//------Metodos overrided:
+
+	// Update.
 	void update() override;
+	// Render.
 	void render() const override;
+	// HandleEvent.
 	void handleEvent(const SDL_Event& event) override;
+	// Save.
 	void save(std::ostream& fil) const override;
 
-	//Estados
+
+	//------Estados:
+
+	// Cuando entra a este estado.
 	bool onEnter() override;
+	// Cuando sale de este estado.
 	bool onExit() override;
+	// Devuelve el ID de este estado.
 	std::string getStateID() const override { return"PlayST"; }
-
-	//Metodos de clase
-	bool damage(SDL_Rect _rect, Weapon c);
-	void hasDied(GameList<SceneObject, false>::anchor scAnch, GameList<GameObject, true>::anchor objAnch);
-	void fireLaser(const Point2D<double>& position, char c);
-	void fireBomb(const Point2D<double>& position);
-	void fireReward(const Point2D<double>& position);
-	void fireKamikaze(const Point2D<double>& position); // Para generar un kamikaze.
-	bool mayGrantReward(SDL_Rect rect);
+	// Cambia al estado GameOver.
 	void gameOver();
-	void cargado();
-	void invencible() { canion->setInvincible(); }
-	void addScore(int points) { score += points; }
-	//void hasDied(GameList<GameObject, true>::anchor);
+
+
+	//------Metodos de clase:
+
+	// Comprueba si una entidad con rect _rect puede chocar con una entidad con char c.
+	bool damage(SDL_Rect _rect, Weapon c);
+	// Mata una entidad.
+	void hasDied(GameList<SceneObject, false>::anchor scAnch, GameList<GameObject, true>::anchor objAnch);
+	// Dispara un laser desde position y con propietario c.
+	void fireLaser(const Point2D<double>& position, char c);
+	// Dispara una bomba desde position.
+	void fireBomb(const Point2D<double>& position);
+	// Dispara un reward desde position.
+	void fireReward(const Point2D<double>& position);
+	// Dispara un kamikaze desde position.
+	void fireKamikaze(const Point2D<double>& position);
+	// Comprueba si el reward ha chocado con la nave.
+	bool mayGrantReward(SDL_Rect rect);
+	// Guardado de la partida.
 	void saveGame();
+	// Cargado de una partida.
+	void cargado();
+	// Hace a la nave invencible.
+	void invencible() { canion->setInvincible(); }
+	// Suma points al score.
+	void addScore(int points) { score += points; }
 
 
-	//Getters
-	int getRandomRange(int min, int max);
-	int getCannonLives() const { return canion->getLives(); }
-	int returnScore() const { return score; }
+	//------Getters:
 	
-	const Point2D<double> getCanonPos(); // Devuelve la posicion de la nave.
-	const double getCannonYPos() const { return canion->getPos().getY(); } 
+	// Devuelve un numero aleatorio entre min y max.
+	int getRandomRange(int min, int max);
+	// Devuelve las vidas que tiene la nave.
+	int getCannonLives() const { return canion->getLives(); }
+	// Devuelve la posicion de la nave.
+	const Point2D<double> getCanonPos();
+	// Devuelve la posicion en X de la nave.
 	const double getCannonXPos() const { return canion->getPos().getX(); } 
+	// Devuelve la posicion en Y de la nave.
+	const double getCannonYPos() const { return canion->getPos().getY(); } 
+	// Devuelve el score de la partida.
+	int returnScore() const { return score; }
 };
-

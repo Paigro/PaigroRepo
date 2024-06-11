@@ -114,5 +114,5 @@ void Mothership::generateKamikaze()
 	elapsedKamikaze = 0;
 	timeToKamikaze = playST->getRandomRange(50, 100);
 	nextKamikazePosX = playST->getRandomRange(32, SCRWIDTH - 32);
-	cout << "Nuevo kamikaze." << endl;
+	//cout << "Nuevo kamikaze." << endl;
 }

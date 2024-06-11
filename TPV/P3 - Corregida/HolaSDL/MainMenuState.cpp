@@ -21,25 +21,22 @@ MainMenuState::MainMenuState(SDLApplication* _sdlApp)
 	addEventListener(cargarPartida);
 	addEventListener(salir);
 
-	nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, false)); });
+	//nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, false)); });
+	nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new ScrollingState(sdlApp, sdlApp->getTexture(SCROLL), )); }); // PAIGRO AQUI.
 	cargarPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, true)); });
 	salir->connectButton([this]() {sdlApp->setEndGame(true); });
 }
 
-/*
-MainMenuState::~MainMenuState() {
-	delete nuevaPartida;
-	//delete cargarPartida;
-	//delete salir;
-}*/
-
-void MainMenuState::update() {
+void MainMenuState::update()
+{
 	for (GameObject& e : objs)
 	{
 		e.update();
 	}
 }
-void MainMenuState::render() const {
+
+void MainMenuState::render() const
+{
 	sdlApp->getTexture(MENUFONDO)->render();
 
 	for (GameObject& e : objs)
@@ -47,23 +44,25 @@ void MainMenuState::render() const {
 		e.render();
 	}
 }
-void MainMenuState::handleEvent(const SDL_Event& event) {
 
+void MainMenuState::handleEvent(const SDL_Event& event)
+{
 	GameState::handleEvent(event);
-	/*for (EventHandler* e : listeners)
-	{
-		e->handleEvent(event);
-	}*/
 }
-void MainMenuState::save(ostream& fil) const {
+
+void MainMenuState::save(ostream& fil) const
+{
 
 }
 
-bool MainMenuState::onEnter() {
+bool MainMenuState::onEnter()
+{
 	cout << "Entrando MainMenu\n";
 	return true;
 }
-bool MainMenuState::onExit() {
+
+bool MainMenuState::onExit()
+{
 	cout << "Saliendo MainMenu\n";
 	return true;
 }

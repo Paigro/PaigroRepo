@@ -27,9 +27,11 @@ public:
 
 	//GameObject(PlayState* gamSt) :gameST(gamSt) {}
 
-	GameObject(SDLApplication* sdlap) : sdlAppl(sdlap) {
+	GameObject(SDLApplication* sdlap) : sdlAppl(sdlap) 
+	{
 		gameST = nullptr;
 	}
+
 	virtual ~GameObject()= default; // Destructora.
 
 	virtual void render() const = 0;

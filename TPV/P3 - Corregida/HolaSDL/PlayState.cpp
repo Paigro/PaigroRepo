@@ -187,7 +187,7 @@ bool PlayState::damage(SDL_Rect _rect, Weapon c)
 {
 	bool end = false;
 
-	//comprueba el hit de todos los objetos o hasta que encuentra un objeto con el que choca
+	// Comprueba el hit de todos los objetos o hasta que encuentra un objeto con el que choca
 	for (auto& i : entities)
 	{
 		if (!end) end = i.hit(_rect, c.getEntityType());
