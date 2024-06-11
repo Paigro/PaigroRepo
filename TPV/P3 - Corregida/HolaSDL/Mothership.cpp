@@ -76,10 +76,13 @@ void Mothership::update()
 		break;
 	}
 
-	if (elapsedKamikaze >= timeToKamikaze)
+	if (elapsedKamikaze >= timeToKamikaze 
+		//&& !kamikaze
+		)
 	{
 		generateKamikaze();
 		elapsedTime = 0;
+		kamikaze = true;
 	}
 	elapsedKamikaze++;
 }

@@ -14,18 +14,22 @@ Reward::Reward(PlayState* playST, Point2D<double> pos, SDLEventCallback rew, Tex
 void Reward::update()
 {
 	position = position + Point2D<double>(0, velocidadReward);
+
 	// Actualizacion del rect.
 	rect.x = position.getX();
 	rect.y = position.getY();
 
-	//Salida de limites del reward.
-	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - 10) playST->hasDied(scAnch, objAnch);
-
-	if (playST->mayGrantReward(rect)) {
-		rewardCallback();
+	// Salida de limites del reward.
+	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - 10)
+	{
 		playST->hasDied(scAnch, objAnch);
 	}
 
+	if (playST->mayGrantReward(rect)) 
+	{
+		rewardCallback();
+		playST->hasDied(scAnch, objAnch);
+	}
 }
 
 void Reward::render() const

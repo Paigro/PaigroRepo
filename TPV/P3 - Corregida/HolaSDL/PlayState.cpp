@@ -135,19 +135,10 @@ void PlayState::update()
 
 void PlayState::render() const
 {
-	getGame()->getTexture(STARS)->render();// Fondo
+	getGame()->getTexture(STARS)->render(); // Fondo.
 
 	//Render de la clase base
 	GameState::render();
-
-	// Actualizacion del render
-	/*
-	for (auto& i : objs)
-	{
-		i.render();
-	}*/
-
-	//info->render();
 }
 
 void PlayState::handleEvent(const SDL_Event& event)
@@ -205,7 +196,8 @@ bool PlayState::damage(SDL_Rect _rect, Weapon c)
 
 	return end;
 }
-void PlayState::hasDied(GameList<SceneObject, false>::anchor scAnch, GameList<GameObject, true>::anchor objAnch) {
+void PlayState::hasDied(GameList<SceneObject, false>::anchor scAnch, GameList<GameObject, true>::anchor objAnch) 
+{
 	entities.erase(scAnch);
 	eraseObject(objAnch);
 }
@@ -254,15 +246,18 @@ void PlayState::cargado()
 #pragma endregion
 
 
-bool PlayState::onEnter() {
+bool PlayState::onEnter() 
+{
 	cout << "Entrando PlayState\n";
 	return true;
 }
-bool PlayState::onExit() {
+bool PlayState::onExit() 
+{
 	cout << "Saliendo PlauState\n";
 	return true;
 }
 
-int PlayState::getRandomRange(int min, int max) {
+int PlayState::getRandomRange(int min, int max) 
+{
 	return  uniform_int_distribution<int>(min, max)(randomGenerator);
 }

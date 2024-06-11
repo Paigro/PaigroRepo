@@ -31,6 +31,8 @@ private:
 	double elapsedKamikaze = 0;
 	double nextKamikazePosX;
 
+	bool kamikaze = false;
+
 public:
 
 	// Constructora / Destructora.
