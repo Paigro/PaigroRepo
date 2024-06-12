@@ -7,10 +7,10 @@
 using namespace std;
 
 Texture::Texture(SDL_Renderer* renderer, SDL_Texture* texture, int rows, int columns)
-  : renderer(renderer)
-  , texture(texture)
-  , nrows(rows)
-  , ncolumns(columns)
+	: renderer(renderer)
+	, texture(texture)
+	, nrows(rows)
+	, ncolumns(columns)
 {
 	SDL_QueryTexture(texture, nullptr, nullptr, &width, &height);
 
@@ -19,10 +19,10 @@ Texture::Texture(SDL_Renderer* renderer, SDL_Texture* texture, int rows, int col
 }
 
 Texture::Texture(SDL_Renderer* renderer, const char* filename, int rows, int columns)
-  : renderer(renderer)
-  , texture(nullptr)
-  , nrows(rows)
-  , ncolumns(columns)
+	: renderer(renderer)
+	, texture(nullptr)
+	, nrows(rows)
+	, ncolumns(columns)
 {
 	SDL_Surface* surface = IMG_Load(filename);
 
@@ -60,30 +60,30 @@ Texture::render(const SDL_Rect& rect) const
 }
 
 void
-Texture::render(const SDL_Rect& rect,
-                double angle,
-                const SDL_Point* center,
-                SDL_RendererFlip flip) const
+Texture::render(const SDL_Rect& rect, double angle, const SDL_Point* center, SDL_RendererFlip flip) const
 {
 	SDL_RenderCopyEx(renderer, texture, nullptr, &rect, angle, center, flip);
+}
+
+void Texture::renderRect(const SDL_Rect& source) const // Imprime el rectangulo dado de la textura cubriendo toda la ventana.
+{
+	SDL_Rect dest{ 0, 0, source.w, source.h };
+	SDL_Rect aux{ 0, source.y, 800, source.h };
+
+	SDL_RenderCopy(renderer, texture, &dest, &aux);
 }
 
 void
 Texture::renderFrame(const SDL_Rect& rect, int row, int col) const
 {
-	SDL_Rect origin{col * frameWidth, row * frameHeight, frameWidth, frameHeight};
+	SDL_Rect origin{ col * frameWidth, row * frameHeight, frameWidth, frameHeight };
 	SDL_RenderCopy(renderer, texture, &origin, &rect);
 }
 
 void
-Texture::renderFrame(const SDL_Rect& rect,
-                     int row,
-                     int col,
-                     double angle,
-                     const SDL_Point* center,
-                     SDL_RendererFlip flip) const
+Texture::renderFrame(const SDL_Rect& rect, int row, int col, double angle, const SDL_Point* center, SDL_RendererFlip flip) const
 {
-	SDL_Rect origin{col * frameWidth, row * frameHeight, frameWidth, frameHeight};
+	SDL_Rect origin{ col * frameWidth, row * frameHeight, frameWidth, frameHeight };
 	SDL_RenderCopyEx(renderer, texture, &origin, &rect, angle, center, flip);
 }
 

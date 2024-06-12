@@ -76,7 +76,7 @@ void Mothership::update()
 		break;
 	}
 
-	if (elapsedKamikaze >= timeToKamikaze 
+	if (elapsedKamikaze >= timeToKamikaze
 		//&& !kamikaze
 		)
 	{
@@ -109,7 +109,7 @@ void Mothership::setAlienCount(int _nAliens)
 
 void Mothership::generateKamikaze()
 {
-	playST->fireKamikaze(Point2D<double>(nextKamikazePosX, 0.0));
+	playST->fireKamikaze(Point2D<double>(nextKamikazePosX, -32.0));
 
 	elapsedKamikaze = 0;
 	timeToKamikaze = playST->getRandomRange(50, 100);

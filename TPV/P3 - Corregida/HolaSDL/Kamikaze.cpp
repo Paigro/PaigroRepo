@@ -18,7 +18,7 @@ void Kamikaze::update()
 		playST->hasDied(scAnch, objAnch);
 	}
 
-	if (elapsedMove >= timeToMove)
+	if (elapsedMove >= TIME_TO_MOVE)
 	{
 		updatePosition();
 		elapsedMove = 0;
@@ -75,7 +75,7 @@ void Kamikaze::updatePosition()
 	double canionPosY = playST->getCannonYPos();
 	double canionPosX = playST->getCannonXPos();
 	direction = 0; // Suponemos quesiempre va a ir hacia abajo.
-	
+
 	if (position.getY() <= canionPosY) // Si esta por encima del canion entonces su direccion puede cambiar hacia los lados dependiendo de su posicion respecto al canion.
 	{
 		if (position.getX() < canionPosX - 5.0) // k <  c
@@ -86,15 +86,21 @@ void Kamikaze::updatePosition()
 		{
 			direction = -1; // Va a la izquierda.
 		}
+		// Movimiento.
+		position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY());
+	}
+	else
+	{
+		// Movimiento.
+		position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY() * 2);
 	}
 
-	// Movimiento.
-	position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY());
+
 
 	// Actualiza posicion del rect.
 	rect.x = position.getX();
 	rect.y = position.getY();
-	
+
 	//std::cout << canionPosX << " :x,canon,y:" << canionPosY << std::endl;
 	//std::cout << position.getX() << " :x,y:" << position.getY() << std::endl;
 	//std::cout << " direction:" << direction << std::endl;

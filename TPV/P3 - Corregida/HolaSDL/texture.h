@@ -42,6 +42,9 @@ public:
 	            const SDL_Point* center = nullptr,
 	            SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 
+	// Imprime el rectangulo dado de la textura cubriendo toda la ventana.
+	void renderRect(const SDL_Rect& source) const;
+
 	/// Render a frame to the given rectangle
 	void renderFrame(const SDL_Rect& target, int row, int col) const;
 	/// Render a frame with additional options from SDL_RenderCopyEx

@@ -19,6 +19,8 @@ private:
 	SDL_Color color;
 	Vector2D<double> velocidad;
 
+	bool fuera = false;
+
 public:
 
 	// Constructoras / destructoras

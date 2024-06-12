@@ -6,7 +6,8 @@ GameStateMachine::GameStateMachine()
 
 }
 
-GameStateMachine::~GameStateMachine() {
+GameStateMachine::~GameStateMachine() 
+{
 	while (!pilaEstados.empty()) {
 		popState();
 	}
@@ -14,6 +15,7 @@ GameStateMachine::~GameStateMachine() {
 }
 
 #pragma region Updates
+
 void GameStateMachine::update()
 {
 	if (!pilaEstados.empty())
@@ -31,16 +33,20 @@ void GameStateMachine::render() const
 		pilaEstados.top()->render();
 	}
 }
+
 #pragma endregion
 
 
 #pragma region Cambio de estados
-void GameStateMachine::pushState(GameState* pState) {
+
+void GameStateMachine::pushState(GameState* pState) 
+{
 	pilaEstados.push(pState);
 	pilaEstados.top()->onEnter();
 }
 
-void GameStateMachine::replaceState(GameState* pState) {
+void GameStateMachine::replaceState(GameState* pState) 
+{
 	if (!pilaEstados.empty()) {
 		if (pilaEstados.top() == pState)
 		{
@@ -68,6 +74,7 @@ void GameStateMachine::popState()
 		}
 	}
 }
+
 #pragma endregion
 
 void GameStateMachine::handleEvent(const SDL_Event& event)
@@ -75,7 +82,8 @@ void GameStateMachine::handleEvent(const SDL_Event& event)
 	pilaEstados.top()->handleEvent(event);
 }
 
-void GameStateMachine::deleteStates() {
+void GameStateMachine::deleteStates() 
+{
 
 	const int cantStates = eliminaEstados.size();
 

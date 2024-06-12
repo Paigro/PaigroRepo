@@ -12,6 +12,9 @@ Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
 	velocidad(velocidadLaser),
 	renderer(playST->getGame()->getRenderer())
 {
+
+	fuera = false;
+
 	entity = getEntityType();
 
 	if (entity == 'c')
@@ -44,11 +47,18 @@ void Laser::update()
 	rect.x = position.getX();
 	rect.y = position.getY();
 
-	//Salida de limites de la bala.
-	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - HEIGHT_LASER) playST->hasDied(scAnch, objAnch);
-	//Comprueba si la bala choca.
-	if (playST->damage(rect, entity)) playST->hasDied(scAnch, objAnch);
-
+	// Salida de limites de la bala.
+	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - HEIGHT_LASER)
+	{
+		playST->hasDied(scAnch, objAnch);
+		fuera = true;
+	}
+	// Comprueba si la bala choca. 
+	// NOTA: He puesto que no este fuera porque con el UFO a veces puede darse que salga y golpee al UFO a la vez y da error.
+	if (!fuera && playST->damage(rect, entity))
+	{
+		playST->hasDied(scAnch, objAnch);
+	}
 }
 
 void Laser::render() const

@@ -6,8 +6,6 @@ ShooterAlien::ShooterAlien(PlayState* gam, Point2D<double> pos, int sub, const T
 	Alien(gam, pos, sub, tex, mot), elapsedTime(eTime)
 {}
 
-//ShooterAlien::~ShooterAlien() {}
-
 void ShooterAlien::update()
 {
 

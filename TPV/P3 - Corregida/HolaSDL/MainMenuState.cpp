@@ -22,7 +22,7 @@ MainMenuState::MainMenuState(SDLApplication* _sdlApp)
 	addEventListener(salir);
 
 	//nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, false)); });
-	nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new ScrollingState(sdlApp, sdlApp->getTexture(SCROLL), )); }); // PAIGRO AQUI.
+	nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new ScrollingState(sdlApp, sdlApp->getTexture(SCROLL), new PlayState(sdlApp, false))); }); // PAIGRO AQUI.
 	cargarPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, true)); });
 	salir->connectButton([this]() {sdlApp->setEndGame(true); });
 }

@@ -6,7 +6,8 @@
 #include "Vector2D.h"
 
 const Vector2D<double> velocidadKamikaze(5.0, 10.0);
-const double timeToMove = 20;
+const double TIME_TO_MOVE = 50;
+
 class Kamikaze : public SceneObject, public Weapon
 {
 public:

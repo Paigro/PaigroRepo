@@ -20,7 +20,7 @@
 //using namespace std;
 
 const std::string TEXTURE_ROOT = "assets/images/";
-const int NUM_TEXTURES = 20;
+const int NUM_TEXTURES = 22;
 
 const double SCRWIDTH = 800;
 const double SCRHEIGHT = 600;
@@ -33,7 +33,7 @@ const double TIMEBETWEENFRAMES = 1000 / FRAMERATE;
 enum TextureName {
 	ALIENS, BUNKER, SPACESHIP, STARS, UFOT, BOMB, NUMS, MENUFONDO, NUEVAP,
 	CARGARP, SALIR, CONTINUARP, GUARDARP, FONDOP, VOLVERM, GOV, WIN, SHIELD,
-	KAMIKAZE, SCROLL
+	KAMIKAZE, SCROLL, SCROLLLOSE, SCROLLWIN
 };
 
 
@@ -70,7 +70,9 @@ private:
 			textureInfo{"assets/textos/hasGanado.png", 1,1},
 			textureInfo{"assets/objetos/shield_reward.png", 1, 1},
 			textureInfo{"assets/images/kamikaze.png", 1, 1},
-			textureInfo{"assets/images/scroll.png", 1, 1}
+			textureInfo{"assets/images/scroll.png", 1, 1},
+			textureInfo{"assets/images/scrolllose.png", 1, 1},
+			textureInfo{"assets/images/scrollwin.png", 1, 1}
 
 	};
 #pragma endregion
