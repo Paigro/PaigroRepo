@@ -1,5 +1,6 @@
-#include "GameState.h"
 #include "checkML.h"
+#include "GameState.h"
+
 using namespace std;
 
 void GameState::update() {
@@ -14,8 +15,8 @@ void GameState::render() const {
 
 }
 
-
-void GameState::addObject(GameObject* obj) {
+void GameState::addObject(GameObject* obj) 
+{
 	objs.push_back(obj);
 }
 
@@ -26,5 +27,8 @@ void GameState::eraseObject(GameList<GameObject, true>::anchor anch)
 
 void GameState::handleEvent(const SDL_Event& event)
 {
-	for (EventHandler* e : listeners) { e->handleEvent(event); }
+	for (EventHandler* e : listeners) 
+	{ 
+		e->handleEvent(event); 
+	}
 }

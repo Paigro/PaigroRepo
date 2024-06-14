@@ -1,5 +1,5 @@
-#include "GameStateMachine.h"
 #include "checkML.h"
+#include "GameStateMachine.h"
 
 GameStateMachine::GameStateMachine()
 {

@@ -1,5 +1,5 @@
-#include "Bomb.h"
 #include "checkML.h"
+#include "Bomb.h"
 #include "PlayState.h"
 #include "SDLApplication.h"
 #include "SceneObject.h"

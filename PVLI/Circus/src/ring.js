@@ -32,7 +32,7 @@ export default class Ring extends Phaser.GameObjects.Sprite {
 
     activate(x, y) { // Activa el objeto, su visibilidad y modifica su posicion.
         this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
-        this.body.setAllowGravity(false); // Po si acaso.
+        this.body.setAllowGravity(false); // Por si acaso.
     }
 
     deactivate() { // Desactiva el objeto, su visibilidad, modifica su posicion y para su movimiento.

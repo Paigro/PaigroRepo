@@ -17,17 +17,17 @@
 #include <vector>
 #include <array>
 
-//using namespace std;
 
-const std::string TEXTURE_ROOT = "assets/images/";
-const int NUM_TEXTURES = 22;
+const std::string TEXTURE_ROOT = "assets/images/"; // Direccion donde estan las texturas.
+const int NUM_TEXTURES = 22; // Numero de textura.
 
-const double SCRWIDTH = 800;
-const double SCRHEIGHT = 600;
+const double SCRWIDTH = 800; // ANCHO de la partida (x).
+const double SCRHEIGHT = 600; // ALTO de la partida (y).
 
 
 const double FRAMERATE = 60;
 const double TIMEBETWEENFRAMES = 1000 / FRAMERATE;
+
 
 // el UFO se llama UFOT para no confundirlo con la clase.
 enum TextureName {
@@ -93,6 +93,7 @@ private:
 	void setupGame();
 
 public:
+
 	SDLApplication();
 	~SDLApplication();
 
@@ -104,10 +105,9 @@ public:
 	void setEndGame(bool end);
 
 	SDL_Renderer* getRenderer() const { return renderer; }
-	//Cambio de estado
+	// Devuelve la GameStateMachine.
 	GameStateMachine* getStMachine() const { return stateMachine; }
 
-	// Getters
+	// Devuelve la textura dado el nombre del enum.
 	Texture* getTexture(TextureName _texNam) const { return textures[_texNam]; }
 };
-

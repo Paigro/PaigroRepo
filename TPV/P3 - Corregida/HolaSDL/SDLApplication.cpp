@@ -1,13 +1,12 @@
-#include "SDLApplication.h"
 #include "checkML.h"
+#include "SDLApplication.h"
 
 using namespace std;
 
 #pragma region Configuracion y setting del juego
-SDLApplication::SDLApplication() {
-
+SDLApplication::SDLApplication() 
+{
 	setupGame();
-
 }
 
 SDLApplication::~SDLApplication()
@@ -44,8 +43,8 @@ void SDLApplication::setupGame()
 
 		}
 	}
-	SDL_RenderClear(renderer);
 
+	SDL_RenderClear(renderer);
 }
 #pragma endregion
 
@@ -70,7 +69,6 @@ void SDLApplication::run() {
 
 	}
 }
-
 
 void SDLApplication::render() const
 {

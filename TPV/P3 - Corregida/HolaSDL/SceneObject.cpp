@@ -1,3 +1,4 @@
+#include "checkML.h"
 #include "SceneObject.h"
 #include "PlayState.h"
 
@@ -7,6 +8,7 @@ SceneObject::SceneObject(GameState* state, Point2D<double> pos, int wid, int hei
 {
 	rect.w = wid;
 	rect.h = hei;
+	//std::cout << "Conversion2" << std::endl;
 }
 
 SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei, const Texture* tex) :
@@ -15,6 +17,7 @@ SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei,
 {
 	rect.w = wid;
 	rect.h = hei;
+	//std::cout << "Conversion2" << std::endl;
 }
 
 void SceneObject::update() {}

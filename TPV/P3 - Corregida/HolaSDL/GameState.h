@@ -11,12 +11,17 @@ class Button;
 class GameState
 {
 protected:
-	GameList<GameObject, true> objs;
-	std::list<EventHandler*> listeners;
-	SDLApplication* sdlApp;
+	GameList<GameObject, true> objs; // GameList de objetos del juego.
+	std::list<EventHandler*> listeners; // Los objetos que tienen listeners.
+	SDLApplication* sdlApp; // Referencia a la sdlApp.
 
 public:
-	GameState(SDLApplication* _sdlApp) : sdlApp(_sdlApp) {}
+	// Constructora de GameState.
+	GameState(SDLApplication* _sdlApp) : sdlApp(_sdlApp)
+	{
+
+	}
+	// Destructora de GameState.
 	virtual ~GameState() = default;
 
 	virtual void update() = 0;
@@ -31,9 +36,8 @@ public:
 	void addObject(GameObject* obj);
 	void eraseObject(GameList<GameObject, true>::anchor anch);
 
-	void addEventListener(EventHandler* lis) {
-		listeners.push_back(lis);
-	}
+	void addEventListener(EventHandler* lis) { listeners.push_back(lis); }
 
+	// Devuelve el sdlApp.
 	SDLApplication* getGame() const { return sdlApp; };
 };

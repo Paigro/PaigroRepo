@@ -111,7 +111,7 @@ export default class Level extends Phaser.Scene {
             callback: () => {
                 if (!this.cheatSpawn) {
                     if (!this.endGame) {
-                        this.spawnRings(this.cameras.main.worldView.right + 20, this.cameras.main.height - 340) // Generamos los meteoritos.
+                        this.spawnRings(this.cameras.main.worldView.right + 20, this.cameras.main.height - 340) // Generamos los aros.
                     }
                 }
             },
@@ -122,13 +122,13 @@ export default class Level extends Phaser.Scene {
         this.fires = [];
         //------JUGADOR QUE SEA SEGUIDO POR LA CAMARA:
         this.player = new Player(this, 50, this.cameras.main.height - 260);
-        this.camera = this.cameras.main.startFollow(this.player, true, 1, 0, -460, 120);
+        this.camera = this.cameras.main.startFollow(this.player, true, 1, 0, -460, 120,);
         //------PUNTO FINAL:
         this.stage = this.add.sprite(((this.goal * 800) / 10) + 40, this.cameras.main.height - 120, 'platform').setScale(3.5, 3.5).setOrigin(0, 1);
         this.physics.add.existing(this.stage);
         this.stage.body.setImmovable(true).setAllowGravity(false).setSize(37, 30);
         //------COLISIONES:
-        this.physics.add.collider(this.player, this.wall) // Metemos la colision entre el jugador y el suelo.
+        this.physics.add.collider(this.player, this.wall) // Metemos la colision entre el jugador y el suelo. this.wall ya existe porque se hace al principio del create al llamar a createlimits().
         this.physics.add.collider(this.player, this.floor, () => { // Metemos la colision entre el jugador y el suelo.
             this.player.jumpFinished(); // Para que el jugador sepa que ya puede volver a saltar.
         });
@@ -163,7 +163,8 @@ export default class Level extends Phaser.Scene {
         //------CHEAT KEYS:
         this.cheatKeys = this.input.keyboard.addKeys({
             V: Phaser.Input.Keyboard.KeyCodes.V,
-            S: Phaser.Input.Keyboard.KeyCodes.S
+            S: Phaser.Input.Keyboard.KeyCodes.S,
+            W: Phaser.Input.Keyboard.KeyCodes.W
         });
 
 
@@ -177,7 +178,7 @@ export default class Level extends Phaser.Scene {
     update(time, delta) {
         if (this.endCreate) {
             this.torosDelFondo();
-            this.updateTexts();
+            this.updateTextsPos();
             this.checkCheatKeys();
             //this.checkCollisions();
         }
@@ -277,7 +278,7 @@ export default class Level extends Phaser.Scene {
         this.victory();
     }
 
-    updateTexts() { // Actualizamos constantemente la x de los textosa medida que se mueva la camara para que se vean siempre.
+    updateTextsPos() { // Actualizamos constantemente la x de los textos a medida que se mueva la camara para que se vean siempre.
         this.highscoreText.x = this.cameras.main.worldView.right - this.cameras.main.centerX;
         this.scoreText.x = this.cameras.main.worldView.right - this.cameras.main.centerX;
     }
@@ -303,7 +304,7 @@ export default class Level extends Phaser.Scene {
             ease: 'power1',
             repeat: 0,
             onComplete: () => {
-                this.exitMenu(); // Volvemos al menu.
+                this.exitMenu(); // Volvemos al menu, antes de ello compara los scores y ejecuta la animacion si debe.
             }
         });
     }
@@ -374,6 +375,10 @@ export default class Level extends Phaser.Scene {
         else if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.S)) { // Cheat spawn aros.
             console.log("Cheat: quitar spawns.");
             this.cheatSpawn = true;
+        }
+        else if (Phaser.Input.Keyboard.JustUp(this.cheatKeys.W)) { // Cheat spawn aros.
+            console.log("Cheat: ganar.");
+            this.victory();
         }
     }
 }

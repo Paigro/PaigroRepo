@@ -129,6 +129,12 @@
     <ClCompile Include="ScrollImage.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="ScreenSaverState.cpp">
+      <Filter>Archivos de código fuente\Estados</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenSaverObject.cpp">
+      <Filter>Archivos de código fuente\Errores</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameStateMachine.h">
@@ -229,6 +235,12 @@
     </ClInclude>
     <ClInclude Include="ScrollImage.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenSaverState.h">
+      <Filter>Archivos de encabezado\Estados</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenSaverObject.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

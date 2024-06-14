@@ -32,5 +32,6 @@ public:
 	virtual bool hit(SDL_Rect _rect, char c);
 
 	virtual void setListAnchor(const GameList<SceneObject, false>::anchor& anc) { scAnch = anc; }
+	virtual void hola() { std::cout << "Hola." << std::endl; };
 };
 

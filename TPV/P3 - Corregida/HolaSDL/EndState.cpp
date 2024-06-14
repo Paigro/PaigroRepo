@@ -1,8 +1,8 @@
+#include "checkML.h"
 #include "EndState.h"
 #include "SDLApplication.h"
 #include "Button.h"
 #include "GameStateMachine.h"
-#include "checkML.h"
 
 using namespace std;
 

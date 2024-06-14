@@ -1,3 +1,4 @@
+#include "checkML.h"
 #include "ScrollImage.h"
 
 ScrollImage::ScrollImage(GameState* state, Point2D<double> pos, const Texture* tex) :

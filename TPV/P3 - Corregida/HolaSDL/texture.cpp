@@ -1,6 +1,6 @@
+#include "checkML.h"
 #include "texture.h"
 #include "SDLError.h"
-#include "checkML.h"
 #include "InvadersError.h"
 #include <SDL_image.h>
 
@@ -65,14 +65,6 @@ Texture::render(const SDL_Rect& rect, double angle, const SDL_Point* center, SDL
 	SDL_RenderCopyEx(renderer, texture, nullptr, &rect, angle, center, flip);
 }
 
-void Texture::renderRect(const SDL_Rect& source) const // Imprime el rectangulo dado de la textura cubriendo toda la ventana.
-{
-	SDL_Rect dest{ 0, 0, source.w, source.h };
-	SDL_Rect aux{ 0, source.y, 800, source.h };
-
-	SDL_RenderCopy(renderer, texture, &dest, &aux);
-}
-
 void
 Texture::renderFrame(const SDL_Rect& rect, int row, int col) const
 {
@@ -97,4 +89,12 @@ Texture::render(const SDL_Rect& rect, SDL_Color color) const
 	SDL_SetTextureColorMod(texture, color.r, color.g, color.b);
 	render(rect);
 	SDL_SetTextureColorMod(texture, original.r, original.g, original.b);
+}
+
+void Texture::renderRect(const SDL_Rect& source) const // Imprime el rectangulo dado de la textura cubriendo toda la ventana.
+{
+	SDL_Rect dest{ 0, 0, source.w, source.h };
+	SDL_Rect aux{ 0, source.y, 800, source.h };
+
+	SDL_RenderCopy(renderer, texture, &dest, &aux);
 }

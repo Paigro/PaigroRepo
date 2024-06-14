@@ -1,5 +1,5 @@
-#include "Reward.h"
 #include "checkML.h"
+#include "Reward.h"
 #include "PlayState.h"
 #include "SDLApplication.h"
 #include "SceneObject.h"

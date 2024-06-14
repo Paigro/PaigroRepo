@@ -2,6 +2,7 @@
 #include "PlayState.h"
 #include "SDLApplication.h"
 #include "GameState.h"
+
 #include <iostream>
 #include <string>
 
@@ -249,6 +250,124 @@ void PlayState::cargado()
 bool PlayState::onEnter()
 {
 	cout << "Entrando PlayState\n";
+
+
+	// PAIGRO AQUI: BORRAR.
+	// Practicando teoria con Nieves:
+
+	/*// EXAMEN 2024 ENE:
+
+	// 3.b:
+	GameObject* g = new SceneObject(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP)); // A* a = new B(7, 1);
+	g->render(); // a->m;
+
+	// 3.d:
+	SceneObject* sc = static_cast<SceneObject*>(g); // B* b1 = static_cast<B*>(a);
+	SceneObject* sc2 = dynamic_cast<SceneObject*>(g); // B* b2 = dynamic_cast<B*>(a);
+	// Los casting no vuelven a llamar a las constructoras.
+
+	(*sc).hola(); // (*b1).m();
+	sc2->hola(); // b2->m();
+
+	delete sc; // Hay que eliminarlo porque es estatico, si no se pone deja MemoryLeaks.
+	//delete sc2; // No hace falta, no deja MemoryLeaks.
+
+	// 3.e:
+	GameObject** gs = new GameObject * [3]; // A** as = new
+	SceneObject s2(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP));
+	gs[0] = new SceneObject(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP)); // Se hacen en el heap. Eliminar.
+	gs[1] = &s2;
+	gs[2] = gs[0];
+
+	delete gs[0]; // Es el que deja MemoryLeaks.
+	delete[]gs; // Eliminar el contenedor en si.
+	*/
+
+	// EXAMEN 2019 FEB:
+	/*// 1.a:
+	int* a = new int;
+	*a = 100;
+	std::cout << *a << std::endl;
+	delete a; // Anyadido para que no deje basura. Resto bien.
+	a = new int;
+	*a = 32;
+	std::cout << *a << std::endl;
+	delete a;
+
+	// 1.b:
+	int* b;
+	int* c;
+	b = new int(10);
+	c = b;
+	*c = 42;
+	std::cout << *b << std::endl;
+	//delete b; // Hay que quitar este delete, al hace delete de uno se hace el del otro y viceversa.
+	std::cout << *c << std::endl;
+	delete c;
+
+	// 1.c:
+	int** ds = new int* [5];
+	for (int i = 0; i < 5; i++)
+	{
+		ds[i] = new int(i);
+	}
+	delete ds[0]; // Esto para que no se quede donde apunta ds[0] como basura sin ser apuntada por nada.
+	ds[0] = ds[4];
+	*ds[0] = 0;
+	for (int i = 0; i < 5; i++)
+	{
+		std::cout << *ds[i] << std::endl;
+	}
+	for (int i = 1; i < 5; i++) // Anyadido esto porque hay que eliminar el contenido antes que el contenedor para que no deje basura. Empieza en 1 porque ds[0] y ds[4] apuntan a lo mismo.
+	{
+		delete ds[i];
+	}
+	delete[]ds;
+
+	//1.d:
+	list<int*> e;
+	for (int i = 0; i < 5; i++)
+	{
+		e.push_back(new int(i));
+	}
+	auto it = e.begin();
+	it++;
+	delete* it; // Hay que eliminar el contenido antes de eliminar la flecha.
+	e.erase(it);
+	it = e.begin();
+	int* f = *it; // Esto esta mal, falta un *: *it.
+	std::cout << *f << std::endl;
+	it++;
+	std::cout << **it << std::endl; // Accede al contenido de la flecha de la flecha. Un it es una flecha
+	for (auto i = e.begin();i != e.end();++i)
+	{
+		delete* i; // Anyadir esto para liberar memoria.
+	}*/
+
+	/*// 3.a:
+	SceneObject b1(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP));
+	SceneObject b2 = b1;
+	 
+	// 3.b:
+	SceneObject* c1 = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
+	SceneObject* c2 = c1; // Esta mal Alien* c2 = c1, tiene que ser SceneObject*
+	c2->hola();
+	delete c2;
+
+	// 3c:
+	SceneObject* bs[3];
+	bs[0] = new SceneObject(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP));
+	bs[1] = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
+	bs[2] = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
+	for (int i = 0; i < 3; ++i) 
+	{
+		bs[i]->hola();
+	}
+	for (int i = 0; i < 3; ++i) 
+	{
+		delete bs[i];
+	}*/
+		
 	return true;
 }
 bool PlayState::onExit()

@@ -23,16 +23,18 @@ protected:
 
 public:
 
-	GameObject(GameState* gamSt) :gameST(gamSt){}
-
-	//GameObject(PlayState* gamSt) :gameST(gamSt) {}
+	GameObject(GameState* gamSt) : gameST(gamSt)
+	{
+		//std::cout << "Conversion" << std::endl;
+	}
 
 	GameObject(SDLApplication* sdlap) : sdlAppl(sdlap) 
 	{
 		gameST = nullptr;
+		//std::cout << "Conversion" << std::endl;
 	}
 
-	virtual ~GameObject()= default; // Destructora.
+	virtual ~GameObject()= default; // Destructora virtual.
 
 	virtual void render() const = 0;
 
@@ -43,4 +45,6 @@ public:
 	void setListAnchor(GameList<GameObject, true>::anchor anc) { objAnch = anc; }
 
 	const GameList<GameObject, true>::anchor& getListAnchor() const { return objAnch; }
+
+
 };

@@ -1,5 +1,5 @@
-#include "Button.h"
 #include "checkML.h"
+#include "Button.h"
 
 Button::Button(GameState* gamSt, Texture* tex, Point2D<double> pos)
 	: GameObject(gamSt), texture(tex), position(pos)

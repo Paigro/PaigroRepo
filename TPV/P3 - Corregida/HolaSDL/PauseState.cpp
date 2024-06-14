@@ -1,7 +1,7 @@
+#include "checkML.h"
 #include "PauseState.h"
 #include "Button.h"
 #include "PlayState.h"
-#include "checkML.h"
 #include "SDLApplication.h"
 
 using namespace std;
