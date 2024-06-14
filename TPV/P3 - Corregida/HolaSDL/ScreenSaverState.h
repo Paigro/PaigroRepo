@@ -3,8 +3,9 @@
 #include "GameState.h"
 #include "texture.h"
 
+class SceneObject;
 
-class ScreenSaverState : public GameState
+	class ScreenSaverState : public GameState
 {
 public:
 
@@ -36,5 +37,11 @@ public:
 	void changeState();
 
 private:
+
+	SceneObject* ship = nullptr;
+	SceneObject* ghost1 = nullptr;
+	SceneObject* ghost2 = nullptr;
+	SceneObject* ghost3 = nullptr;
+	SceneObject* ghost4 = nullptr;
 
 };

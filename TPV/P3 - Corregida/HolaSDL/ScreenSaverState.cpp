@@ -2,10 +2,14 @@
 #include "ScreenSaverState.h"
 #include "SDLApplication.h"
 
+#include "SceneObject.h"
+#include "ScreenSaverObject.h"
+
 ScreenSaverState::ScreenSaverState(SDLApplication* _sdlApp) :
 	GameState(_sdlApp)
 {
-
+	ship = new ScreenSaverObject(this, Point2D<double>(300.0, 300.0), sdlApp->getTexture(SPACESHIP), false);
+	addObject(ship);
 }
 
 void ScreenSaverState::update()
@@ -18,10 +22,14 @@ void ScreenSaverState::update()
 
 void ScreenSaverState::render() const
 {
+	//getGame()->getTexture(SCREENSAVER)->render(); // Fondo.
+
 	for (GameObject& e : objs)
 	{
 		e.render();
 	}
+
+	GameState::render();
 }
 
 void ScreenSaverState::handleEvent(const SDL_Event& event)
