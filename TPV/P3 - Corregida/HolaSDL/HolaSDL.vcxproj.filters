@@ -133,7 +133,7 @@
       <Filter>Archivos de código fuente\Estados</Filter>
     </ClCompile>
     <ClCompile Include="ScreenSaverObject.cpp">
-      <Filter>Archivos de código fuente\Errores</Filter>
+      <Filter>Archivos de código fuente\Clases base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
