@@ -3,27 +3,33 @@
 #include "SDLApplication.h"
 
 ScreenSaverState::ScreenSaverState(SDLApplication* _sdlApp) :
-	GameState(sdlApp)
+	GameState(_sdlApp)
 {
 
 }
 
 void ScreenSaverState::update()
 {
-
+	for (GameObject& e : objs)
+	{
+		e.update();
+	}
 }
 
 void ScreenSaverState::render() const
 {
-
+	for (GameObject& e : objs)
+	{
+		e.render();
+	}
 }
 
 void ScreenSaverState::handleEvent(const SDL_Event& event)
 {
 	GameState::handleEvent(event);
-	if (event.type == SDL_KEYDOWN)
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
 	{
-		changeState();
+		sdlApp->getStMachine()->popState();
 	}
 }
 

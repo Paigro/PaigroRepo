@@ -25,6 +25,8 @@ MainMenuState::MainMenuState(SDLApplication* _sdlApp)
 	nuevaPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new ScrollingState(sdlApp, sdlApp->getTexture(SCROLL), new PlayState(sdlApp, false))); }); // PAIGRO AQUI.
 	cargarPartida->connectButton([this]() {sdlApp->getStMachine()->replaceState(new PlayState(sdlApp, true)); });
 	salir->connectButton([this]() {sdlApp->setEndGame(true); });
+
+	screenSaverCountDown = 0;
 }
 
 void MainMenuState::update()
@@ -33,6 +35,14 @@ void MainMenuState::update()
 	{
 		e.update();
 	}
+
+	std::cout << screenSaverCountDown << std::endl;
+
+	if (screenSaverCountDown >= TIME_TO_SCREEN_SAVER)
+	{
+		changeToScreenSaver();
+	}
+	screenSaverCountDown++;
 }
 
 void MainMenuState::render() const
@@ -48,6 +58,11 @@ void MainMenuState::render() const
 void MainMenuState::handleEvent(const SDL_Event& event)
 {
 	GameState::handleEvent(event);
+
+	if (event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		screenSaverCountDown = 0;
+	}
 }
 
 void MainMenuState::save(ostream& fil) const
@@ -65,4 +80,10 @@ bool MainMenuState::onExit()
 {
 	cout << "Saliendo MainMenu\n";
 	return true;
+}
+
+void MainMenuState::changeToScreenSaver()
+{
+	screenSaverCountDown = 0;
+	sdlApp->getStMachine()->pushState(new ScreenSaverState(sdlApp));
 }

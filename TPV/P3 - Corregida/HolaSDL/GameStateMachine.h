@@ -6,6 +6,7 @@
 #include "MainMenuState.h"
 #include "PlayState.h"
 #include "ScrollingState.h"
+#include "ScreenSaverState.h"
 #include <list>
 
 //using namespace std;

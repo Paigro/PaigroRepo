@@ -60,7 +60,6 @@ void GameStateMachine::replaceState(GameState* pState)
 		pilaEstados.push(pState);
 		pilaEstados.top()->onEnter();
 	}
-
 }
 
 void GameStateMachine::popState()
