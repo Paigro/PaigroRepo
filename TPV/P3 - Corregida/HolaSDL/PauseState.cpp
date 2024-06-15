@@ -55,20 +55,19 @@ void PauseState::render() const
 
 bool PauseState::onEnter()
 {
-	cout << "Entrando PauseState\n";
+	cout << "\n\nENTER PAUSE STATE\n";	
 	return true;
 }
 
 bool PauseState::onExit()
 {
-	cout << "Saliendo PauseState\n";
+	cout << "\nEXIT PAUSE STATE\n";
 	return true;
 }
 
 
 void PauseState::continuar()
 {
-	cout << "continuar" << endl;
 	sdlApp->getStMachine()->popState();
 }
 

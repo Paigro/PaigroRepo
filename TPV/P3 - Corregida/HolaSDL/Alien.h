@@ -13,32 +13,32 @@ private:
 
 	int subtipo; // Subtipo de alien.
 	Mothership* mothership = nullptr; // Puntero a mothership.
-	double posYAnt = 0; // Posicion Y anterior
-	char entity = 'a';
+	double posYAnt = 0; // Posicion Y anterior.
+	char entity = 'a'; // Char que identifica la entidad.
 
-	int nombre;
+	bool move = false; // Si el Alien se puede mover o no.
 
-	bool move = false;
-
-	//Animation parameters
-	int renderFrame = 0;
-	int changeSprTime = 1000;
-	int elapsedTime;
+	int renderFrame = 0; // Frame en el que se encuentra el Alien.
 
 	// Cambiar el renderFrame.
 	void animation() { renderFrame == 0 ? renderFrame = 1 : renderFrame = 0; }
 
-
-
 public:
 
-	//Constructoras / destructoras
-	Alien(PlayState* gam, Point2D<double> pos, int sub, const Texture* tex, Mothership* mot);
-	//~Alien();
+	//------Constructora y destructora:
 
-	// Metodos heredados.
+	// Constructora de Alien.
+	Alien(PlayState* gam, Point2D<double> pos, int sub, const Texture* tex, Mothership* mot);
+
+
+	//------Metodos heredados:
+
+	// Update del Alien.
 	void update() override;
+	// Render del Alien.
 	void render() const override;
+	// Hit del Alien.
 	bool hit(SDL_Rect rect, char c) override;
+	// Save del Alien.
 	void save(std::ostream& fil) const override;
 };

@@ -6,19 +6,22 @@
 
 using namespace std;
 
-EndState::EndState(SDLApplication* _sdlApp, bool win) : GameState(_sdlApp)
+EndState::EndState(SDLApplication* _sdlApp, bool win) :
+	GameState(_sdlApp),
+	hasWon(win)
 {
 	rect.y = POS_TITLE_FIN_Y;
 	rect.x = POS_TITLE_FIN_X;
-	if (win)
+	
+	if (hasWon)
 	{
 		tex = sdlApp->getTexture(WIN);
 	}
 	else
 	{
 		tex = sdlApp->getTexture(GOV);
-
 	}
+
 	rect.w = tex->getFrameWidth();
 	rect.h = tex->getFrameHeight();
 
@@ -52,12 +55,12 @@ void EndState::render() const
 
 bool EndState::onEnter()
 {
-	cout << "Entrando EndState\n";
+	cout << "\n\nENTER END STATE: " << hasWon << "\n";
 	return true;
 }
 
 bool EndState::onExit()
 {
-	cout << "Saliendo EndState\n";
+	cout << "\nEXIT END STATE\n";
 	return true;
 }

@@ -7,15 +7,17 @@
 class SceneObject : public GameObject
 {
 protected:
-	PlayState* playST = nullptr;
+	PlayState* playST = nullptr; // Referencia al PlayState.
 
 	Point2D<double> position; // Posicion del elemento.
-	int width; // Anchura.
-	int height; // Altura.
-	const Texture* texture = nullptr;
-	//bool alive = true;
-	SDL_Rect rect;
-	GameList<SceneObject>::anchor scAnch; // interador identificador
+	
+	const Texture* texture = nullptr; // Textura del elemento.
+	int width; // Anchura de la textura.
+	int height; // Altura de la textura.
+	
+	SDL_Rect rect; // Rectangulo del elemento.
+
+	GameList<SceneObject>::anchor scAnch; // Iterador identificador.
 
 
 public:

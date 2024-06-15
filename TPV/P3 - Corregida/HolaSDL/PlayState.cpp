@@ -10,8 +10,9 @@ using namespace std;
 
 #pragma region constructora/destructora
 
-PlayState::PlayState(SDLApplication* _sdlApp, bool guardado)
-	: renderer(_sdlApp->getRenderer()), GameState(_sdlApp)
+PlayState::PlayState(SDLApplication* _sdlApp, bool guardado) :
+	renderer(_sdlApp->getRenderer()),
+	GameState(_sdlApp)
 {
 	if (guardado)
 	{
@@ -23,16 +24,17 @@ PlayState::PlayState(SDLApplication* _sdlApp, bool guardado)
 	}
 	readMap();
 
-	// Anadir mothership e infobar a la lista de objetos
+	// Anyadir mothership e infobar a la lista de objetos.
 	addObject(mother);
 	addObject(info);
 }
 
 void PlayState::readMap()
 {
-	std::ifstream file; 	// Inicialza el ifstream.
+	std::ifstream file; // Inicialza el ifstream.
 
 	file.open(map);
+
 	if (file.fail())
 	{
 		throw FileNotFoundError("No se puede encuentra el archivo: "s + map);
@@ -42,8 +44,9 @@ void PlayState::readMap()
 		throw FileFormatError("El siguiente archivo esta vacio: "s + map);
 	}
 
-	// Variables auxiliares.
+	// Variables int auxiliares:
 	int objeto, subtAlien, lives, state, nAliens = 0;
+	// Variables double auxiliares:
 	double dato1, dato2, dato3;
 
 	while (!file.eof()) // Lectura de objetos.
@@ -249,11 +252,27 @@ void PlayState::cargado()
 
 bool PlayState::onEnter()
 {
-	cout << "Entrando PlayState\n";
+	cout << "\n\nENTER PLAY STATE\n";
 
+	teoria(); // PAIGRO AQUI: Borrar.
 
-	// PAIGRO AQUI: BORRAR.
+	return true;
+}
+bool PlayState::onExit()
+{
+	cout << "\nEXIT PLAY STATE\n";
+	return true;
+}
+
+int PlayState::getRandomRange(int min, int max)
+{
+	return  uniform_int_distribution<int>(min, max)(randomGenerator);
+}
+
+void PlayState::teoria()
+{
 	// Practicando teoria con Nieves:
+
 
 	/*// EXAMEN 2024 ENE:
 
@@ -282,6 +301,7 @@ bool PlayState::onEnter()
 	delete gs[0]; // Es el que deja MemoryLeaks.
 	delete[]gs; // Eliminar el contenedor en si.
 	*/
+
 
 	// EXAMEN 2019 FEB:
 	/*// 1.a:
@@ -347,7 +367,7 @@ bool PlayState::onEnter()
 	/*// 3.a:
 	SceneObject b1(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP));
 	SceneObject b2 = b1;
-	 
+
 	// 3.b:
 	SceneObject* c1 = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
 	SceneObject* c2 = c1; // Esta mal Alien* c2 = c1, tiene que ser SceneObject*
@@ -359,24 +379,97 @@ bool PlayState::onEnter()
 	bs[0] = new SceneObject(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP));
 	bs[1] = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
 	bs[2] = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
-	for (int i = 0; i < 3; ++i) 
+	for (int i = 0; i < 3; ++i)
 	{
 		bs[i]->hola();
 	}
-	for (int i = 0; i < 3; ++i) 
+	for (int i = 0; i < 3; ++i)
 	{
 		delete bs[i];
 	}*/
-		
-	return true;
-}
-bool PlayState::onExit()
-{
-	cout << "Saliendo PlayState\n";
-	return true;
-}
 
-int PlayState::getRandomRange(int min, int max)
-{
-	return  uniform_int_distribution<int>(min, max)(randomGenerator);
+
+	// EXAMEN 2018 FEB:
+	/*// 1.a:
+	int* p1; int* p2; // Como no hacen new esto no dejan basura.
+	int n = 5; // Como n se va a borrar al salir de ambito porque es estatica, los punteros no van a apuntar a nada entonces no hace falta borrar nada.
+	p1 = &n;
+	p2 = p1;
+	// Esta bien.*/
+
+	/*// 1.b:
+	int* p1 = new int;
+	int* p2;
+	int n = 5;
+	delete p1; // Anyadir esto para que el new int se borre y no se quede sin nada que lo apunte y deje basura. Eliminas la memoria a lo que apunta y se queda como direccion invalida, habria que ponerlo a nullptr o apuntarlo a otra cosa.
+	p1 = &n;
+	p2 = p1;
+	// El resto esta bien.*/
+
+	/*// 1.c:
+	int* ts[5];
+	for (int i = 0; i < 5; i++) {
+		ts[i]  = new int();
+	}
+
+	for (int i = 0; i < 5; i++) { // Anyadir esto para eliminar la basura. Poner a nullptr como buena practica.
+		delete ts[i];
+		ts[i] = nullptr;
+	}
+	//*/
+
+	/*// 1.d:
+	int** ts = new int* [5];
+	for (int i = 0; i < 5; i++) {
+		ts[i] = new int;
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		delete ts[i]; // Anyadir esto para eliminar la basura.
+		ts[i] = nullptr;
+	}
+	delete[]ts;
+	//*/
+
+	/*// 1.e:
+	list<int*> ts;
+	for (int i = 0; i < 5; i++) {
+		ts.push_back(new int());
+	}
+	int* first = ts.front();
+	int* last = ts.back();
+	for (auto i = ts.begin();i != ts.end();++i)
+	{
+		delete* i; // Anyadir esto para liberar memoria.
+	}
+	//*/
+
+	/*// 1.f:
+	int rows = 10; int cols = 10;
+	int** ts;
+	ts = new int* [rows];
+	for (int r = 0; r < rows; r++) {
+		ts[r] = new int[cols];
+	}
+	for (int i = 0; i < rows; i++)
+	{
+		delete ts[i]; // Lo mismo que el 1.d.
+		ts[i] = nullptr;
+	}
+	delete[]ts;
+	//*/
+
+	/*// Otros
+	Alien c(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
+	SceneObject b = c;
+	b.hola();
+
+	// 3.c:
+	GameObject* b1 = new SceneObject(this, Point2D<double>(3.0, 3.0), 45, 45, sdlApp->getTexture(CARGARP)); // casting ascendente si.
+	GameObject* b2 = b1; // No puede ser SceneObject tiene que ser GameObject.
+	delete b1;
+	b1 = new Alien(this, Point2D<double>(3.0, 3.0), 2, sdlApp->getTexture(CARGARP), mother);
+
+	Alien* sc = new ShooterAlien(this, Point2D<double>(3.0, 3.0), 3, sdlApp->getTexture(UFOT), mother, 3.0);
+	//*/
 }

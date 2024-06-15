@@ -8,8 +8,8 @@
 ScreenSaverState::ScreenSaverState(SDLApplication* _sdlApp) :
 	GameState(_sdlApp)
 {
-	ship = new ScreenSaverObject(this, Point2D<double>(300.0, 300.0), sdlApp->getTexture(UFOT));
-	addObject(ship);
+	ufo = new ScreenSaverObject(this, Point2D<double>(300.0, 300.0), sdlApp->getTexture(UFOT));
+	addObject(ufo);
 }
 
 void ScreenSaverState::update()
@@ -48,13 +48,13 @@ void ScreenSaverState::save(std::ostream& fil) const
 
 bool ScreenSaverState::onEnter()
 {
-	std::cout << "\nENTER SCREENSAVESTATE.\n";
+	std::cout << "\n\nENTER SCREEN SAVE STATE.\n";
 	return true;
 }
 
 bool ScreenSaverState::onExit()
 {
-	std::cout << "\EXIT SCREENSAVESTATE.\n";
+	std::cout << "\nEXIT SCREEN SAVE STATE.\n";
 	return true;
 }
 

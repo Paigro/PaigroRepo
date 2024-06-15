@@ -33,9 +33,15 @@ public:
 	virtual bool onExit() = 0;
 	virtual std::string getStateID() const = 0;
 
+
+	//------Gestion de los objetos:
+
+	// Anyade un objeto a la ista de objetos.
 	void addObject(GameObject* obj);
+	// Elimina un objeto de la lista de objetos.
 	void eraseObject(GameList<GameObject, true>::anchor anch);
 
+	// Anyade un EventHandle (como un boton) a la lista de EventHandlers.
 	void addEventListener(EventHandler* lis) { listeners.push_back(lis); }
 
 	// Devuelve el sdlApp.

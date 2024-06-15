@@ -36,8 +36,6 @@ void MainMenuState::update()
 		e.update();
 	}
 
-	std::cout << screenSaverCountDown << std::endl;
-
 	if (screenSaverCountDown >= TIME_TO_SCREEN_SAVER)
 	{
 		changeToScreenSaver();
@@ -72,13 +70,13 @@ void MainMenuState::save(ostream& fil) const
 
 bool MainMenuState::onEnter()
 {
-	cout << "Entrando MainMenu\n";
+	cout << "\n\nENTER MAIN MENU STATE\n";
 	return true;
 }
 
 bool MainMenuState::onExit()
 {
-	cout << "Saliendo MainMenu\n";
+	cout << "\nEXIT MAIN MENU STATE\n";
 	return true;
 }
 

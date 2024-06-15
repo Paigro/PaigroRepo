@@ -6,7 +6,7 @@
 using namespace std;
 
 Cannon::Cannon(PlayState* gam, Point2D<double> pos, const Texture* tex, int liv, int eTime)
-	: SceneObject(gam, pos, tex->getFrameWidth(), tex->getFrameHeight(), tex), elapsedTime(eTime)
+	: SceneObject(gam, pos, tex->getFrameWidth(), tex->getFrameHeight(), tex), shootTimer(eTime)
 {
 	// En caso de que queramos ampliar las vidas durante la ejecucion del juego
 	liv > MAX_CANNON_LIVES ? lives = MAX_CANNON_LIVES : lives = liv;
@@ -16,18 +16,15 @@ Cannon::Cannon(PlayState* gam, Point2D<double> pos, const Texture* tex, int liv,
 
 void Cannon::handleEvent(const SDL_Event& event)
 {
-	//cout << "Cannon: tu puta madre iteradores de los cojones." << endl;
 	if (event.type == SDL_KEYDOWN)
 	{
 		switch (event.key.keysym.sym)
 		{
-		case SDLK_SPACE:
-			//disparo
-			if (elapsedTime <= 0)
+		case SDLK_SPACE: // Disparo.
+			if (shootTimer <= 0)
 			{
-				//cout << "Cannon: pium pium" << endl;
 				playST->fireLaser(Point2D<double>(position.getX() + 15, position.getY()), 'c');
-				elapsedTime = TIEMPODISPARO;
+				shootTimer = TIEMPODISPARO;
 			}
 			break;
 		case SDLK_RIGHT: // Cambio de direccion a la derecha
@@ -36,10 +33,10 @@ void Cannon::handleEvent(const SDL_Event& event)
 		case SDLK_LEFT: // Cambio de direccion a la izquierda.
 			direction = -1;
 			break;
-		case SDLK_i:
+		case SDLK_i: // Truco para ponerlo invencible.
 			invincible = true;
 			break;
-		default:
+		default: // Caso base, se queda quieto.
 			direction = 0;
 			break;
 		}
@@ -48,24 +45,22 @@ void Cannon::handleEvent(const SDL_Event& event)
 	{
 		switch (event.key.keysym.sym)
 		{
-		default:
+		default: // Al levantar cualquier tecla se queda quieto.
 			direction = 0;
 			break;
 		}
-
 	}
 }
 
 bool Cannon::hit(SDL_Rect _rect, char c)
 {
-	if ((&_rect) != (&rect) && c != entity) // Comprueba que el puntero al rect no sea igual a si mismo (para que un laser no colisione consigo mismo) y que no colisiones con una entidad igual (para los aliens)
+	if ((&_rect) != (&rect) && c != entity) // Comprueba que el puntero al rect no sea igual a si mismo (para que un laser no colisione consigo mismo) y que no colisiones con una entidad igual (para los aliens).
 	{
 		if (SDL_HasIntersection(&rect, &_rect))
 		{
 			if (!invincible)
 			{
 				lives--;
-				//cout << "Cannon lives: " << lives << endl;
 				if (lives <= 0)
 				{
 					playST->gameOver();
@@ -96,7 +91,7 @@ void Cannon::update()
 	}
 
 
-	elapsedTime--;
+	shootTimer--;
 
 	// Contador de la invencibilidad.
 	if (invincible)
@@ -127,7 +122,7 @@ void Cannon::render() const
 
 void Cannon::save(ostream& fil) const // Guarda: tipo-posicion-vidas-tiempoParaDisparar.
 {
-	fil << ID_CANNON << " " << position.getX() << " " << position.getY() << " " << lives << " " << elapsedTime << "\n";
+	fil << ID_CANNON << " " << position.getX() << " " << position.getY() << " " << lives << " " << shootTimer << "\n";
 }
 
 void Cannon::setInvincible()

@@ -135,4 +135,9 @@ public:
 	const double getCannonYPos() const { return canion->getPos().getY(); } 
 	// Devuelve el score de la partida.
 	int returnScore() const { return score; }
+
+	//------Examenes de teoria:
+
+	// Para los examenes de teoria.
+	void teoria();
 };

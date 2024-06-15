@@ -45,13 +45,13 @@ void ScrollingState::save(std::ostream& fil) const
 
 bool ScrollingState::onEnter()
 {
-	std::cout << "\nENTER SCROLLSTATE.\n";
+	std::cout << "\n\nENTER SCROLL STATE.\n";
 	return true;
 }
 
 bool ScrollingState::onExit()
 {
-	std::cout << "\EXIT SCROLLSTATE.\n";
+	std::cout << "\nEXIT SCROLL STATE.\n";
 	return true;
 }
 

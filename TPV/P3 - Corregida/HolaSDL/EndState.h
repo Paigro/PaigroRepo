@@ -9,7 +9,6 @@ constexpr int POS_TITLE_FIN_X(300), POS_TITLE_FIN_Y(100),
 class EndState : public GameState
 {
 private:
-	// --- Win / GameOver ---
 	SDL_Rect rect;
 	Texture* tex;
 
@@ -17,8 +16,12 @@ private:
 	Button* volverMenu;
 	Button* salir;
 
+	// --- Win / GameOver ---
+	bool hasWon = false;
+
 public:
 	EndState(SDLApplication* _sdlApp, bool win);
+
 	void update() override;
 	void render() const override;
 	void save(std::ostream& fil) const override {}
@@ -28,4 +31,3 @@ public:
 	bool onExit() override;
 	std::string getStateID() const override { return "EndST"; }
 };
-

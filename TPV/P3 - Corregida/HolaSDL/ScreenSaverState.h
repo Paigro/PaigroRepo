@@ -5,7 +5,7 @@
 
 class SceneObject;
 
-	class ScreenSaverState : public GameState
+class ScreenSaverState : public GameState
 {
 public:
 
@@ -37,11 +37,7 @@ public:
 	void changeState();
 
 private:
-
-	SceneObject* ship = nullptr;
-	SceneObject* ghost1 = nullptr;
-	SceneObject* ghost2 = nullptr;
-	SceneObject* ghost3 = nullptr;
-	SceneObject* ghost4 = nullptr;
+	// El UFO que va a aparecer en pantalla moviendose.
+	SceneObject* ufo = nullptr; 
 
 };

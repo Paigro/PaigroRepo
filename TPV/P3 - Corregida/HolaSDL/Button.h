@@ -11,7 +11,7 @@
 
 using SDLEventCallback = std::function<void(void)>;
 
-class Button :public EventHandler, public GameObject
+class Button : public EventHandler, public GameObject
 {
 private:
 	enum button_state
