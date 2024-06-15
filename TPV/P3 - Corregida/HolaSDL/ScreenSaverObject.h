@@ -6,27 +6,35 @@
 
 class ScreenSaverObject : public SceneObject
 {
+private:
+
+	bool sayHello; // Si tiene que pararse a decir hola (voltereta).
+	int angle; // Angulo que tiene.
+	int dirX; // Direccion en X.
+	int dirY; // Direccion en Y.
 
 public:
 
-	// Constructoras:
+	//------Constructoras / destructoras:
+
+	// Constructora de ScreenSaverObject.
 	ScreenSaverObject(GameState* gam, Point2D<double> pos, const Texture* tex);
+	// Destructora de ScreenSaverObject.
+	//~ScreenSaverObject();
 
-	// Metodos heredados.
+
+	//------Metodos heredados:
+
+	// Update de ScreenSaverObject.
 	void update() override;
+	// Render de ScreenSaverObject.
 	void render() const override;
-	bool hit(SDL_Rect rect, char c) override;
-	void save(std::ostream& fil) const override;
 
-	Point2D<double> getPos() { return position; };
 
+	//------Metodos de la clase:
+
+	// Mueve el objeto.
 	void move();
+	// Comprueba la salida de los limites del objeto.
 	void checkLimits();
-
-private:
-
-	bool sayHello;
-	int angle;
-	int dirX;
-	int dirY;
 };

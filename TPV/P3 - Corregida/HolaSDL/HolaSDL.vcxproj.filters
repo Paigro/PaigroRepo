@@ -126,13 +126,13 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>Archivos de código fuente\Clases base</Filter>
     </ClCompile>
-    <ClCompile Include="ScrollImage.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="ScreenSaverState.cpp">
       <Filter>Archivos de código fuente\Estados</Filter>
     </ClCompile>
     <ClCompile Include="ScreenSaverObject.cpp">
+      <Filter>Archivos de código fuente\Clases base</Filter>
+    </ClCompile>
+    <ClCompile Include="ScrollImage.cpp">
       <Filter>Archivos de código fuente\Clases base</Filter>
     </ClCompile>
   </ItemGroup>
@@ -233,13 +233,13 @@
     <ClInclude Include="Weapon.h">
       <Filter>Archivos de encabezado\Clases Base</Filter>
     </ClInclude>
-    <ClInclude Include="ScrollImage.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="ScreenSaverState.h">
       <Filter>Archivos de encabezado\Estados</Filter>
     </ClInclude>
     <ClInclude Include="ScreenSaverObject.h">
+      <Filter>Archivos de encabezado\Clases Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ScrollImage.h">
       <Filter>Archivos de encabezado\Clases Base</Filter>
     </ClInclude>
   </ItemGroup>

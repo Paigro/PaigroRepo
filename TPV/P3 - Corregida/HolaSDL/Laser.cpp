@@ -6,24 +6,23 @@
 
 using namespace std;
 
-Laser::Laser(PlayState* playST, Point2D<double> pos, char ent)
-	: SceneObject(playST, pos, WIDTH_LASER, HEIGHT_LASER, nullptr),
+Laser::Laser(PlayState* playST, Point2D<double> pos, char ent) :
+	SceneObject(playST, pos, WIDTH_LASER, HEIGHT_LASER, nullptr),
 	Weapon(ent),
-	velocidad(velocidadLaser),
-	renderer(playST->getGame()->getRenderer())
+	velocidad(velocidadLaser), renderer(playST->getGame()->getRenderer())
 {
-
 	fuera = false;
 
 	entity = getEntityType();
 
-	if (entity == 'c')
+	// Guardamos el color que sea.
+	if (entity == 'c') // Color del cannon.
 	{
 		color.r = COL_CANNON_R;
 		color.g = COL_CANNON_G;
 		color.b = COL_CANNON_B;
 	}
-	else
+	else // Color del alien.
 	{
 		color.r = COL_ALIEN_R;
 		color.g = COL_ALIEN_G;
@@ -48,7 +47,7 @@ void Laser::update()
 	rect.y = position.getY();
 
 	// Salida de limites de la bala.
-	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT - HEIGHT_LASER)
+	if (position.getY() <= 0 || position.getY() >= SCRHEIGHT + HEIGHT_LASER)
 	{
 		playST->hasDied(scAnch, objAnch);
 		fuera = true;

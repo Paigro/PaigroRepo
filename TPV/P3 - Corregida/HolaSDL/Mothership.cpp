@@ -6,8 +6,9 @@
 
 using namespace std;
 
-Mothership::Mothership(PlayState* plST, SDLApplication* appl)
-	:GameObject(plST), playST(plST)
+Mothership::Mothership(PlayState* plST, SDLApplication* appl) :
+	GameObject(plST),
+	playST(plST)
 {
 	timeToKamikaze = playST->getRandomRange(50, 100);
 	nextKamikazePosX = playST->getRandomRange(32, SCRWIDTH - 32);
@@ -17,7 +18,7 @@ bool Mothership::shouldMove()
 	//comprueba si se puede mover el alien (se mueve tambien si esta terminando de hacer el spin)
 	if (_state == MOVE || _state == SPIN)
 	{
-		//registra cuantos aliens han llamado al metodo
+		// Registra cuantos aliens han llamado al metodo
 		if (aliensReistrados < nAliens)
 		{
 			aliensReistrados++;
@@ -25,7 +26,7 @@ bool Mothership::shouldMove()
 		else
 		{
 			// Una vez todos los aliens han sido registrados (es decir, ya se han movido) pasa al estado stop
-			elapsedTime = maxTime - level;
+			moveCountDown = maxTime - level;
 			aliensReistrados = 0;
 			_state = STOP;
 		}
@@ -61,7 +62,7 @@ void Mothership::update()
 	case Mothership::MOVE:
 		break;
 	case Mothership::STOP: // Lleva la cuenta atras de cuando pasar al estado MOVE.
-		elapsedTime <= 0 ? _state = MOVE : elapsedTime--;
+		moveCountDown <= 0 ? _state = MOVE : moveCountDown--;
 		break;
 	case Mothership::SPIN:	// Cambia de direccon, va al estado STOP, y aumenta el nivel de altura.
 		direction = -direction;
@@ -76,15 +77,12 @@ void Mothership::update()
 		break;
 	}
 
-	if (elapsedKamikaze >= timeToKamikaze
-		//&& !kamikaze
-		)
+	if (kamikazeCountDown >= timeToKamikaze)
 	{
 		generateKamikaze();
-		elapsedTime = 0;
-		kamikaze = true;
+		moveCountDown = 0;
 	}
-	elapsedKamikaze++;
+	kamikazeCountDown++;
 }
 
 void Mothership::render() const
@@ -92,14 +90,14 @@ void Mothership::render() const
 
 void Mothership::save(ostream& fil) const // Guarda: tipo-nAliens.
 {
-	fil << "3 " << _state << " " << level << " " << elapsedTime << "\n";
+	fil << "3 " << _state << " " << level << " " << moveCountDown << "\n";
 }
 
 
-void Mothership::setMotherParams(int sta, int lev, int esp) {
+void Mothership::setMotherParams(int sta, int lev, int mcd) {
 	_state = (state)sta;
 	level = lev;
-	elapsedTime = esp;
+	moveCountDown = mcd;
 }
 
 void Mothership::setAlienCount(int _nAliens)
@@ -111,8 +109,7 @@ void Mothership::generateKamikaze()
 {
 	playST->fireKamikaze(Point2D<double>(nextKamikazePosX, -32.0));
 
-	elapsedKamikaze = 0;
+	kamikazeCountDown = 0;
 	timeToKamikaze = playST->getRandomRange(50, 100);
 	nextKamikazePosX = playST->getRandomRange(32, SCRWIDTH - 32);
-	//cout << "Nuevo kamikaze." << endl;
 }

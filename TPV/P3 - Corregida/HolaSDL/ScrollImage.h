@@ -3,36 +3,41 @@
 #include "SceneObject.h"
 #include "Vector2D.h"
 
-const double SCROLL_IMAGE_SPEED = 3.0;
+const double SCROLL_IMAGE_SPEED = 3.0; // Velocidad a la que se va a mover la imagen de scroll.
 
 class ScrollImage : public SceneObject
 {
-public:
-
-	// Constructora.
-	ScrollImage(GameState* state, Point2D<double> pos, const Texture* tex);
-	
-	// Devuelve si ha llegado al final de la imagen.
-	bool  getFinish() { return finish; }
-
 private:
 
+	bool finish = false; // Guarda si la imagen ha llegado al final.
 
-	//------Metodos heredados:
-
-	// Update.
-	void update() override;
-	// Render.
-	void render() const override;
-	// Hit.
-	bool hit(SDL_Rect rect, char c) override;
-	// Save.
-	void save(std::ostream& fil) const override;
+	//------Metodos privados de la clase:
 
 	// Comprueba si la imagen ha salido por arriba de la pantalla.
 	bool isOut();
 	// Mueve la imagen.
 	void move();
 
-	bool finish = false; // Guarda si la imagen ha llegado al final.
+public:
+
+	//------Constructoras / destructoras:
+
+	// Constructora de ScrollImage.
+	ScrollImage(GameState* state, Point2D<double> pos, const Texture* tex);
+	// Destructora de ScrollImage.
+	//~ScrollImage();
+
+	//------Metodos heredados:
+
+	// Update de ScrollImage.
+	void update() override;
+	// Render de ScrollImage.
+	void render() const override;
+
+	//------Getters y setters:
+
+
+	// Devuelve si ha llegado al final de la imagen.
+	bool getFinish() { return finish; }
+
 };

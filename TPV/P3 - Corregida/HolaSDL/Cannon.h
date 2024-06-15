@@ -2,12 +2,13 @@
 #include "SceneObject.h"
 #include "EventHandler.h"
 
-const double TIEMPODISPARO = 25;
-constexpr int ID_CANNON = 0;
+const double TIEMPODISPARO = 25; // Tiempo que hay que esperar para poder disparar.
+constexpr int ID_CANNON = 0; // ID de la entidad Cannon.
 
 class Cannon : public EventHandler, public SceneObject
 {
 private:
+
 	int lives = 3; // Numero de vidas del cannon.
 	int direction = 0; // Direcciones: -1 (izquierda), 0 (parado), 1 (derecha).
 	double shootTimer = 0; // Contador para el disparo.
@@ -20,12 +21,14 @@ private:
 	int timer = 0; // Contador para la invencibilidad.
 	int maxTimer = 200; // Tiempo maximo que puede ser invencible.
 
-
 public:
+
 	//------Constructoras / destructoras:
 
-	// Constructora.
+	// Constructora de Cannon.
 	Cannon(PlayState* gam, Point2D<double> pos, const Texture* tex, int liv, int eTime);
+	// Destructora de Cannon.
+	//~Cannon();
 
 
 	//------Metodos heredados:

@@ -1,22 +1,20 @@
 #pragma once
 
-#include "Vector2D.h"
-#include "texture.h"
-#include "SceneObject.h"
-#include "Mothership.h"
-
 class Weapon
 {
 private:
 
-	char entity;
+	char entity; // Char que identifica al Weapon.
 
 public:
 
-	Weapon(char ent)
-		:entity(ent)
-	{}
+	Weapon(char ent) :
+		entity(ent)
+	{
 
+	}
+
+	// Devuelve el identificador de la entidad/weapon.
 	char getEntityType()
 	{
 		return entity;

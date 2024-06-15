@@ -2,30 +2,25 @@
 #include "ShooterAlien.h"
 #include "PlayState.h"
 
-ShooterAlien::ShooterAlien(PlayState* gam, Point2D<double> pos, int sub, const Texture* tex, Mothership* mot, double eTime) :
-	Alien(gam, pos, sub, tex, mot), elapsedTime(eTime)
-{}
+ShooterAlien::ShooterAlien(PlayState* gam, Point2D<double> pos, int sub, const Texture* tex, Mothership* mot, double scd) :
+	Alien(gam, pos, sub, tex, mot),
+	shootCountDown(scd)
+{
+	reloadTime = setTime();
+	shootCountDown = playST->getRandomRange(minShootTime, reloadTime); // Porque si, creo que puede quedar bien.
+}
 
 void ShooterAlien::update()
 {
-
-	reloadTime = setTime();
 	Alien::update();
-	if (elapsedTime >= reloadTime)
-	{
-		//cout << "Alien: pium pium" << endl;
-		//if (playST->getRandomRange(0, 10) < proporcionBombas) {
-			//playST->fireBomb(position);
-		//}
-		//else {
-			playST->fireLaser(position, 'a');
-		//}
 
-		elapsedTime = 0.0;
+	if (shootCountDown >= reloadTime)
+	{
+		playST->fireLaser(position, 'a');
+		shootCountDown = 0.0;
 		reloadTime = setTime();
 	}
-	elapsedTime++;
-	//cout << elapsedTime << endl;
+	shootCountDown++;
 }
 
 double ShooterAlien::setTime() const
@@ -35,5 +30,5 @@ double ShooterAlien::setTime() const
 
 void ShooterAlien::save(std::ostream& fil) const // Guarda: tipo-posicion-subitpo-tiempoParaDisparar.
 {
-	fil << ID_SHOOTERALIEN << " " << position.getX() << " " << position.getY() << "  " << 0 << " " << elapsedTime << "\n";
+	fil << ID_SHOOTERALIEN << " " << position.getX() << " " << position.getY() << "  " << 0 << " " << shootCountDown << "\n";
 }

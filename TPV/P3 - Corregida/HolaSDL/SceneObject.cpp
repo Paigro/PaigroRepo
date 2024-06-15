@@ -8,7 +8,6 @@ SceneObject::SceneObject(GameState* state, Point2D<double> pos, int wid, int hei
 {
 	rect.w = wid;
 	rect.h = hei;
-	//std::cout << "Conversion2" << std::endl;
 }
 
 SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei, const Texture* tex) :
@@ -17,16 +16,27 @@ SceneObject::SceneObject(PlayState* plST, Point2D<double> pos, int wid, int hei,
 {
 	rect.w = wid;
 	rect.h = hei;
-	//std::cout << "Conversion2" << std::endl;
 }
 
-void SceneObject::update() {}
+void SceneObject::update()
+{
 
-void SceneObject::render() const {}
+}
 
-void SceneObject::save(std::ostream& fil) const {}
+void SceneObject::render() const
+{
 
-bool SceneObject::hit(SDL_Rect _rect, char c) { return true; }
+}
+
+void SceneObject::save(std::ostream& fil) const
+{
+
+}
+
+bool SceneObject::hit(SDL_Rect _rect, char c)
+{
+	return true;
+}
 
 SDL_Rect SceneObject::getRect()
 {

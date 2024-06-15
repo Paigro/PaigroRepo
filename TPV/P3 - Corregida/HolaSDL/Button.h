@@ -14,36 +14,48 @@ using SDLEventCallback = std::function<void(void)>;
 class Button : public EventHandler, public GameObject
 {
 private:
-	enum button_state
+
+	// Enum de los estados en los que puede estar el boton.
+	enum button_state 
 	{
-		MOUSE_OUT = 0,
-		MOUSE_OVER = 1,
-		CLICKED = 2
+		MOUSE_OUT = 0, // Raton fuera.
+		MOUSE_OVER = 1, // Raton encima.
+		CLICKED = 2 // Boton clickado.
 	};
 
-	SDL_Point point;	// guarda posicion del cursor en click
-	SDL_Rect destRect;	// rectangulo del render
+	SDL_Point point;	// Guarda la posicion del cursor en click.
+	SDL_Rect destRect;	// Rectangulo del render.
 
-	std::list<SDLEventCallback> eventsCB;
-	Point2D<double> position;
-	Texture* texture;
-	int currentFrame;
+	std::list<SDLEventCallback> eventsCB; // Lista de callbacks.
+	Point2D<double> position; // Posicion del boton.
+	Texture* texture; // Textura del boton.
+	int currentFrame; // Frame actual del boton.
 
-	// Metodos privados.
+	// Hace los callbacks.
 	void emit() const;
 
 public:
+
+	//------Constructoras y destructoras:
+
+	// Constructora de Button.
 	Button(GameState* gamSt, Texture* tex, Point2D<double> pos);
+	// Destructora de Button.
 	//~Button();
 
-	// Metodos heredados.
+
+	//------Metodos heredados:
+
+	// Render de Bunker.
 	void render() const override;
+	// Update de Bunker.
 	void update() override;
+	// HandleEvent de Bunker.
 	void handleEvent(const SDL_Event& event) override;
+	// Save de Bunker.
 	void save(std::ostream& fil) const override{} ;
 
-	// Metodos de clase.
+	// Mete un callback dado a la lista de callbacks del boton.
 	void connectButton(SDLEventCallback buttonCallback);
-
 };
 

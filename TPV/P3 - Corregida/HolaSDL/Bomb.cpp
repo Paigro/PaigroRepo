@@ -7,25 +7,25 @@
 
 using namespace std;
 
-Bomb::Bomb(PlayState* playST, Point2D<double> pos, int vid, char ent)
-	: SceneObject(playST, pos, playST->getGame()->getTexture(BOMB)->getFrameWidth(), playST->getGame()->getTexture(BOMB)->getFrameHeight(), nullptr), vidas(vid),
-	Weapon(ent)
+Bomb::Bomb(PlayState* playST, Point2D<double> pos, int vid, char ent) :
+	SceneObject(playST, pos, playST->getGame()->getTexture(BOMB)->getFrameWidth(), playST->getGame()->getTexture(BOMB)->getFrameHeight(), playST->getGame()->getTexture(BOMB)), 
+	Weapon(ent),
+	vidas(vid)
 {
-	tex = playST->getGame()->getTexture(BOMB);
 	entity = getEntityType();
 }
 
-//Bomb::~Bomb() {}
-
 void Bomb::update()
 {
+	// Actualizacion de la velocidad.
 	position = position + velocidadBomb;
+
 	// Actualizacion del rect.
 	rect.x = position.getX();
 	rect.y = position.getY();
 
-	// Salida de limites de la bala.
-	if (position.getY() >= SCRHEIGHT - 10)
+	// Salida de limites de la bomba.
+	if (position.getY() >= SCRHEIGHT + texture->getFrameHeight())
 	{
 		playST->hasDied(scAnch, objAnch);
 	}
@@ -47,7 +47,7 @@ void Bomb::update()
 
 void Bomb::render() const
 {
-	tex->render(rect);
+	texture->render(rect);
 }
 
 bool Bomb::hit(SDL_Rect _rect, char c)

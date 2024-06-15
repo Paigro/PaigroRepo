@@ -5,26 +5,25 @@
 
 using namespace std;
 
-InfoBar::InfoBar(PlayState* plST, SDLApplication* appl, Point2D<double> pos, int scr) : GameObject(plST), playST(plST), position(pos), score(scr)
+InfoBar::InfoBar(PlayState* plST, SDLApplication* appl, Point2D<double> pos, int scr) :
+	GameObject(plST),
+	playST(plST), position(pos), score(scr)
 {
 	cannonLives = playST->getCannonLives(); // Cogemos las vidas del cannon.
 
-	// Rects para las vidas del cañon
-	// canVid = new SDL_Rect[cannonLives];
-
-	canTexture = playST->getGame()->getTexture(SPACESHIP);
+	canTexture = playST->getGame()->getTexture(SPACESHIP); // Guardamos la textura de la nave.
 	for (int i = 0; i < cannonLives; i++)
 	{
-		// Para mostrar las vidas restantes de la nave:
+		// Para mostrar las vidas restantes de la nave.
 		canVid[i].w = canTexture->getFrameWidth();
 		canVid[i].h = canTexture->getFrameHeight();
 
-		//posicionado de las vidas
+		// Posicionado de las vidas.
 		canVid[i].x = position.getX() + DIGIT_PITH * i; // Para que aparezcan consecutivas.
 		canVid[i].y = position.getY();
 	}
 
-	// Rects para la puntuacion
+	// Rects para la puntuacion.
 	numTexture = playST->getGame()->getTexture(NUMS);
 	for (int i = 0; i < MAX_DIGITS; i++)
 	{
@@ -37,26 +36,12 @@ InfoBar::InfoBar(PlayState* plST, SDLApplication* appl, Point2D<double> pos, int
 	}
 }
 
-/*InfoBar::~InfoBar() {
-	// Elimina los arrays
-	//delete[] canVid;
-	//delete[] cifrPunt;
-
-	// Elimina la referencia al playstate
-	delete playST;
-
-	// Elimina las referencias a las texturas
-	delete canTexture;
-	delete numTexture;
-}*/
-
 void InfoBar::update()
 {
 	cannonLives = playST->getCannonLives(); // Cogemos las vidas del cannon.
 	if (score != playST->returnScore()) {
 		score = playST->returnScore();
 	}
-
 }
 
 void InfoBar::render() const
@@ -67,7 +52,7 @@ void InfoBar::render() const
 	}
 
 	int scoreAux = score;
-	int i = MAX_DIGITS-1;
+	int i = MAX_DIGITS - 1;
 	while (scoreAux > 0 && i >= 0)
 	{
 		// dividimos entre 10 porque cogemos el digito derecho para asignarlo a los rect de derecha a izquierda

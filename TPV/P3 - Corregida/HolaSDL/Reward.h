@@ -5,26 +5,32 @@
 #include <functional> 
 #include "texture.h"
 
-
 using SDLEventCallback = std::function<void(void)>;
 
-class Reward:public SceneObject
+class Reward :public SceneObject
 {
 private:
-	char entity = 'r';
-	SDL_Renderer* renderer = nullptr;
-	Texture* tex;
-	SDLEventCallback rewardCallback;
+
+	char entity = 'r'; // Char para identificar la entidad.
+	SDL_Renderer* renderer = nullptr; // Renferencia al renderer.
+	SDLEventCallback rewardCallback; // Callback que ocurre cuando se coje el reward.
 
 public:
 
-	//Constructoras / destructoras
+	//------Constructoras / destructoras:
+
+	// Constructora de Reward.
 	Reward(PlayState* playST, Point2D<double> pos, SDLEventCallback rew, Texture* _tex);
+	// Destructora de Reward.
 	//~Reward();
 
-	// Metodos heredados.
-	void update() override;
-	void render() const override;
-	bool hit(SDL_Rect rect, char c) override;
-};
 
+	//------Metodos heredados:
+
+	// Update de Reward.
+	void update() override;
+	// Render de Reward.
+	void render() const override;
+	// Hit de Reward.
+	bool hit(SDL_Rect rect, char c)override;
+};

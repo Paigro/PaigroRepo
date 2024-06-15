@@ -9,7 +9,7 @@ Kamikaze::Kamikaze(PlayState* gam, Point2D<double> pos, const Texture* tex, char
 	SceneObject(gam, pos, tex->getFrameWidth(), tex->getFrameHeight(), tex),
 	Weapon(c)
 {
-	elapsedMove = 0;
+	moveCountDown = 0;
 }
 
 void Kamikaze::update()
@@ -19,12 +19,12 @@ void Kamikaze::update()
 		playST->hasDied(scAnch, objAnch);
 	}
 
-	if (elapsedMove >= TIME_TO_MOVE)
+	if (moveCountDown >= TIME_TO_MOVE) // Actualiza su posicion cuando debe.
 	{
 		updatePosition();
-		elapsedMove = 0;
+		moveCountDown = 0;
 	}
-	elapsedMove++;
+	moveCountDown++;
 
 	// Comprueba si el kamikaze choca.
 	if (playST->damage(rect, getEntityType()))
@@ -38,17 +38,16 @@ void Kamikaze::update()
 			damage--;
 		}
 	}
-
 }
 
 void Kamikaze::render() const
 {
-	if (direction != 0)
+	if (direction != 0) // Cuando la direccion no es 0 (no tiene a la nave debajo) se calcula el angulo.
 	{
 		double angle = 180 / (M_PI * atan(velocidadKamikaze.getX() * direction / velocidadKamikaze.getY())); // Para sacar el angulo.
 		texture->renderFrame(rect, 0, 0, angle);
 	}
-	else
+	else // Cuando la direccion es 0 (tiene la nave debajo) se hace un render normal.
 	{
 		texture->render(rect);
 	}
@@ -58,7 +57,7 @@ bool Kamikaze::hit(SDL_Rect _rect, char c)
 {
 	if ((&_rect) != (&rect) && c != getEntityType() && SDL_HasIntersection(&rect, &_rect))
 	{
-		//std::cout << "COLISIOOOOOOOOOOOOOOOOOOOOOON" << std::endl;
+		//cout << "Kamikaze: hit." << endl;		
 		playST->addScore(5);
 		playST->hasDied(scAnch, objAnch);
 		return true;
@@ -73,36 +72,30 @@ void Kamikaze::save(std::ostream& fil) const
 
 void Kamikaze::updatePosition()
 {
-	double canionPosY = playST->getCannonYPos();
-	double canionPosX = playST->getCannonXPos();
-	direction = 0; // Suponemos quesiempre va a ir hacia abajo.
+	double cannonPosY = playST->getCannonYPos();
+	double cannonPosX = playST->getCannonXPos();
+	direction = 0; // Suponemos que siempre va a ir hacia abajo.
 
-	if (position.getY() <= canionPosY) // Si esta por encima del canion entonces su direccion puede cambiar hacia los lados dependiendo de su posicion respecto al canion.
+	if (position.getY() <= cannonPosY) // Si esta por encima del cannon entonces su direccion puede cambiar hacia los lados dependiendo de su posicion respecto al canion.
 	{
-		if (position.getX() < canionPosX - 5.0) // k <  c
+		if (position.getX() < cannonPosX - 5.0) // k <  c
 		{
 			direction = 1; // Va a la derecha.
 		}
-		else if (position.getX() > canionPosX + 5.0) // c  >  k
+		else if (position.getX() > cannonPosX + 5.0) // c  >  k
 		{
 			direction = -1; // Va a la izquierda.
 		}
 		// Movimiento.
 		position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY());
 	}
-	else
+	else // Esto es para que cuando este por debajo del cannon vaya mas rapido y se vaya antes.
 	{
 		// Movimiento.
 		position = position + Vector2D(velocidadKamikaze.getX() * direction, velocidadKamikaze.getY() * 2);
 	}
 
-
-
 	// Actualiza posicion del rect.
 	rect.x = position.getX();
 	rect.y = position.getY();
-
-	//std::cout << canionPosX << " :x,canon,y:" << canionPosY << std::endl;
-	//std::cout << position.getX() << " :x,y:" << position.getY() << std::endl;
-	//std::cout << " direction:" << direction << std::endl;
 }

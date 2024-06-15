@@ -5,7 +5,7 @@
 #include "SceneObject.h"
 #include "Mothership.h"
 
-constexpr int ID_ALIEN(1);
+constexpr int ID_ALIEN = 1; // ID de la entidad Alien.
 
 class Alien : public SceneObject
 {
@@ -25,11 +25,12 @@ private:
 
 public:
 
-	//------Constructora y destructora:
+	//------Constructoras y destructoras:
 
 	// Constructora de Alien.
 	Alien(PlayState* gam, Point2D<double> pos, int sub, const Texture* tex, Mothership* mot);
-
+	// Destructora de Alien.
+	//~Alien();
 
 	//------Metodos heredados:
 

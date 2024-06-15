@@ -5,14 +5,13 @@
 
 using namespace std;
 
-Cannon::Cannon(PlayState* gam, Point2D<double> pos, const Texture* tex, int liv, int eTime)
-	: SceneObject(gam, pos, tex->getFrameWidth(), tex->getFrameHeight(), tex), shootTimer(eTime)
+Cannon::Cannon(PlayState* gam, Point2D<double> pos, const Texture* tex, int liv, int eTime) :
+	SceneObject(gam, pos, tex->getFrameWidth(), tex->getFrameHeight(), tex),
+	shootTimer(eTime)
 {
 	// En caso de que queramos ampliar las vidas durante la ejecucion del juego
 	liv > MAX_CANNON_LIVES ? lives = MAX_CANNON_LIVES : lives = liv;
 }
-
-//Cannon::~Cannon() {}
 
 void Cannon::handleEvent(const SDL_Event& event)
 {
@@ -60,6 +59,7 @@ bool Cannon::hit(SDL_Rect _rect, char c)
 		{
 			if (!invincible)
 			{
+				//cout << "CAnnon: hit." << endl;
 				lives--;
 				if (lives <= 0)
 				{
@@ -90,7 +90,6 @@ void Cannon::update()
 		position = Vector2D(0.0, position.getY());
 	}
 
-
 	shootTimer--;
 
 	// Contador de la invencibilidad.
@@ -103,12 +102,10 @@ void Cannon::update()
 		}
 		timer++;
 	}
-
 }
 
 void Cannon::render() const
 {
-
 	if (invincible) // Cuando la nave es invencible.
 	{
 		texture->renderFrame(rect, texture->getNumRows() - 1, texture->getNumColumns() - 1);
@@ -117,7 +114,6 @@ void Cannon::render() const
 	{
 		texture->renderFrame(rect, texture->getNumRows() - 1, texture->getNumColumns() - 2);
 	}
-
 }
 
 void Cannon::save(ostream& fil) const // Guarda: tipo-posicion-vidas-tiempoParaDisparar.
@@ -129,4 +125,3 @@ void Cannon::setInvincible()
 {
 	invincible = true;
 }
-

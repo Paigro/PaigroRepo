@@ -3,6 +3,10 @@
 class FileFormatError : public InvadersError
 {
 public:
-	FileFormatError(const std::string& mes) : InvadersError(mes){}
-};
 
+	FileFormatError(const std::string& mes) :
+		InvadersError(mes)
+	{
+
+	}
+};

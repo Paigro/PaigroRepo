@@ -52,6 +52,7 @@ bool Alien::hit(SDL_Rect _rect, char c)
 	{
 		if (SDL_HasIntersection(&rect, &_rect))
 		{
+			//cout << "Alien: hit." << endl;
 			switch (subtipo)
 			{
 			case 0:
