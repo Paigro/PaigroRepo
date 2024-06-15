@@ -27,6 +27,7 @@ private:
 
 public:
 	PauseState(SDLApplication* _sdlApp, PlayState* _playST);
+
 	void update() override;
 	void render() const override;
 	void handleEvent(const SDL_Event& event) override;

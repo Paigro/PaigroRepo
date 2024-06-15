@@ -13,6 +13,8 @@ public:
 	//~Vector2D() { delete& x; delete& y; } destructora no funciona
 	T getX() const { return x; }
 	T getY() const { return y; }
+	void setX(T newX) { x = newX; }
+	void setY(T newY) { y = newY }
 
 	//Sobrecargas de operadores
 	Vector2D operator+(Vector2D other) const

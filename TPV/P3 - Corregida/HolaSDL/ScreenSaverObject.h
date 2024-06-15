@@ -10,7 +10,7 @@ class ScreenSaverObject : public SceneObject
 public:
 
 	// Constructoras:
-	ScreenSaverObject(GameState* gam, Point2D<double> pos, const Texture* tex, bool follower);
+	ScreenSaverObject(GameState* gam, Point2D<double> pos, const Texture* tex);
 
 	// Metodos heredados.
 	void update() override;
@@ -21,10 +21,12 @@ public:
 	Point2D<double> getPos() { return position; };
 
 	void move();
+	void checkLimits();
 
 private:
 
-	bool hasToBeFollowed;
+	bool sayHello;
+	int angle;
 	int dirX;
 	int dirY;
 };

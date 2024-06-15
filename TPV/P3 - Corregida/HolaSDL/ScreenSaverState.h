@@ -32,7 +32,7 @@ public:
 	// Cuando sale de este estado.
 	bool onExit() override;
 	// Devuelve el ID de este estado.
-	std::string getStateID() const override { return "ScreenSaveState"; }
+	std::string getStateID() const override { return "ScreenSaveST"; }
 	// Cambia al estado siguiente
 	void changeState();
 

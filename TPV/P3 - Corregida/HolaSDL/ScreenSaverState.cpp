@@ -8,7 +8,7 @@
 ScreenSaverState::ScreenSaverState(SDLApplication* _sdlApp) :
 	GameState(_sdlApp)
 {
-	ship = new ScreenSaverObject(this, Point2D<double>(300.0, 300.0), sdlApp->getTexture(SPACESHIP), false);
+	ship = new ScreenSaverObject(this, Point2D<double>(300.0, 300.0), sdlApp->getTexture(UFOT));
 	addObject(ship);
 }
 
@@ -22,7 +22,7 @@ void ScreenSaverState::update()
 
 void ScreenSaverState::render() const
 {
-	//getGame()->getTexture(SCREENSAVER)->render(); // Fondo.
+	getGame()->getTexture(SCREENSAVER)->render(); // Fondo.
 
 	for (GameObject& e : objs)
 	{
