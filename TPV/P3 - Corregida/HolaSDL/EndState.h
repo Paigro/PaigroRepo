@@ -9,25 +9,46 @@ constexpr int POS_TITLE_FIN_X(300), POS_TITLE_FIN_Y(100),
 class EndState : public GameState
 {
 private:
-	SDL_Rect rect;
-	Texture* tex;
 
-	// --- Botones ---
-	Button* volverMenu;
-	Button* salir;
+	SDL_Rect rect; // Rectangulo del texto de victoria o derrota.
+	Texture* tex; // Textura del texto de victoria o derrota.
 
-	// --- Win / GameOver ---
-	bool hasWon = false;
+	bool hasWon = false; // Para guardar si el jugador a ganado o perdido.
+
+
+	//------Botones:
+
+	Button* volverMenu; // Boton para volver al menu.
+	Button* salir; // Boton para salir.
 
 public:
-	EndState(SDLApplication* _sdlApp, bool win);
 
+	//------Constructoras y destructoras:
+
+	// Construcora de EndState.
+	EndState(SDLApplication* _sdlApp, bool win);
+	// Destructora de EndState.
+	//~EndState();
+
+
+	//------Metodos heredados:
+
+	// Update de EndState.
 	void update() override;
+	// Update de EndState.
 	void render() const override;
+	// Update de EndState.
 	void save(std::ostream& fil) const override {}
+	// Update de EndState.
 	void handleEvent(const SDL_Event& event) override { GameState::handleEvent(event); }
 
+
+	//------Metodos de los estados:
+
+	// Cuando entra a este estado.
 	bool onEnter() override;
+	// Cuando sale de este estado.
 	bool onExit() override;
+	// Devuelve el ID de este estado.
 	std::string getStateID() const override { return "EndST"; }
 };

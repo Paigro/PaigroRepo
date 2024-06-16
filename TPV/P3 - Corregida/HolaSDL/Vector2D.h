@@ -3,20 +3,33 @@ template <class T>
 
 class Vector2D
 {
-
 private:
+
 	T x;
 	T y;
+
 public:
+
+	//------Constructoras y destructoras:
+
+	// Constructora vacia.
 	Vector2D() { Vector2D(0, 0); };
+	// Constructora que recibe parametros.
 	Vector2D(T a, T b) { x = a; y = b; }
-	//~Vector2D() { delete& x; delete& y; } destructora no funciona
+
+	//------Getters y setters:
+
+	// Devuelve la X.
 	T getX() const { return x; }
+	// Devuelve la Y.
 	T getY() const { return y; }
+	// Setea la X.
 	void setX(T newX) { x = newX; }
+	// Setea la Y.
 	void setY(T newY) { y = newY }
 
-	//Sobrecargas de operadores
+	//------Sobrecargas de operadores:
+
 	Vector2D operator+(Vector2D other) const
 	{
 		return Vector2D(x + other.x, y + other.y);

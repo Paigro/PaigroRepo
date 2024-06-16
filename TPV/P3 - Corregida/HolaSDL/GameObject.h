@@ -20,27 +20,39 @@ protected:
 
 public:
 
+	//------Constructoras y destructoras:
+
+	// Constructora que recibe un PlayState.
 	GameObject(GameState* gamSt) :
 		gameST(gamSt)
 	{
 
 	}
-
+	// Constructora que recibe el sdlApp y pone gameState a nullptr.
 	GameObject(SDLApplication* sdlap) :
 		sdlAppl(sdlap)
 	{
 		gameST = nullptr;
 	}
+	// Destructora virtual.
+	virtual ~GameObject() = default; 
 
-	virtual ~GameObject() = default; // Destructora virtual.
 
+	//------Metodos para heredar:
+	
+	// Render virtual.
 	virtual void render() const = 0;
-
+	// Update virtual.
 	virtual void update() = 0;
-
+	// Save virtual.
 	virtual void save(std::ostream& fil) const = 0;
 
+
+	//------Getters y setters:
+
+	// Devuelve la lista de anchors de objetos del juego.
+	const GameList<GameObject, true>::anchor& getListAnchor() const { return objAnch; }
+	// Setea la lista de anchors de objetos del juego. 
 	void setListAnchor(GameList<GameObject, true>::anchor anc) { objAnch = anc; }
 
-	const GameList<GameObject, true>::anchor& getListAnchor() const { return objAnch; }
 };

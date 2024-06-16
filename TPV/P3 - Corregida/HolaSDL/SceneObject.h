@@ -22,7 +22,7 @@ protected:
 
 public:
 
-	//------Constructoras / destructoras:
+	//------Constructoras y destructoras:
 
 	// Constructora de SceneObject que recibe un estado cualquiera.
 	SceneObject(GameState* state, Point2D<double> pos, int wid, int hei, const Texture* tex);
@@ -43,9 +43,7 @@ public:
 
 
 	//------Metodos de la clase:
-
-	// Devuelve el rectangulo de la entidad.
-	SDL_Rect getRect();
+	
 	// Hit de SceneObject.
 	virtual bool hit(SDL_Rect _rect, char c);
 
@@ -54,4 +52,6 @@ public:
 
 	// Setea el anchor del sceneObjet.
 	virtual void setListAnchor(const GameList<SceneObject, false>::anchor& anc) { scAnch = anc; }
+	// Devuelve el rectangulo de la entidad.
+	SDL_Rect getRect();
 };

@@ -1,18 +1,18 @@
 #include "checkML.h"
 #include "GameState.h"
 
-using namespace std;
-
-void GameState::update() {
+void GameState::update() 
+{
 	for (auto& e : objs) {
 		e.update();
 	}
 }
-void GameState::render() const {
+
+void GameState::render() const 
+{
 	for (auto& e : objs) {
 		e.render();
 	}
-
 }
 
 void GameState::addObject(GameObject* obj) 

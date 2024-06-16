@@ -6,7 +6,9 @@
 
 using namespace std;
 
-PauseState::PauseState(SDLApplication* _sdlApp, PlayState* _playST) : GameState(_sdlApp), playST(_playST)
+PauseState::PauseState(SDLApplication* _sdlApp, PlayState* _playST) :
+	GameState(_sdlApp),
+	playST(_playST)
 {
 	continuarB = new Button(this, sdlApp->getTexture(CONTINUARP), Point2D<double>(POS_CONTINUARX, POS_CONTINUARY));
 	guardarB = new Button(this, sdlApp->getTexture(GUARDARP), Point2D<double>(POS_GUARDARX, POS_GUARDARY));
@@ -18,13 +20,13 @@ PauseState::PauseState(SDLApplication* _sdlApp, PlayState* _playST) : GameState(
 	addObject(cargarB);
 	addObject(salirB);
 
-	// para que los botones puedan reaccionar a eventos
+	// Para que los botones puedan reaccionar a eventos:
 	addEventListener(continuarB);
 	addEventListener(guardarB);
 	addEventListener(cargarB);
 	addEventListener(salirB);
 
-	// uso de la expresion lambda
+	// Uso de la expresion lambda:
 	continuarB->connectButton([this]() { continuar(); });
 	guardarB->connectButton([this]() { guardarPartida(); });
 	cargarB->connectButton([this]() { cargarPartida(); });
@@ -33,29 +35,30 @@ PauseState::PauseState(SDLApplication* _sdlApp, PlayState* _playST) : GameState(
 
 void PauseState::update()
 {
-	for (GameObject& e: objs)
+	for (GameObject& e : objs)
 	{
 		e.update();
 	}
 }
-void PauseState::handleEvent(const SDL_Event& event) 
+void PauseState::handleEvent(const SDL_Event& event)
 {
-	GameState::handleEvent(event); 
+	GameState::handleEvent(event);
 }
 
 void PauseState::render() const
 {
-	// renderiza la imagen de fondo
+	// Renderiza la imagen de fondo
 	sdlApp->getTexture(FONDOP)->render();
 
-	for (GameObject& a : objs) {
+	for (GameObject& a : objs)
+	{
 		a.render();
 	}
 }
 
 bool PauseState::onEnter()
 {
-	cout << "\n\nENTER PAUSE STATE\n";	
+	cout << "\n\nENTER PAUSE STATE\n";
 	return true;
 }
 
@@ -64,7 +67,6 @@ bool PauseState::onExit()
 	cout << "\nEXIT PAUSE STATE\n";
 	return true;
 }
-
 
 void PauseState::continuar()
 {
@@ -84,6 +86,6 @@ void PauseState::cargarPartida()
 
 void PauseState::salir()
 {
-	// settea el exit a true (del sdl application)
+	// Settea el exit a true (del sdl application).
 	sdlApp->setEndGame(true);
 }

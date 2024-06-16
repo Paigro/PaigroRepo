@@ -8,7 +8,8 @@ GameStateMachine::GameStateMachine()
 
 GameStateMachine::~GameStateMachine() 
 {
-	while (!pilaEstados.empty()) {
+	while (!pilaEstados.empty()) 
+	{
 		popState();
 	}
 	deleteStates();
@@ -83,7 +84,6 @@ void GameStateMachine::handleEvent(const SDL_Event& event)
 
 void GameStateMachine::deleteStates() 
 {
-
 	const int cantStates = eliminaEstados.size();
 
 	for (int i = 0; i < cantStates; i++)

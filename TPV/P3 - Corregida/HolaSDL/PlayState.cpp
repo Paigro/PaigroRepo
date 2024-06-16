@@ -11,8 +11,8 @@ using namespace std;
 #pragma region constructora/destructora
 
 PlayState::PlayState(SDLApplication* _sdlApp, bool guardado) :
-	renderer(_sdlApp->getRenderer()),
-	GameState(_sdlApp)
+	GameState(_sdlApp),
+	renderer(_sdlApp->getRenderer())
 {
 	if (guardado)
 	{
@@ -22,9 +22,10 @@ PlayState::PlayState(SDLApplication* _sdlApp, bool guardado) :
 	{
 		map = map + "original.txt";
 	}
+
 	readMap();
 
-	// Anyadir mothership e infobar a la lista de objetos.
+	// Mete mothership e infobar a la lista de objetos.
 	addObject(mother);
 	addObject(info);
 }
@@ -57,13 +58,10 @@ void PlayState::readMap()
 		{
 			file >> dato3;
 			mother->setMotherParams(dato1, dato2, dato3);
-			//objs.push_back(mother);
-
 		}
 		else if (objeto == ID_INFOBAR) // InfoBar no se mete en la lista.
 		{
 			info = new InfoBar(this, getGame(), Point2D<double>(10, SCRHEIGHT - 30), dato1);
-			//objs.push_back(info);
 		}
 		else
 		{
@@ -96,7 +94,6 @@ void PlayState::readMap()
 				newObj = new UFO(this, Point2D<double>(dato1, dato2), getGame()->getTexture(UFOT), state, dato3);
 				break;
 			case ID_LASER: // Lasers.
-
 				file >> c;
 				newObj = new Laser(this, Point2D<double>(dato1, dato2), c);
 				break;
@@ -105,14 +102,10 @@ void PlayState::readMap()
 				file >> c;
 				newObj = new Bomb(this, Point2D<double>(dato1, dato2), dato3, c);
 				break;
-				/*case 9:
-					newObj = new Shield(this, Point2D<double>(dato1, dato2));
-					break;*/
 			default:
 				throw FileFormatError("Objeto inesperado");
 				break;
 			}
-
 			addSceneObject(newObj);
 		}
 	}
@@ -129,8 +122,8 @@ void PlayState::addSceneObject(SceneObject* obj)
 
 void PlayState::update()
 {
-	// Update de la clase base.
-	GameState::update();
+	GameState::update(); // Update de la clase base.
+
 	if (mother->getAlienCount() <= 0)
 	{
 		sdlApp->getStMachine()->replaceState(new ScrollingState(sdlApp, sdlApp->getTexture(SCROLLWIN), new EndState(sdlApp, true)));
@@ -138,10 +131,11 @@ void PlayState::update()
 }
 
 void PlayState::render() const
-{
-	getGame()->getTexture(STARS)->render(); // Fondo.
+{	
+	// Renderiza la imagen de fondo
+	getGame()->getTexture(STARS)->render();
 
-	//Render de la clase base
+	// Render de la clase base.
 	GameState::render();
 }
 
@@ -166,18 +160,17 @@ void PlayState::fireBomb(const Point2D<double>& position)
 {
 	//cout << "Lanza bomba" << endl;
 	addSceneObject(new Bomb(this, position, 2, 'a'));
-	//entities.push_back(new Bomb(this, position));
 }
 
 void PlayState::fireReward(const Point2D<double>& position)
 {
 	//cout << "Lanza Rewars" << endl;
 	addSceneObject(new Reward(this, position, [this]() { canion->setInvincible(); }, sdlApp->getTexture(SHIELD)));
-	//entities.push_back(new Reward(this, position, [this]() { canion->setInvincible(); }, sdlApp->getTexture(SHIELD)));
 }
 
 void PlayState::fireKamikaze(const Point2D<double>& position)
 {
+	//cout << "Lanza Kamikaze" << endl;
 	addSceneObject(new Kamikaze(this, position, sdlApp->getTexture(KAMIKAZE), 'a'));
 }
 
@@ -195,7 +188,6 @@ bool PlayState::damage(SDL_Rect _rect, Weapon c)
 	for (auto& i : entities)
 	{
 		if (!end) end = i.hit(_rect, c.getEntityType());
-		//else i.hit(_rect, c);
 	}
 
 	return end;

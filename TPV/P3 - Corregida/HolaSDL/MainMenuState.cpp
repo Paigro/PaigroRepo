@@ -6,8 +6,8 @@
 
 using namespace std;
 
-MainMenuState::MainMenuState(SDLApplication* _sdlApp)
-	: GameState(_sdlApp)
+MainMenuState::MainMenuState(SDLApplication* _sdlApp) :
+	GameState(_sdlApp)
 {
 	nuevaPartida = new Button(this, sdlApp->getTexture(NUEVAP), Point2D<double>(POS_NUEVA_PARTIDAX, POS_NUEVA_PARTIDAY));
 	cargarPartida = new Button(this, sdlApp->getTexture(CARGARP), Point2D<double>(POS_CARGAR_PARTIDAX, POS_CARGAR_PARTIDAY));

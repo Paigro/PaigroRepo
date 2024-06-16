@@ -9,26 +9,47 @@ class MainMenuState : public GameState
 {
 private:
 
-	Button* nuevaPartida;
-	Button* cargarPartida;
-	Button* salir;
+	Button* nuevaPartida; // Boton para nueva partida.
+	Button* cargarPartida; // Boton para cargar partida.
+	Button* salir; // Boton para salir.
 
-	const int TIME_TO_SCREEN_SAVER = 100; // Al pasar este tiempo se pone el ScreenSaver.
+	const int TIME_TO_SCREEN_SAVER = 300; // Al pasar este tiempo se pone el ScreenSaver.
 	int screenSaverCountDown; // Contador para el ScreenSaver.
 
 public:
 
-	MainMenuState(SDLApplication* _sdlApp);
+	//------Constructoras y destructoras:
 
+	// Construcora de MainMenuState.
+	MainMenuState(SDLApplication* _sdlApp);
+	// Destructora de MainMenuState.
+	//~MainMenuState();
+
+
+	//------Metodos heredados:
+
+	// Update de MainMenuState.
 	void update() override;
+	// Update de MainMenuState.
 	void render() const override;
+	// Update de MainMenuState.
 	void save(std::ostream& fil) const override;
+	// Update de MainMenuState.
 	void handleEvent(const SDL_Event& event) override;
 
+
+	//------Metodos de los estados:
+
+	// Cuando entra a este estado.
 	bool onEnter() override;
+	// Cuando sale de este estado.
 	bool onExit() override;
+	// Devuelve el ID de este estado.
 	std::string getStateID() const override { return "MenuST"; }
 
-	void changeToScreenSaver();
 
+	//------Metodos de la clase:
+
+	// Cambia al estado del salvapantalla.
+	void changeToScreenSaver();
 };

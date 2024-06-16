@@ -1,10 +1,14 @@
 #pragma once
+// Cosas de SDL:
 #include "SDL.h"
+//Cosas importantes?:
+#include "texture.h"
+#include "Vector2D.h"
+#include "EventHandler.h"
+// Entidades:
 #include "Alien.h"
 #include "Mothership.h"
 #include "UFO.h"
-#include "texture.h"
-#include "Vector2D.h"
 #include "Cannon.h"
 #include "Bunker.h"
 #include "Laser.h"
@@ -15,10 +19,9 @@
 #include "SceneObject.h"
 #include "Weapon.h"
 #include "Kamikaze.h"
-
+// Estados:
 #include "GameState.h"
-#include "EventHandler.h"
-
+// Errores:
 #include "InvadersError.h"
 #include "SDLError.h"
 #include "FileFormatError.h"
@@ -33,26 +36,24 @@
 #include <fstream>
 #include <random>
 
-//using namespace std;
 
-const std::string MAP_PATH = "assets/maps/";
+const std::string MAP_PATH = "assets/maps/"; // Ruta a los mapas.
 
 
-const double velocidadAlien = 5;
-const Vector2D<double> velocidadBomb(0, 5);
-const double velocidadCannon = 10;
-const Vector2D<double> velocidadLaser(0, 5);
-const int proporcionBombas = 5;
-const int velocidadReward = 4;
+const double velocidadAlien = 5; // Velocidad de los aliens.
+const Vector2D<double> velocidadBomb(0, 5); // Velocidad de las bombas.
+const double velocidadCannon = 10; // Velocidad del cannon.
+const Vector2D<double> velocidadLaser(0, 5); // Velocidad de los laseres.
+const int proporcionBombas = 5; // Proporcion de bombas.
+const int velocidadReward = 4; // Velocidad de los rewards.
 
 class PlayState : public GameState
 {
 private:
 	
 	GameList<SceneObject> entities; // Lista de SceneObjects de las entidades del juego.
-	SDL_Renderer* renderer;
 
-
+	SDL_Renderer* renderer; // Referencia al renderer.
 	Cannon* canion = nullptr; // Referencia a la nave.
 	Mothership* mother = new Mothership(this, getGame()); // Referencia a la mothership.
 	InfoBar* info = nullptr; // Referencia al infobar.
@@ -67,35 +68,38 @@ private:
 	void addSceneObject(SceneObject* obj);
 
 public:
-	// Constructora.
+
+	//------Constructoras y destructoras:
+
+	// Construcora de PlayState.
 	PlayState(SDLApplication* _sdlApp, bool guardado);
+	// Destructora de PlayState.
+	//~PlayState();
 
 
-	//------Metodos overrided:
+	//------Metodos heredados:
 
-	// Update.
+	// Update de PlayState.
 	void update() override;
-	// Render.
+	// Update de PlayState.
 	void render() const override;
-	// HandleEvent.
-	void handleEvent(const SDL_Event& event) override;
-	// Save.
+	// Update de PlayState.
 	void save(std::ostream& fil) const override;
+	// Update de PlayState.
+	void handleEvent(const SDL_Event& event) override;
 
 
-	//------Estados:
+	//------Metodos de los estados:
 
-	// Cuando entra a este estado.
+		// Cuando entra a este estado.
 	bool onEnter() override;
 	// Cuando sale de este estado.
 	bool onExit() override;
 	// Devuelve el ID de este estado.
 	std::string getStateID() const override { return"PlayST"; }
-	// Cambia al estado GameOver.
-	void gameOver();
 
 
-	//------Metodos de clase:
+	//------Metodos de la clase:
 
 	// Comprueba si una entidad con rect _rect puede chocar con una entidad con char c.
 	bool damage(SDL_Rect _rect, Weapon c);
@@ -119,9 +123,11 @@ public:
 	void invencible() { canion->setInvincible(); }
 	// Suma points al score.
 	void addScore(int points) { score += points; }
+	// Cambia al estado GameOver.
+	void gameOver();
 
 
-	//------Getters:
+	//------Getters y setters:
 	
 	// Devuelve un numero aleatorio entre min y max.
 	int getRandomRange(int min, int max);
@@ -135,6 +141,7 @@ public:
 	const double getCannonYPos() const { return canion->getPos().getY(); } 
 	// Devuelve el score de la partida.
 	int returnScore() const { return score; }
+
 
 	//------Examenes de teoria:
 

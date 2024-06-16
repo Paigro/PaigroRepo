@@ -18,6 +18,8 @@ void ScreenSaverState::update()
 	{
 		e.update();
 	}
+
+	GameState::update(); // Update de la clase base.
 }
 
 void ScreenSaverState::render() const
@@ -29,7 +31,7 @@ void ScreenSaverState::render() const
 		e.render();
 	}
 
-	GameState::render();
+	GameState::render(); // Render de la clase base.
 }
 
 void ScreenSaverState::handleEvent(const SDL_Event& event)
