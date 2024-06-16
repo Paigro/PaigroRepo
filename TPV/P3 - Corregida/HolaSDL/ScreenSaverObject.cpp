@@ -37,10 +37,10 @@ void ScreenSaverObject::render() const
 
 void ScreenSaverObject::move()
 {
-	// Dice hola si le toca decrilo.
+	// Actualizacion del movimiento si no esta diciendo hola.
 	if (!sayHello)
 	{
-		position = position + Vector2D<double>(10.0 * dirX, 10.0 * dirY);
+		position = position + Vector2D<double>(5.0 * dirX, 5.0 * dirY);
 	}
 
 	// Si esta en esa posicion dice hola.

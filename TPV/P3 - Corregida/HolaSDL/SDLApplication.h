@@ -1,25 +1,26 @@
 #pragma once
+// Cosas de SDL:
 #include "SDL.h"
+// Cosas importantes?:
 #include "texture.h"
-
+// Estados:
 #include "GameStateMachine.h"
 #include "MainMenuState.h"
 #include "PlayState.h"
 #include "EndState.h"
 #include "PauseState.h"
-
+// Errores:
 #include "InvadersError.h"
 #include "SDLError.h"
 #include "FileFormatError.h"
 #include "FileNotFoundError.h"
-
 
 #include <vector>
 #include <array>
 
 
 const std::string TEXTURE_ROOT = "assets/images/"; // Direccion donde estan las texturas.
-const int NUM_TEXTURES = 23; // Numero de textura.
+const int NUM_TEXTURES = 23; // Numero de texturas.
 
 const double SCRWIDTH = 800; // ANCHO de la partida (x).
 const double SCRHEIGHT = 600; // ALTO de la partida (y).
@@ -28,19 +29,20 @@ const double SCRHEIGHT = 600; // ALTO de la partida (y).
 const double FRAMERATE = 60;
 const double TIMEBETWEENFRAMES = 1000 / FRAMERATE;
 
-
-// el UFO se llama UFOT para no confundirlo con la clase.
+// Enum de nombres de texturas.
+// NOTA: el UFO se llama UFOT para no confundirlo con la clase.
 enum TextureName {
 	ALIENS, BUNKER, SPACESHIP, STARS, UFOT, BOMB, NUMS, MENUFONDO, NUEVAP,
 	CARGARP, SALIR, CONTINUARP, GUARDARP, FONDOP, VOLVERM, GOV, WIN, SHIELD,
 	KAMIKAZE, SCROLL, SCROLLLOSE, SCROLLWIN, SCREENSAVER
 };
 
-
 class SDLApplication
 {
 private:
+
 #pragma region Texturas
+
 	struct textureInfo
 	{
 		std::string url;
@@ -95,20 +97,38 @@ private:
 
 public:
 
+	//------Constructoras y destructoras:
+
+	// Construcora de SDLApplication.
 	SDLApplication();
+	// Destructora de SDLApplication.
 	~SDLApplication();
 
-	// Metodos base
-	void update() { stateMachine->update(); }
-	void render() const;
-	void run();
-	void handleEvents();
-	void setEndGame(bool end);
 
+	//------Metodos base:
+
+	// Update de SDLApplication.
+	void update() { stateMachine->update(); }
+	// Render de SDLApplication.
+	void render() const;
+	// HandleEvents de SDLApplication.
+	void handleEvents();
+
+
+	//------Metodos de la clase:
+
+	// Bucle del juego.
+	void run();
+
+
+	//------Getters y setters;
+	
+	// Devuelve la textura dado el nombre del enum.
+	Texture* getTexture(TextureName _texNam) const { return textures[_texNam]; }
+	// Devuelve el renderer.
 	SDL_Renderer* getRenderer() const { return renderer; }
 	// Devuelve la GameStateMachine.
 	GameStateMachine* getStMachine() const { return stateMachine; }
-
-	// Devuelve la textura dado el nombre del enum.
-	Texture* getTexture(TextureName _texNam) const { return textures[_texNam]; }
+	// Setea el endGame para cerrar la partida.
+	void setEndGame(bool end);
 };

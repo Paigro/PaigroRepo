@@ -4,6 +4,7 @@
 using namespace std;
 
 #pragma region Configuracion y setting del juego
+
 SDLApplication::SDLApplication() 
 {
 	setupGame();
@@ -26,14 +27,13 @@ SDLApplication::~SDLApplication()
 void SDLApplication::setupGame()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+
 	window = SDL_CreateWindow("SPACE INAVERS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCRWIDTH, SCRHEIGHT, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
 
 	if (window == nullptr || renderer == nullptr)
 	{
 		throw SDLError("Error en SDL: "s + SDL_GetError());
-		//cout << "Error creacion de ventana" << endl;
 	}
 	else
 	{
@@ -46,10 +46,9 @@ void SDLApplication::setupGame()
 
 	SDL_RenderClear(renderer);
 }
+
 #pragma endregion
 
-
-//Bucle del juego
 void SDLApplication::run() {
 
 	startTime = SDL_GetTicks();
@@ -65,8 +64,8 @@ void SDLApplication::run() {
 			update();
 			startTime = SDL_GetTicks();
 		}
-		render();
 
+		render();
 	}
 }
 
