@@ -19,20 +19,18 @@ export default class Boot extends Phaser.Scene {
         this.load.spritesheet('rat', './assets/rat32.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('penguin', './assets/penguin40.png', { frameWidth: 40, frameHeight: 40 });
 
-        /*// Musica:
-        this.load.audio('failureMusic', './assets/sounds/failure.mp3');
-        this.load.audio('finalSound', './assets/sounds/final.wav');
-        this.load.audio('jumpSound', './assets/sounds/jump.wav');
-        this.load.audio('menuMusic', './assets/sounds/menu.mp3');
-        this.load.audio('scoreSound', './assets/sounds/score.wav');
-        this.load.audio('stageMusic', './assets/sounds/stage.mp3');*/
+        // Musica:
+        this.load.audio('winSound', './assets/sounds/win.mp3');
+        this.load.audio('loseSound', './assets/sounds/lose.mp3');
+        this.load.audio('collideSound', './assets/sounds/collide.mp3');
+        this.load.audio('throwBallSound', './assets/sounds/throw_ball.mp3');
+        this.load.audio('stunSound', './assets/sounds/stun.mp3');
 
     }
 
     create() {
         this.loadAnimations();
         this.scene.start('MenuP');
-        console.log("buenos dias1");
     }
 
     loadAnimations() {

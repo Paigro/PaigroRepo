@@ -17,11 +17,8 @@ export default class Menu extends Phaser.Scene {
         this.ball = this.add.image(this.cameras.main.centerX - 50, this.cameras.main.centerY + 40, 'ball').setScale(2, 2);
         this.ball.x = this.cameras.main.centerX - 100;
         // Musica:
-        /*this.sound.stopAll(); // Quitamos el resto de sonidos.
-        this.menuMusic = this.sound.add('menuMusic');
-        this.menuMusic.play({ volume: 0.1, loop: true });*/
+        this.sound.stopAll(); // Quitamos el resto de sonidos.
         // Titulo del juego:
-        console.log("buenos dias");
         this.tittle = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 100, "Penguin-chan wars", {
             fontSize: 100,
             fill: '#00f',
@@ -69,9 +66,7 @@ export default class Menu extends Phaser.Scene {
         else if (Phaser.Input.Keyboard.JustUp(this.keys.SPACE)) {
             if (this.buttonSelected == 0) {
                 console.log("Scena con 1");
-
                 this.scene.start("Level", { nPlayers: 1 }); // Mandamos la dificultad del nivel.
-
             }
             else {
                 console.log("Scena con 2");

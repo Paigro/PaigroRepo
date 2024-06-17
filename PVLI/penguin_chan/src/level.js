@@ -6,7 +6,7 @@ export default class Level extends Phaser.Scene {
     constructor() {
         super({ key: 'Level', active: false });
 
-        this.timeLeft = 2;
+        this.timeLeft = 90;
     }
 
     init(data) {
@@ -14,6 +14,14 @@ export default class Level extends Phaser.Scene {
     }
 
     create() {
+        //------CONTROL DE JUEGO:
+        this.end = false;
+        //------SONIDOS:
+        this.winSound = this.sound.add('winSound'); // Metemos el sonido de ganar.
+        this.loseSound = this.sound.add('loseSound'); // Metemos el sonido de perder.
+        this.collideSound = this.sound.add('collideSound'); // Metemos el sonido de colision entre bolas.
+        this.throwSound = this.sound.add('throwBallSound'); // Metemos el sonido de lanzar bolas.
+        this.stunSound = this.sound.add('stunSound'); // Metemos el sonido de stun.
         //------POSICIONES DE LOS JUGADORES:
         this.posPlayer1 = this.cameras.main.centerY - 168;
         this.posPlayer2 = this.cameras.main.centerY + 100;
@@ -53,21 +61,30 @@ export default class Level extends Phaser.Scene {
         this.time.addEvent({
             delay: 1000, // 1 segundo.
             callback: () => {
-                if (this.timeLeft > 0)
+                if (this.timeLeft > 0 && !this.end)
                     this.timeLeft--;
                 this.timeText.setText("Time left: " + this.timeLeft); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
                 if (this.timeLeft == 0) {
-                    this.endGame();
+                    this.endGameByTime();
                 }
             },
             callbackScope: this,
             loop: true // Para que se haga continuamente.
         });
-        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, "Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat, { // Texto para llevar la cuenta del fuel que lleva el jugador.
-            fontSize: 40, // Como de grande es el texto.
-            fill: '#FFFFFF', // Relleno.
+        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 100, "Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat, { // Texto para llevar la cuenta del fuel que lleva el jugador.
+            fontSize: 60, // Como de grande es el texto.
+            fill: '#00f', // Color de relleno
+            stroke: '#fff', // Color de los bordes.
+            strokeThickness: 4, // Como de grande es el borde.
             fontFamily: 'babelgam', // Fuente del texto.
-        }).setOrigin(0.5, 0.5).setDepth(5).setVisible(false);
+        }).setOrigin(0.5, 0.5).setDepth(11).setVisible(false);
+        this.lostWinText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 100, " ", {
+            fontSize: 100, // Como de grande es el texto.
+            fill: '#00f', // Color de relleno
+            stroke: '#fff', // Color de los bordes.
+            strokeThickness: 4, // Como de grande es el borde.
+            fontFamily: 'babelgam', // Fuente del texto.
+        }).setOrigin(0.5, 0.5).setDepth(11).setVisible(false);
         //------COLISIONES:
         // Colision jugadores con paredes.
         this.physics.add.collider(this.player1, this.wallD);
@@ -76,6 +93,9 @@ export default class Level extends Phaser.Scene {
         this.physics.add.collider(this.player2, this.wallI);
         //------SPAWNEA LAS BOLAS INICIALES.
         this.spawnBalls();
+        //------RECTANGULO FINAL:
+        this.rect = this.add.graphics();
+        this.rect.fillStyle(0x000000).fillRect(0, 0, this.cameras.main.width, this.cameras.main.height).setDepth(10).setAlpha(0);
         //------FIN DEL CREATE:
         this.createEnd = true;
     }
@@ -94,7 +114,7 @@ export default class Level extends Phaser.Scene {
 
     spawnBalls() {
         for (let i = 0; i < 5; i++) {
-            let ball = new Ball(this, this.cameras.main.centerX - 80 + i * 30, this.posPlayer1 + 20);
+            let ball = new Ball(this, this.cameras.main.centerX - 80 + i * 40, this.posPlayer1 + 20);
             this.ballsPool.push(ball);
         }
         for (let i = 0; i < 5; i++) {
@@ -104,20 +124,20 @@ export default class Level extends Phaser.Scene {
     }
 
     // Para parar las bolas cuando llegan a la zona.
-    checkCollision(player, ball) {
+    checkCollision() {
         this.ballsPool.forEach(ball => {
             // Verifica la colisión con cada zona
-            const collision = this.physics.world.overlap(ball, this.ballZoneDown);
-            const collision2 = this.physics.world.overlap(ball, this.ballZoneUp);
-            if (collision) {
+            const collisionDown = this.physics.world.overlap(ball, this.ballZoneDown);
+            const collisionUp = this.physics.world.overlap(ball, this.ballZoneUp);
+            if (collisionUp) {
                 if (!ball.getIsPicked()) {
                     ball.stop();
                     ball.setZone(1);
                 }
-            } else if (collision2) {
+            } else if (collisionDown) {
                 if (!ball.getIsPicked()) {
                     ball.stop();
-                    ball.setZone(1);
+                    ball.setZone(2);
                 }
             }
         });
@@ -127,9 +147,10 @@ export default class Level extends Phaser.Scene {
             this.players.forEach(player => {
                 const collision = this.physics.world.overlap(ball, player);
                 if (collision) {
-                    console.log("colision jugador-bola");
+                    //console.log("colision jugador-bola");
                     if (ball.body.velocity.y != 0) {
                         player.stun();
+                        this.stunSound.play({ volume: 0.1, loop: false }); // Sonido de stun.
                     }
                 }
             });
@@ -141,9 +162,12 @@ export default class Level extends Phaser.Scene {
                 const collision = this.physics.world.overlap(ball, ball2);
                 if (collision) {
                     if (ball != ball2) {
-                        console.log("colision entre bolas");
+                        //console.log("colision entre bolas");
                         ball.body.setVelocityY(ball.body.velocity.y * -1);
                         ball2.body.setVelocityY(ball2.body.velocity.y * -1);
+                        if (ball.body.velocity.y > 0 || ball.body.velocity.y < 0) {
+                            this.collideSound.play({ volume: 0.5, loop: false }); // Sonido de colision.
+                        }
                     }
                 }
             })
@@ -176,24 +200,6 @@ export default class Level extends Phaser.Scene {
                 return false;
             }
         });
-    }
-
-    addScore(nPlayer) {
-        if (nPlayer == 1) {
-            this.scorePenguin++;
-        }
-        else {
-            this.scoreRat++;
-        }
-    }
-
-    endGame() {
-        this.finalText.setVisible(true);
-        this.time.delayedCall(10000, this.exitMenu(), [], this); //PAIGRO AQUI ACABAR
-    }
-
-    exitMenu() {
-        this.scene.start("MenuP"); // Volvemos al menu.
     }
 
     createLimits() { // Crea los limites izquierdo e inferior de la partida.
@@ -231,32 +237,85 @@ export default class Level extends Phaser.Scene {
     }
 
     checkEndGame() {
-        let ballsInZone1;
-        let ballsInZone2;
+        // Reseteamos por si acaso.
+        this.scorePenguin = 0;
+        this.scoreRat = 0;
 
         this.ballsPool.forEach(ball => {
-
-            if (ball.getZone() === 1) {
-                ballsInZone1++;
+            if (ball.getZone() === 1) { // Zona 1 = zona arriba.
+                this.scorePenguin++;
             }
-            else if (ball.getZone() === 2) {
-                ballsInZone2++;
+            else if (ball.getZone() === 2) { // Zona 2 = zona abajo.
+                this.scoreRat++;
             }
         });
 
-        if (ballsInZone1 >= 10) {
-            this.victory(2)
+        if (this.scoreRat >= 10) {
+            this.defeat();
+            this.end = true;
         }
-        else if (ballsInZone2 >= 10) {
-            this.victory(1)
+        else if (this.scorePenguin >= 10) {
+            this.victory();
+            this.end = true;
         }
-        ballsInZone1 = 0;
-        ballsInZone2 = 0;
-
-        // PAIGRO AQUI ACABAR
-
     }
-    victory(nPlayer) {
+
+    endGameByTime() {
+        if (this.scoreRat > this.scorePenguin) {
+            this.defeat();
+            this.end = true;
+        }
+        else if (this.scorePenguin > this.scoreRat) {
+            this.victory();
+            this.end = true;
+        } else {
+            this.tie();
+            this.end = true;
+        }
+    }
+
+    throwSoundPlay() {
+        this.throwSound.play({ volume: 0.5, loop: false }); // Sonido de lanzar.
+    }
+
+    victory() {
+        //console.log("VICTORIA");
+        this.lostWinText.setText("YOU WIN").setVisible(true);
+        this.finalText.setText("Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat).setVisible(true);
+        this.exitMenu();
+        this.player1.setWin(1);
+        this.player2.setWin(2);
+        this.winSound.play({ volume: 0.1, loop: true }); // Sonido de ganar.
+    }
+
+    defeat() {
+        //console.log("DERROTA");
+        this.lostWinText.setText("YOU LOST").setVisible(true);
+        this.finalText.setText("Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat).setVisible(true);
+        this.exitMenu();
+        this.player1.setWin(2);
+        this.player2.setWin(1);
+        this.loseSound.play({ volume: 0.1, loop: true }); // Sonido de perder.
+    }
+
+    tie() {
+        // console.log("TIE");
+        this.lostWinText.setText("TIE").setVisible(true);
+        this.finalText.setText("Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat).setVisible(true);
+        this.exitMenu();
+    }
+
+    exitMenu() {
+        this.tweens.add({ // Transicion de derrota.
+            targets: this.rect,
+            alpha: 1,
+            duration: 4000,
+            ease: 'power1',
+            repeat: 0,
+            onComplete: () => {
+                this.scene.start("MenuP"); // Volvemos al menu.            
+            }
+        });
 
     }
     /*

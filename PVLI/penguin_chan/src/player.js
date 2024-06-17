@@ -24,13 +24,25 @@ export default class Player extends Phaser.GameObjects.Container {
         this.actualBall = null;
         this.isStun;
         this.stunTimer = 0;
+        this.hasWon = 0;
+
+        //------Para la IA:
+        this.canAct;
+        this.direction = 1;
+        this.timeToChangeDirection = 200;
+        this.timerDirection = 100;
+        this.timeToAct = 25;
+        this.timerToAct = 0;
 
         scene.add.existing(this); // Metemos el contenedor en la escena.
     }
 
     preUpdate(t, dt) {
-        this.move();
 
+        if (this.hasWon == 0) {
+            this.move();
+        }
+        this.animations(); // Llamamos para actualizar la animacion.
         if (this.isStun && this.stunTimer >= 100) {
             this.isStun = false
             this.stunTimer = false;
@@ -39,6 +51,9 @@ export default class Player extends Phaser.GameObjects.Container {
 
         if (!this.ballInRange) {
             this.scene
+        }
+        if (!this.isStun) {
+            this.IA();
         }
     }
 
@@ -61,87 +76,102 @@ export default class Player extends Phaser.GameObjects.Container {
 
     move() {
         if (!this.isStun) {
-            if (this.nPlayer != 3) { // 3 = IA
+            if (this.nPlayer != 3) { // Jugadores humanos.
 
                 if (this.keys.right.isDown) { // Movimiento derecha.
-
                     this.body.setVelocityX(this.speed);
-
-
                 }
                 else if (this.keys.left.isDown) { // Movimiento izquierda.
-
                     this.body.setVelocityX(-this.speed);
-
                 }
                 else if (Phaser.Input.Keyboard.JustUp(this.keys.shoot)) {
-                    if (this.hasBall) {
-                        this.shootBall();
-                    }
-                    else {
-
-                        this.checkCollisions();
-                    }
+                    this.spaceBar();
                 }
 
                 if (Phaser.Input.Keyboard.JustUp(this.keys.right) || Phaser.Input.Keyboard.JustUp(this.keys.left)) {
                     this.body.setVelocity(0);
                 }
             }
+            else { // IA:
+                if (this.direction > 0) { // Se mueve hacia la derecha.
+                    this.body.setVelocityX(this.speed);
+                }
+                else if (this.direction < 0) { // Se mueve hacia la izquierda
+                    this.body.setVelocityX(-this.speed);
+                }
+            }
+
+            // Posicion de la bola.
             if (this.actualBall != null) {
                 if (this.nPlayer === 1) {
                     this.actualBall.setPosition(this.x + 15, this.y - 10);
                 }
                 else {
-                    this.actualBall.setPosition(this.x + 15, this.y + 40);
+                    this.actualBall.setPosition(this.x + 15, this.y + 45);
                 }
             }
         }
-        this.animations(); // Llamamos para actualizar la animacion.
-
     }
 
     animations() {
-        if (this.nPlayer === 1) {
-            if (!this.isStun) {
-                if (!this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento sin bola.
-                    this.playerSprite.anims.play('penguinWalkAlone', true);
-                }
-                else if (this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento con bola.
-                    this.playerSprite.anims.play('penguinWalkBall', true);
+        if (this.hasWon === 0) {
+
+            if (this.nPlayer === 1) {
+                if (!this.isStun) {
+                    if (!this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento sin bola.
+                        this.playerSprite.anims.play('penguinWalkAlone', true);
+                    }
+                    else if (this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento con bola.
+                        this.playerSprite.anims.play('penguinWalkBall', true);
+                    }
+                    else {
+                        if (this.hasBall) { // Parado con bola.
+                            this.playerSprite.anims.play('penguinIdleBall', true);
+                        }
+                        else { // Parado sin bola.
+                            this.playerSprite.anims.play('penguinIdleAlone', true);
+                        }
+                    }
                 }
                 else {
-                    if (this.hasBall) { // Parado con bola.
-                        this.playerSprite.anims.play('penguinIdleBall', true);
-                    }
-                    else { // Parado sin bola.
-                        this.playerSprite.anims.play('penguinIdleAlone', true);
-                    }
+                    this.playerSprite.anims.play('penguinDead', true);
                 }
             }
             else {
-                this.playerSprite.anims.play('penguinDead', true);
-            }
-        }
-        else {
-            if (!this.isStun) {
-                if (!this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento sin bola.
-                    this.playerSprite.anims.play('ratWalkAlone', true);
-                }
-                else if (this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento con bola.
-                    this.playerSprite.anims.play('ratWalkBall', true);
+                if (!this.isStun) {
+                    if (!this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento sin bola.
+                        this.playerSprite.anims.play('ratWalkAlone', true);
+                    }
+                    else if (this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento con bola.
+                        this.playerSprite.anims.play('ratWalkBall', true);
+                    }
+                    else {
+                        if (this.hasBall) { // Parado con bola.
+                            this.playerSprite.anims.play('ratIdleBall', true);
+                        }
+                        else { // Parado sin bola.
+                            this.playerSprite.anims.play('ratIdleAlone', true);
+                        }
+                    }
                 }
                 else {
-                    if (this.hasBall) { // Parado con bola.
-                        this.playerSprite.anims.play('ratIdleBall', true);
-                    }
-                    else { // Parado sin bola.
-                        this.playerSprite.anims.play('ratIdleAlone', true);
-                    }
+                    this.playerSprite.anims.play('ratDead', true);
                 }
             }
+        } else {
+            let animal = '';
+            if (this.nPlayer === 1) {
+                animal = 'penguin';
+            }
             else {
-                this.playerSprite.anims.play('ratDead', true);
+                animal = 'rat';
+            }
+
+            if (this.hasWon === 1) { // Ganar.
+                this.playerSprite.anims.play(animal + 'Win', true);
+            }
+            else if (this.hasWon === 2) { // Perder
+                this.playerSprite.anims.play(animal + 'Defeat', true);
             }
         }
     }
@@ -152,6 +182,16 @@ export default class Player extends Phaser.GameObjects.Container {
         }
         else {
             this.scene.checkCollisionPlayer2();
+        }
+    }
+
+    spaceBar() {
+        this.canAct = false;
+        if (this.hasBall) {
+            this.shootBall();
+        }
+        else {
+            this.checkCollisions();
         }
     }
 
@@ -171,11 +211,13 @@ export default class Player extends Phaser.GameObjects.Container {
         else {
             this.actualBall.body.setVelocityY(50);
         }
-        console.log("Disparar bola");
+        //console.log("Disparar bola");
         this.actualBall.setIsPicked(false);
         this.actualBall.isInZone = false;
         this.actualBall = null;
         this.hasBall = false;
+        this.scene.throwSoundPlay();
+
     }
 
     pickBall(ball) {
@@ -184,24 +226,61 @@ export default class Player extends Phaser.GameObjects.Container {
         this.actualBall = ball;
         ball.setIsPicked(true);
         if (this.nPlayer === 1) {
-            console.log("Coger bola1");
+            //console.log("Coger bola1");
             ball.setPosition(this.x + 15, this.y - 10);
         }
         else {
-            console.log("Coger bola2");
+            //console.log("Coger bola2");
             ball.setPosition(this.x + 15, this.y + 40);
         }
         ball.setPlayer(this.nPlayer);
     }
 
-    automaticMove() {
-
-    }
-
     stun() {
-        console.log("Stun.");
+        //console.log("Stun.");
         this.isStun = true;
         this.body.setVelocity(0, 0);
         this.stunTimer = 0;
+    }
+
+    IA() {
+        if (this.nPlayer === 3) {
+            if (this.timerDirection >= this.timeToChangeDirection) {
+                this.timerDirection = 0;
+                if (this.direction < 0) {
+                    this.direction = 1;
+                }
+                else {
+                    this.direction = -1;
+                }
+                //console.log("IA: cambio de direccion.");
+            }
+            if (this.timerToAct >= this.timeToAct) {
+                this.calculateIAAction();
+                this.timeToAct = Phaser.Math.Between(50, 100);
+                this.timerToAct = 0;
+            }
+
+            if (this.canAct) {
+                this.spaceBar();
+            }
+            this.timerToAct++;
+            this.timerDirection++;
+        }
+    }
+    calculateIAAction() {
+        let randomNumber = Phaser.Math.Between(1, 10);
+        if ((randomNumber % 2) == 0) {
+            //console.log("IA: puede actuar.");
+            this.canAct = true;
+        }
+        else {
+            //console.log("IA: no puede actuar.");
+            this.canAct = false;
+        }
+    }
+
+    setWin(hasWon) {
+        this.hasWon = hasWon;
     }
 }

@@ -5,7 +5,8 @@ export default class Ball extends Phaser.GameObjects.Sprite {
 
         this.scene = scene;
 
-        scene.physics.add.existing(this); // Metemos fisicas al contenedor.
+        scene.physics.add.existing(this); // Metemos fisicas al Sprite.
+
         this.body.setSize(16, 16).setAllowGravity(false).setImmovable(true); // Cambiamos el body, le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
 
         this.speed = 60;
@@ -19,6 +20,10 @@ export default class Ball extends Phaser.GameObjects.Sprite {
         this.isInZone = true;
 
         scene.add.existing(this); // Metemos el sprite en la escena.
+
+        scene.physics.world.enable(this);
+        this.body.setBounce(1, 1);
+        this.body.setCircle(8);
     }
 
     preUpdate(t, dt) {
@@ -27,6 +32,9 @@ export default class Ball extends Phaser.GameObjects.Sprite {
         if (this.y <= 0 || this.y >= this.scene.cameras.main.height) {
             console.log("desactivar");
             this.destroy();
+        }
+        if (!this.isInZone) {
+            this.setZone(0);
         }
     }
 
@@ -77,7 +85,6 @@ export default class Ball extends Phaser.GameObjects.Sprite {
     stop() { // Para el objeto completamente.
         this.body.setVelocity(0, 0);
         if (!this.isInZone) {
-            this.scene.addScore(this.player);
             this.player = 0;
             this.isInZone = true;
         }
