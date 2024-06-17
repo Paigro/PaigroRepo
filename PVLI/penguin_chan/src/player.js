@@ -115,7 +115,6 @@ export default class Player extends Phaser.GameObjects.Container {
 
     animations() {
         if (this.hasWon === 0) {
-
             if (this.nPlayer === 1) {
                 if (!this.isStun) {
                     if (!this.hasBall && (this.body.velocity.x > 0 || this.body.velocity.x < 0)) { // Movimiento sin bola.
@@ -217,7 +216,6 @@ export default class Player extends Phaser.GameObjects.Container {
         this.actualBall = null;
         this.hasBall = false;
         this.scene.throwSoundPlay();
-
     }
 
     pickBall(ball) {
