@@ -5,7 +5,7 @@ export default class Menu extends Phaser.Scene {
     }
 
     init(data) {
-        this.highscore = data.highScore; // Guardamos el highscore que le pase el Level.
+        
     }
 
     preload() {
@@ -29,9 +29,9 @@ export default class Menu extends Phaser.Scene {
         }).setOrigin(0.5, 0.5);
         //------BOTONES:
         // Boton 1:
-        this.createButton("1 player", 40, 'white', 1);
+        this.createButton("Easy", 40, 'white', 1);
         // Boton 2:
-        this.createButton("2 player", 100, 'white', 2);
+        this.createButton("Hard", 100, 'white', 2);
         //------TECLAS:
         this.keys = this.input.keyboard.addKeys({
             W: Phaser.Input.Keyboard.KeyCodes.W,
@@ -69,12 +69,12 @@ export default class Menu extends Phaser.Scene {
         }
         else if (Phaser.Input.Keyboard.JustUp(this.keys.SPACE)) {
             if (this.buttonSelected == 0) {
-                console.log("Scena con 1");
-                this.scene.start("Level", { nPlayers: 1 }); // Mandamos la dificultad del nivel.
+                console.log("Scena easy");
+                this.scene.start("Level", { diff: 1 }); // Mandamos la dificultad del nivel.
             }
             else {
-                console.log("Scena con 2");
-                this.scene.start("Level", { nPlayers: 2 }); // Mandamos la dificultad del nivel.
+                console.log("Scena hard");
+                this.scene.start("Level", { diff: 2 }); // Mandamos la dificultad del nivel.
             }
         }
     }

@@ -22,7 +22,7 @@ export default class Ball extends Phaser.GameObjects.Sprite {
         scene.add.existing(this); // Metemos el sprite en la escena.
 
         scene.physics.world.enable(this);
-        this.body.setBounce(1.5); // Hace que rebote. Al tener un valor mayor que 1, al rebota su velocidad aumente.
+        this.body.setBounce(0.9); // Hace que rebote. Al tener un valor mayor que 1, al rebota su velocidad aumente.
         this.body.setCircle(8); // Hace que sea un circulo de radio 8 px.
     }
 

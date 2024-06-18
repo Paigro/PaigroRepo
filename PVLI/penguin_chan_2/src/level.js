@@ -10,7 +10,8 @@ export default class Level extends Phaser.Scene {
     }
 
     init(data) {
-        this.numPlayers = data.nPlayers; // Guardamos la cantidad de jugadores pasados por el menu.
+        this.diff = data.diff; // Guardamos la cantidad de jugadores pasados por el menu.
+        // PAIGRO AQUI: falta hacer cosas con la dificultad.
     }
 
     create() {
@@ -23,12 +24,11 @@ export default class Level extends Phaser.Scene {
         this.throwSound = this.sound.add('throwBallSound'); // Metemos el sonido de lanzar bolas.
         this.stunSound = this.sound.add('stunSound'); // Metemos el sonido de stun.
         //------POSICIONES DE LOS JUGADORES en Y:
-        this.posPlayer1 = this.cameras.main.centerY - 168;
-        this.posPlayer2 = this.cameras.main.centerY + 100;
+        this.posPlayerX = this.cameras.main.centerX - 40;
         //------IMAGENES:
         this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1).setScale(2, 2); // Fondo.
-        this.table = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'table'); // Mesa.
-        this.score = this.add.image(this.cameras.main.width - 130, this.cameras.main.centerY, 'score'); // Marcador.
+        this.table = this.add.image(this.cameras.main.centerX + 250, this.cameras.main.centerY + 160, 'table').setRotation(Phaser.Math.DegToRad(90)).setScale(2.2, 2.2); // Mesa.
+        this.score = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY - 200, 'score'); // Marcador.
         //------SCORES DE LOS JUGADORES:
         this.scorePenguin = 0;
         this.scoreRat = 0;
@@ -36,16 +36,10 @@ export default class Level extends Phaser.Scene {
         this.createLimits()
         //------PLAYERS:
         this.players = [];
-        this.player1 = new Player(this, this.cameras.main.centerX, this.posPlayer2, 1);
-        if (this.numPlayers == 1) {
-            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 3);
-        }
-        else {
-            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 2);
-        }
-        // Los metemos al array.
+        this.player1 = new Player(this, this.posPlayerX, this.cameras.main.centerY, 1);
+        this.player1.setScale(2, 2);
+        // Lo metemo al array.
         this.players[0] = this.player1;
-        this.players[1] = this.player2;
         //------POOL DE BOLAS:
         this.ballsPool = [];
         //------TEXTOS:
@@ -96,11 +90,13 @@ export default class Level extends Phaser.Scene {
         }).setOrigin(0.5, 0.5).setDepth(11).setVisible(false);
         //------COLISIONES:
         // Colision jugadores con paredes.
+        this.physics.add.collider(this.players, this.wallR);
+        this.physics.add.collider(this.players, this.wallU);
         this.physics.add.collider(this.players, this.wallD);
-        this.physics.add.collider(this.players, this.wallI);
         // Colisiones entre las bolas y  las paredes.
+        this.physics.add.collider(this.ballsPool, this.wallR);
+        this.physics.add.collider(this.ballsPool, this.wallU);
         this.physics.add.collider(this.ballsPool, this.wallD);
-        this.physics.add.collider(this.ballsPool, this.wallI);
         //------SPAWNEA LAS BOLAS INICIALES.
         this.spawnBalls();
         //------RECTANGULO FINAL:
@@ -124,31 +120,21 @@ export default class Level extends Phaser.Scene {
 
     spawnBalls() {
         for (let i = 0; i < 5; i++) {
-            let ball = new Ball(this, this.cameras.main.centerX - 80 + i * 40, this.posPlayer1 + 20);
-            this.ballsPool.push(ball);
-        }
-        for (let i = 0; i < 5; i++) {
-            let ball = new Ball(this, this.cameras.main.centerX - 80 + i * 40, this.posPlayer2 + 30);
+            let ball = new Ball(this, this.cameras.main.centerX - 50, this.cameras.main.centerY - 60 + i * 100);
+            ball.setScale(2, 2);
             this.ballsPool.push(ball);
         }
     }
-
 
     checkCollision() {
         // Para parar las bolas cuando llegan a la zona.
         this.ballsPool.forEach(ball => {
             // Verifica la colision con cada zona.
-            const collisionDown = this.physics.world.overlap(ball, this.ballZoneDown);
-            const collisionUp = this.physics.world.overlap(ball, this.ballZoneUp);
-            if (collisionUp) { // Si colisiona con la zona de arriba, paramos la bola y le pasamos la zona con la que ha colisionado (1).
+            const collisionZone = this.physics.world.overlap(ball, this.ballZone);
+            if (collisionZone) { // Si colisiona con la zona, paramos la bola y le pasamos la zona con la que ha colisionado (1).
                 if (!ball.getIsPicked()) {
                     ball.stop();
                     ball.setZone(1);
-                }
-            } else if (collisionDown) { // Si colisiona con la zona de arriba, paramos la bola y le pasamos la zona con la que ha colisionado (2).
-                if (!ball.getIsPicked()) {
-                    ball.stop();
-                    ball.setZone(2);
                 }
             }
         });
@@ -159,7 +145,7 @@ export default class Level extends Phaser.Scene {
                 const collision = this.physics.world.overlap(ball, player);
                 if (collision) {
                     //console.log("colision jugador-bola");
-                    if (ball.body.velocity.y != 0) {
+                    if (ball.body.velocity.x != 0) {
                         player.stun();
                         this.stunSound.play({ volume: 0.1, loop: false }); // Sonido de stun.
                     }
@@ -198,52 +184,40 @@ export default class Level extends Phaser.Scene {
         });
     }
 
-    checkCollisionPlayer2() {
-        this.ballsPool.forEach(ball => {
-            const collision = this.physics.world.overlap(ball, this.player2);
-            if (collision) {
-                //console.log("colision jugador1-bola");
-                this.player2.choice(ball);
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
-    }
-
     createLimits() { // Crea los limites izquierdo e inferior de la partida.
         //------Pared Derecha:
+        this.wallR = this.add.graphics();
+        this.wallR.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2);
+        this.wallR.setPosition(this.cameras.main.width, 0);
+        this.physics.add.existing(this.wallR);
+        this.wallR.body.setSize(10, this.cameras.main.height);
+        this.wallR.body.setAllowGravity(false).setImmovable(true);
+        this.wallR.setVisible(false);
+
+        //------Pared Arriba:
+        this.wallU = this.add.graphics();
+        this.wallU.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2);
+        this.wallU.setPosition(0, this.cameras.main.centerY - 100);
+        this.physics.add.existing(this.wallU);
+        this.wallU.body.setSize(this.cameras.main.width, 10);
+        this.wallU.body.setAllowGravity(false).setImmovable(true);
+        this.wallU.setVisible(false);
+
+        //------Pared Abajo:
         this.wallD = this.add.graphics();
         this.wallD.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2);
-        this.wallD.setPosition(this.cameras.main.centerX + 120, 0);
+        this.wallD.setPosition(0, this.cameras.main.height - 10);
         this.physics.add.existing(this.wallD);
-        this.wallD.body.setSize(10, this.cameras.main.height);
+        this.wallD.body.setSize(this.cameras.main.width, 10);
         this.wallD.body.setAllowGravity(false).setImmovable(true);
         this.wallD.setVisible(false);
 
-        //------Pared Izquierda:
-        this.wallI = this.add.graphics();
-        this.wallI.fillStyle(0xFF6600).fillRect(0, 0, this.cameras.main.width, 120).setDepth(2);
-        this.wallI.setPosition(this.cameras.main.centerX - 120, 0);
-        this.physics.add.existing(this.wallI);
-        this.wallI.body.setSize(10, this.cameras.main.height);
-        this.wallI.body.setAllowGravity(false).setImmovable(true);
-        this.wallI.setVisible(false);
-
-        //------Zona Bolas Abajo:
-        this.ballZoneDown = this.add.zone(this.cameras.main.centerX - 100, this.cameras.main.centerY + 125, 200, 20);
-        this.physics.world.enable(this.ballZoneDown);
-        this.ballZoneDown.body.setAllowGravity(false);
-        this.ballZoneDown.body.setImmovable(true);
-        this.ballZoneDown.setOrigin(0, 0);
-
         //------Zona Bolas Arriba:        
-        this.ballZoneUp = this.add.zone(this.cameras.main.centerX - 100, this.cameras.main.centerY - 170, 200, 20);
-        this.physics.world.enable(this.ballZoneUp);
-        this.ballZoneUp.body.setAllowGravity(false);
-        this.ballZoneUp.body.setImmovable(true);
-        this.ballZoneUp.setOrigin(0, 0);
+        this.ballZone = this.add.zone(this.cameras.main.centerX - 70, this.cameras.main.centerY - 100, 10, 500);
+        this.physics.world.enable(this.ballZone);
+        this.ballZone.body.setAllowGravity(false);
+        this.ballZone.body.setImmovable(true);
+        this.ballZone.setOrigin(0, 0);
     }
 
     checkEndGame() {

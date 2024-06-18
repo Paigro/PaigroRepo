@@ -51,9 +51,6 @@ export default class Player extends Phaser.GameObjects.Container {
         }
         this.stunTimer++;
 
-        if (!this.ballInRange) {
-            this.scene
-        }
         if (!this.isStun) {
             this.IA();
         }
