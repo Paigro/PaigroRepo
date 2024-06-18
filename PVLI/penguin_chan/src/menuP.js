@@ -13,12 +13,13 @@ export default class Menu extends Phaser.Scene {
     }
 
     create() {
-        this.buttonSelected = 0;
-        this.ball = this.add.image(this.cameras.main.centerX - 50, this.cameras.main.centerY + 40, 'ball').setScale(2, 2);
+        //------CONTROL DEL MENU:
+        this.buttonSelected = 0; // Boton que esta seleccionado.
+        this.ball = this.add.image(this.cameras.main.centerX - 50, this.cameras.main.centerY + 40, 'ball').setScale(2, 2); // Feedback de boton seleccionado.
         this.ball.x = this.cameras.main.centerX - 100;
-        // Musica:
+        //------MUSICA:
         this.sound.stopAll(); // Quitamos el resto de sonidos.
-        // Titulo del juego:
+        //------TITULO DE JUEGO:
         this.tittle = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 100, "Penguin-chan wars", {
             fontSize: 100,
             fill: '#00f',
@@ -26,15 +27,18 @@ export default class Menu extends Phaser.Scene {
             strokeThickness: 4,
             fontFamily: 'babelgam',
         }).setOrigin(0.5, 0.5);
+        //------BOTONES:
         // Boton 1:
         this.createButton("1 player", 40, 'white', 1);
         // Boton 2:
         this.createButton("2 player", 100, 'white', 2);
+        //------TECLAS:
         this.keys = this.input.keyboard.addKeys({
             W: Phaser.Input.Keyboard.KeyCodes.W,
             S: Phaser.Input.Keyboard.KeyCodes.S,
             SPACE: Phaser.Input.Keyboard.KeyCodes.SPACE,
         });
+        //------FIN DEL CREATE:
         this.createEnd = true;
     }
 

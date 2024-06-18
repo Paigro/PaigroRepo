@@ -7,22 +7,23 @@ export default class Ball extends Phaser.GameObjects.Sprite {
 
         scene.physics.add.existing(this); // Metemos fisicas al Sprite.
 
-        this.body.setSize(16, 16).setAllowGravity(false).setImmovable(true); // Cambiamos el body, le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
+        this.body.setSize(16, 16) // Cambiamos el body.
+        // NOTA: obviamente si se hace inmovable luego no revota...
+        //this.body.setAllowGravity(false).setImmovable(true); // Le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
 
-        this.speed = 60;
-
-        this.isPicked = false;
-
+        this.speed = 60; // Velocidad de la bola.
+        
+        this.isPicked = false; // Si esta cogida o no.
         this.player; // Jugador que ha lanzado la bola.
-
+        
+        this.isInZone = true; // Si esta en una zona o no.
         this.zone; // Zona en la que esta.
 
-        this.isInZone = true;
 
         scene.add.existing(this); // Metemos el sprite en la escena.
 
         scene.physics.world.enable(this);
-        this.body.setBounce(1, 1);
+        this.body.setBounce(1);
         this.body.setCircle(8);
     }
 
@@ -36,17 +37,6 @@ export default class Ball extends Phaser.GameObjects.Sprite {
         if (!this.isInZone) {
             this.setZone(0);
         }
-    }
-
-    activate(x, y, nplayer) { // Activa el objeto, su visibilidad y lo pone en la posicion recibida.
-        this.setActive(true).setVisible(true).setX(x).setY(y); // Lo activamos.
-        if (nplayer == 1) {
-            this.body.setVelocityY(-this.speed)
-        }
-        else {
-            this.body.setVelocityY(this.speed)
-        }
-
     }
 
     getIsPicked() {
@@ -75,11 +65,6 @@ export default class Ball extends Phaser.GameObjects.Sprite {
 
     setZone(zone) {
         this.zone = zone;
-    }
-
-    deActivate() { // Desactiva el objeto, su visibilidad, modifica su posicion y para su movimiento.
-        this.setActive(false).setVisible(false).setPosition(0, -50); // Lo desactivamos.
-        this.body.setVelocity(0, 0); // Lo paramos.
     }
 
     stop() { // Para el objeto completamente.

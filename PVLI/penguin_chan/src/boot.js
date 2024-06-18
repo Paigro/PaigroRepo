@@ -15,7 +15,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('table', './assets/table.png');
         this.load.image('score', './assets/score.png');
 
-
+        // SpriteSheets:
         this.load.spritesheet('rat', './assets/rat32.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('penguin', './assets/penguin40.png', { frameWidth: 40, frameHeight: 40 });
 
@@ -25,7 +25,6 @@ export default class Boot extends Phaser.Scene {
         this.load.audio('collideSound', './assets/sounds/collide.mp3');
         this.load.audio('throwBallSound', './assets/sounds/throw_ball.mp3');
         this.load.audio('stunSound', './assets/sounds/stun.mp3');
-
     }
 
     create() {

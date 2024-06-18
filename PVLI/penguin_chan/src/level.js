@@ -22,13 +22,13 @@ export default class Level extends Phaser.Scene {
         this.collideSound = this.sound.add('collideSound'); // Metemos el sonido de colision entre bolas.
         this.throwSound = this.sound.add('throwBallSound'); // Metemos el sonido de lanzar bolas.
         this.stunSound = this.sound.add('stunSound'); // Metemos el sonido de stun.
-        //------POSICIONES DE LOS JUGADORES:
+        //------POSICIONES DE LOS JUGADORES en Y:
         this.posPlayer1 = this.cameras.main.centerY - 168;
         this.posPlayer2 = this.cameras.main.centerY + 100;
         //------IMAGENES:
-        this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1).setScale(2, 2);
-        this.table = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'table');
-        this.score = this.add.image(this.cameras.main.width - 130, this.cameras.main.centerY, 'score')
+        this.background = this.add.image(0, this.cameras.main.height, 'background').setOrigin(0, 1).setScale(2, 2); // Fondo.
+        this.table = this.add.image(this.cameras.main.centerX, this.cameras.main.centerY, 'table'); // Mesa.
+        this.score = this.add.image(this.cameras.main.width - 130, this.cameras.main.centerY, 'score'); // Marcador.
         //------SCORES DE LOS JUGADORES:
         this.scorePenguin = 0;
         this.scoreRat = 0;
@@ -38,46 +38,55 @@ export default class Level extends Phaser.Scene {
         this.players = [];
         this.player1 = new Player(this, this.cameras.main.centerX, this.posPlayer2, 1);
         if (this.numPlayers == 1) {
-            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 3)
+            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 3);
         }
         else {
-            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 2)
+            this.player2 = new Player(this, this.cameras.main.centerX, this.posPlayer1, 2);
         }
+        // Los metemos al array.
         this.players[0] = this.player1;
-        this.players[1] = this.player2
+        this.players[1] = this.player2;
         //------POOL DE BOLAS:
         this.ballsPool = [];
         //------TEXTOS:
-        this.pointsText = this.add.text(this.score.x, this.score.y - 15, this.scorePenguin + " " + this.scoreRat, { // Texto para llevar la cuenta del fuel que lleva el jugador.
+        // Texto para llevar la puntuacion del juego.
+        this.pointsText = this.add.text(this.score.x, this.score.y - 15, this.scorePenguin + " " + this.scoreRat, {
             fontSize: 30, // Como de grande es el texto.
             fill: '#000000', // Relleno.
             fontFamily: 'babelgam', // Fuente del texto.
         }).setOrigin(0.5, 0.5).setDepth(2);
-        this.timeText = this.add.text(this.cameras.main.centerX, 100, "Time left: " + this.timeLeft, { // Texto para llevar la cuenta del fuel que lleva el jugador.
+
+        // Texto para llevar la cuenta del tiempo.
+        this.timeText = this.add.text(this.cameras.main.centerX, 100, "Time left: " + this.timeLeft, {
             fontSize: 40, // Como de grande es el texto.
             fill: '#000000', // Relleno.
             fontFamily: 'babelgam', // Fuente del texto.
         }).setOrigin(0.5, 0.5).setDepth(2);
+        // Evento de tiempo para que se vaya reduciendo 1 cada segundo y cuando llegue a 0 active el fin e juego.
         this.time.addEvent({
             delay: 1000, // 1 segundo.
             callback: () => {
                 if (this.timeLeft > 0 && !this.end)
                     this.timeLeft--;
-                this.timeText.setText("Time left: " + this.timeLeft); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
+                this.timeText.setText("Time left: " + this.timeLeft); // Actualizamos el texto de tiempo.
                 if (this.timeLeft == 0) {
-                    this.endGameByTime();
+                    this.endGameByTime(); // Llamamos al fin de juego.
                 }
             },
-            callbackScope: this,
+            callbackScope: this, // Creo que para que acceda bien a la escena y pueda acceder bien a las cosas dentro de ella.
             loop: true // Para que se haga continuamente.
         });
-        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 100, "Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat, { // Texto para llevar la cuenta del fuel que lleva el jugador.
+
+        //----Textos finales del juego.
+        // Testo que dice la puntuacion final de cada jugador.
+        this.finalText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + 100, "Penguin Score:  " + this.scorePenguin + "\nRat score: " + this.scoreRat, {
             fontSize: 40, // Como de grande es el texto.
             fill: '#00f', // Color de relleno
             stroke: '#fff', // Color de los bordes.
             strokeThickness: 4, // Como de grande es el borde.
             fontFamily: 'babelgam', // Fuente del texto.
         }).setOrigin(0.5, 0.5).setDepth(11).setVisible(false);
+        // Texto que dice
         this.lostWinText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY - 100, " ", {
             fontSize: 60, // Como de grande es el texto.
             fill: '#00f', // Color de relleno
@@ -87,10 +96,11 @@ export default class Level extends Phaser.Scene {
         }).setOrigin(0.5, 0.5).setDepth(11).setVisible(false);
         //------COLISIONES:
         // Colision jugadores con paredes.
-        this.physics.add.collider(this.player1, this.wallD);
-        this.physics.add.collider(this.player1, this.wallI);
-        this.physics.add.collider(this.player2, this.wallD);
-        this.physics.add.collider(this.player2, this.wallI);
+        this.physics.add.collider(this.players, this.wallD);
+        this.physics.add.collider(this.players, this.wallI);
+        // Colisiones entre las bolas y  las paredes.
+        this.physics.add.collider(this.ballsPool, this.wallD);
+        this.physics.add.collider(this.ballsPool, this.wallI);
         //------SPAWNEA LAS BOLAS INICIALES.
         this.spawnBalls();
         //------RECTANGULO FINAL:
@@ -102,14 +112,14 @@ export default class Level extends Phaser.Scene {
 
     update(time, delta) {
         if (this.createEnd) {
-            this.updateTexts();
             this.checkCollision();
             this.checkEndGame();
         }
     }
 
     updateTexts() {
-        this.pointsText.setText(this.scorePenguin + " " + this.scoreRat); // Actualizamos el texto final dependiendo de si se ha ganado o perdido.
+        // Actualizamos el texto de la puntuacion.
+        this.pointsText.setText(this.scorePenguin + " " + this.scoreRat);
     }
 
     spawnBalls() {
@@ -123,18 +133,19 @@ export default class Level extends Phaser.Scene {
         }
     }
 
-    // Para parar las bolas cuando llegan a la zona.
+
     checkCollision() {
+        // Para parar las bolas cuando llegan a la zona.
         this.ballsPool.forEach(ball => {
-            // Verifica la colisión con cada zona
+            // Verifica la colision con cada zona.
             const collisionDown = this.physics.world.overlap(ball, this.ballZoneDown);
             const collisionUp = this.physics.world.overlap(ball, this.ballZoneUp);
-            if (collisionUp) {
+            if (collisionUp) { // Si colisiona con la zona de arriba, paramos la bola y le pasamos la zona con la que ha colisionado (1).
                 if (!ball.getIsPicked()) {
                     ball.stop();
                     ball.setZone(1);
                 }
-            } else if (collisionDown) {
+            } else if (collisionDown) { // Si colisiona con la zona de arriba, paramos la bola y le pasamos la zona con la que ha colisionado (2).
                 if (!ball.getIsPicked()) {
                     ball.stop();
                     ball.setZone(2);
@@ -156,22 +167,21 @@ export default class Level extends Phaser.Scene {
             });
         });
 
-        // Choque entre bolas.
-        this.ballsPool.forEach(ball => {
-            this.ballsPool.forEach(ball2 => {
-                const collision = this.physics.world.overlap(ball, ball2);
-                if (collision) {
-                    if (ball != ball2) {
-                        //console.log("colision entre bolas");
-                        ball.body.setVelocityY(ball.body.velocity.y * -1);
-                        ball2.body.setVelocityY(ball2.body.velocity.y * -1);
-                        if (ball.body.velocity.y > 0 || ball.body.velocity.y < 0) {
-                            this.collideSound.play({ volume: 0.5, loop: false }); // Sonido de colision.
-                        }
-                    }
-                }
-            })
-        });
+        // Choque entre bolas.        
+        this.physics.add.collider(this.ballsPool, this.ballsPool, (ball1, ball2) =>
+            this.checkCollisionsBetweenBalls(ball1, ball2)
+        );
+    }
+
+    checkCollisionsBetweenBalls(ball1, ball2) {
+        if (ball1 != ball2) {
+            //console.log("colision entre bolas");
+            ball1.body.setVelocityY(ball1.body.velocity.y * -1);
+            ball2.body.setVelocityY(ball2.body.velocity.y * -1);
+            if (ball1.body.velocity.y > 0 || ball1.body.velocity.y < 0) {
+                this.collideSound.play({ volume: 0.5, loop: false }); // Sonido de colision.
+            }
+        }
     }
 
     checkCollisionPlayer1() {
@@ -258,6 +268,7 @@ export default class Level extends Phaser.Scene {
             this.victory();
             this.end = true;
         }
+        this.updateTexts();
     }
 
     endGameByTime() {
@@ -316,6 +327,5 @@ export default class Level extends Phaser.Scene {
                 this.scene.start("MenuP"); // Volvemos al menu.            
             }
         });
-
     }
 }

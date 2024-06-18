@@ -3,25 +3,27 @@ export default class Player extends Phaser.GameObjects.Container {
     constructor(scene, x, y, player) {
         super(scene, x, y,); // Llamada a la constructora padre.
 
-
-
         this.nPlayer = player;
+
         scene.physics.add.existing(this); // Le ponemos fisicas.
 
-        this.body.setSize(32, 32);
+        this.body.setSize(32, 32); // Cambiamos su body.
         this.scene.add.existing(this); // Lo metemos en la escena.
 
         this.keys; // Para guardar las teclas para el movimiento.
         this.playerKeys(); // Setear las teclas.
+
         this.speed = 60; // Velocidad del jugador.
 
-        this.playerSprite = scene.add.sprite(0, 0, 'player').setOrigin(0, 0); // Guardamos el srpite del jugador.
+        this.playerSprite = scene.add.sprite(0, 0, 'player').setOrigin(0, 0); // Guardamos el sprite del jugador.
         this.add([this.playerSprite]); // Metemos al contenedor el sprite del jugador.
+
         this.body.setAllowGravity(false);
 
         this.hasBall = false;
         this.ballInRange = false;
         this.actualBall = null;
+        
         this.isStun;
         this.stunTimer = 0;
         this.hasWon = 0;
