@@ -7,9 +7,9 @@ export default class Ball extends Phaser.GameObjects.Sprite {
 
         scene.physics.add.existing(this); // Metemos fisicas al Sprite.
 
-        this.body.setSize(16, 16) // Cambiamos el body.
+        this.body.setSize(16, 16).setAllowGravity(false) // Cambiamos el body y le quitamos la gravedad.
         // NOTA: obviamente si se hace inmovable luego no revota...
-        //this.body.setAllowGravity(false).setImmovable(true); // Le quitamos la gravedad y hacemos que sea inmovible a las colisiones.
+        //this.body.setAllowGravity(false).setImmovable(true); // Hacemos que sea inmovible a las colisiones.
 
         this.speed = 60; // Velocidad de la bola.
 

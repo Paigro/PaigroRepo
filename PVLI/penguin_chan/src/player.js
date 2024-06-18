@@ -23,7 +23,7 @@ export default class Player extends Phaser.GameObjects.Container {
         this.hasBall = false;
         this.ballInRange = false;
         this.actualBall = null;
-        
+
         this.isStun;
         this.stunTimer = 0;
         this.hasWon = 0;
@@ -245,20 +245,21 @@ export default class Player extends Phaser.GameObjects.Container {
 
     IA() {
         if (this.nPlayer === 3) {
+            // Se ve que tarda 200 en ir de un lado a otro entonces el time = 200 y el timer inicialmente empieza en 100 porque esta en el medio
             if (this.timerDirection >= this.timeToChangeDirection) {
                 this.timerDirection = 0;
                 if (this.direction < 0) {
-                    this.direction = 1;
+                    this.direction = 1; // Cambia de direccion a la derecha.
                 }
                 else {
-                    this.direction = -1;
+                    this.direction = -1; // Cambia de direccion a la izquierda.
                 }
                 //console.log("IA: cambio de direccion.");
             }
             if (this.timerToAct >= this.timeToAct) {
-                this.calculateIAAction();
-                this.timeToAct = Phaser.Math.Between(50, 100);
-                this.timerToAct = 0;
+                this.calculateIAAction(); // Calcula si puede actuar o no.
+                this.timeToAct = Phaser.Math.Between(50, 100); // Nuevo tiempo para que actue la IA.
+                this.timerToAct = 0; // Reset del timer.
             }
 
             if (this.canAct) {
@@ -268,6 +269,7 @@ export default class Player extends Phaser.GameObjects.Container {
             this.timerDirection++;
         }
     }
+
     calculateIAAction() {
         let randomNumber = Phaser.Math.Between(1, 10);
         if ((randomNumber % 2) == 0) {
