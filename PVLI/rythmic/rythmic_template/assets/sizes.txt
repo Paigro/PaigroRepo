@@ -1,0 +1,12 @@
+CH_Dead.png: frames de 128x128 - 5 frames
+CH_Hurt.png: frames de 128x128 - 3 frames
+CH_Idle.png: frames de 128x128 - 7 frames
+SK_Attack.png: frames de 128x128 - 5 frames
+SK_Dead.png: frames de 128x128 - 4 frames
+SK_Idle.png: frames de 128x128 - 7 frames
+energy.png: frames de 32x32 - 4 frames
+
+jungle.png: 768x512
+heart.png: 64x64
+area.png: 580x80
+#_button: 50x50
