@@ -3,3 +3,5 @@
 Carpeta IG2 actualizada con temas 0 a 7, enunciados de ejercicios, p1, p2 y ejemplos de código. 
 Faltaría el proyecto base de Ogre pero supera los 100 MB asi que lo subiré a Drive.
 //-------------------------------------------------------------------------------------------------//
+16/12/2024
+Esta todo hasta la fecha.

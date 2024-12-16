@@ -1,0 +1,7 @@
+6 apartados:
+1) Hacer entidad como un master enemy (avion y reloj).
+2) Poner texturas y multitexturas (1pt).
+3) Mover cosas (animacion con keys?).
+4) Sistemas de particulas (hacer 2) (parecidos como los de clase) (1 con mas cosa que lo que aparece en las transparencias).
+5) Shader (solo 1 cortito ("oro parece" -> corrosion?).
+6) (este es la animacion o la multitextura?).
