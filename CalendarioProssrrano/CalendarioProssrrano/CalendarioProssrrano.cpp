@@ -1,8 +1,26 @@
+#include <iostream>
 #include <string>
+#include <array>
 
 #include "PaigroConsole.h"
+#include "ProssrranDate.h"
 
-struct Date
+
+const Date REF_GREG_DATE(2, 11, 2019); // Fecha de referencia para el calendario Gregoriano.
+const ProssrranDate REF_PSS_DATE(1, 1, 0, 1); // Fecha de referencia para el calendario Prossrrano.
+
+const int DUR_BISYEAR_GREG = 366; // Duracion en dias del anyo bisiesto Gregoriano.
+const int DUR_YEAR_GREG = 365; // Duracion en dias del anyo Gregoriano.
+
+const int DUR_YEAR_PSS = 364; // Duracion en dias del anyo Prossrrano.
+const int DUR_PHASE_PSS = 91; // Duracion en dias de una etapa Prossrrana.
+const int DUR_NORMALMONTH_PSS = 9; // Duracion en dias de un mes normal Prossrrano.
+const int DUR_LASTMONTH_PSS = 10; // Duracion en dias del ultimo mes Prossrrano.
+
+
+#pragma region 1a version:
+
+/*struct Date
 {
 private:
 
@@ -232,23 +250,14 @@ public:
 			}
 		}
 	}
-};
+};*/
 
 
 
-const Date REF_GREG_DATE(2, 11, 2019); // Fecha de referencia para el calendario Gregoriano.
-const ProssrranDate REF_PSS_DATE(1, 1, 0, 1); // Fecha de referencia para el calendario Prossrrano.
-
-const int DUR_BISYEAR_GREG = 366; // Duracion en dias del anyo bisiesto Gregoriano.
-const int DUR_YEAR_GREG = 365; // Duracion en dias del anyo Gregoriano.
-
-const int DUR_YEAR_PSS = 364; // Duracion en dias del anyo Prossrrano.
-const int DUR_PHASE_PSS = 91; // Duracion en dias de una etapa Prossrrana.
-const int DUR_NORMALMONTH_PSS = 9; // Duracion en dias de un mes normal Prossrrano.
-const int DUR_LASTMONTH_PSS = 10; // Duracion en dias del ultimo mes Prossrrano.
 
 
-int dateDifference(Date date)
+
+/*int dateDifference(Date date)
 {
 	Date aux = date;
 	int daysDif = 0;
@@ -332,7 +341,7 @@ ProssrranDate converToProssrran(Date date)
 		for (size_t i = 0; i < (-daysDiff); i++)
 		{
 			--pssDate;
-			std::cout << pssDate.day << "-" << pssDate.month << "-" << pssDate.year << "(" << pssDate.phase << ")" << std::endl;
+			//std::cout << pssDate.day << "-" << pssDate.month << "-" << pssDate.year << "(" << pssDate.phase << ")" << std::endl;
 		}
 	}
 	else if (daysDiff > 0)
@@ -340,7 +349,7 @@ ProssrranDate converToProssrran(Date date)
 		for (size_t i = 0; i < daysDiff; i++)
 		{
 			++pssDate;
-			std::cout << pssDate.day << "-" << pssDate.month << "-" << pssDate.year << "(" << pssDate.phase << ")" << std::endl;
+			//std::cout << pssDate.day << "-" << pssDate.month << "-" << pssDate.year << "(" << pssDate.phase << ")" << std::endl;
 		}
 	}
 
@@ -359,14 +368,21 @@ ProssrranDate ajuste(Date date)
 
 int main()
 {
+	message("Buenos dias. Sea bienvenido a este programa para\nconvertir fechas del calendario gregoriano al calendario Prossrrano.");
+	alert("Las fechas calculadas estan bien, las fechas de las agendas\ndel 2020 para arriba tienen un desfase de 2 dias.");
+	separator();
+
+
 	int day = 0;
 	int month = 0;
 	int year = 0;
 	ProssrranDate finalDate;
 
+
 	message("Escriba la fecha que quiera convertir a prossrrano:");
 	std::cin >> day >> month >> year;
 	Date dateToCheck(day, month, year);
+
 
 	while (!dateToCheck.isCorrect())
 	{
@@ -380,16 +396,66 @@ int main()
 
 	std::string fecha = std::to_string(finalDate.day) + "/" + std::to_string(finalDate.month) + "/" + std::to_string(finalDate.year) + " (" + std::to_string(finalDate.phase) + "/4)";
 
+	message("La fecha es: " + fecha + ".");
 
-	if (dateToCheck.day >= 16 && dateToCheck.month >= 6 && dateToCheck.year >= 2020) {
+	return 356;
+}*/
 
-		--finalDate;
-		--finalDate;
+#pragma endregion
+
+#pragma region 2a region:
+
+ProssrranDate convertToProssrran(const Date& date)
+{
+	int daysDiff = Date::dateDifference(REF_GREG_DATE, date);
+	ProssrranDate result = REF_PSS_DATE;
+
+	if (daysDiff > 0)
+	{
+		for (int i = 0; i < daysDiff; ++i)
+		{
+			++result;
+		}
 	}
-	ProssrranDate finalAjuste = finalDate;
-	std::string fechaCorregida = std::to_string(finalAjuste.day) + "/" + std::to_string(finalAjuste.month) + "/" + std::to_string(finalAjuste.year) + " (" + std::to_string(finalAjuste.phase) + "/4)";
+	else
+	{
+		for (int i = 0; i < -daysDiff; ++i)
+		{
+			--result;
+		}
+	}
 
-	message("La fecha es: " + fecha + ". (O el: " + fechaCorregida + " sin mi error de junio del 2020.)");
-
-	return 0;
+	return result;
 }
+
+int main()
+{
+	message("Buenos dias. Sea bienvenido a este programa para\nconvertir fechas del calendario gregoriano al calendario Prossrrano.");
+	alert("Las fechas calculadas estan bien, las fechas de las agendas\ndel 2020 para arriba tienen un desfase de 2 o mas dias.");
+	separator();
+
+	int day = -1;
+	int month = -1;
+	int year = -1;
+
+
+	message("Escriba la fecha que quiera convertir a prossrrano:");
+	std::cin >> day >> month >> year;
+	Date dateToCheck(day, month, year);
+
+	while (!dateToCheck.isCorrect())
+	{
+		error("Fecha incorrecta.");
+		message("Introduzca una fecha correcta:");
+		std::cin >> day >> month >> year;
+		Date dateToCheck(day, month, year);
+	}
+	ProssrranDate pssDate = convertToProssrran(dateToCheck);
+	std::string fecha = std::to_string(pssDate.getDay()) + "/" + std::to_string(pssDate.getMonth()) + "/" + std::to_string(pssDate.getYear()) + " (" + std::to_string(pssDate.getPhase()) + "/4)";
+
+	message("Fecha prossrrana: " + fecha + ".");
+
+	return 0357;
+}
+
+#pragma endregion

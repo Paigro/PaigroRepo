@@ -128,9 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CalendarioProssrrano.cpp" />
+    <ClCompile Include="Date.cpp" />
+    <ClCompile Include="ProssrranDate.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Date.h" />
     <ClInclude Include="PaigroConsole.h" />
+    <ClInclude Include="ProssrranDate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
