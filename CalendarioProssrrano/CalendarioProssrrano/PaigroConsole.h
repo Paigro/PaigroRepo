@@ -61,7 +61,7 @@ void justText(const std::string& text)
 	std::cout << text << "\n";
 }
 
-// Escribe un separador.
+// Escribe un separador con o sin texto.
 void separator(const std::string& separatorText = "")
 {
 	std::cout << "\033[36m//------------------------------------" << separatorText << "------------------------------------// " << "\n\033[0m";
@@ -71,4 +71,12 @@ void separator(const std::string& separatorText = "")
 void missingFun(const std::string& missingFunText)
 {
 	std::cout << "\033[35m//--------FUNCIONALIDAD POR HACER: " << missingFunText << "\n\033[0m";
+}
+
+void jump(const int nJumps) 
+{
+	for (int i = 0; i < nJumps; i++)
+	{
+		std::cout << "\n";
+	}
 }

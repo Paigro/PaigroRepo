@@ -9,21 +9,20 @@ class Date
 private:
 
 	// Dias de cada mes en un anyo no bisiesto.
-	static constexpr std::array<int, 12> daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; 
+	static constexpr std::array<int, 12> daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 
 	//------Metodos de Date:
 
 	// Devuelve si el anyo es bisiesto.
 	static bool isBisiesto(int year);
-	// Devuelve el numero de dias del mes
-	static int daysInMonthFor(int month, int year);
+	
 
 protected:
 
-	int day; // Dia.
-	int month; // Mes.
-	int year; // Anyo.
+	int day; // Dia de la fecha.
+	int month; // Mes de la fecha.
+	int year; // Anyo de la fecha.
 
 public:
 
@@ -43,29 +42,24 @@ public:
 
 	//------Operadores:
 
-	// Operador ++.
+	// Operador ++. Va sumando dias haciendo los cambios necesarios entre meses y anyos.
 	void operator++();
-	// Operador --.
+	// Operador --. Va restando dias haciendo los cambios necesarios entre meses y anyos.
 	void operator--();
 	// Operador ==.
 	bool operator==(const Date& other) const;
 	// Operador !=.
-
 	bool operator!=(const Date& other) const;
-
-
-	//------Diferencia entre fechas:
-
-	// Diferencia en dias entre dos fechas.
-	static int dateDifference(const Date& a, const Date& b);
 
 
 	//------Getters y setters:
 
 	// Devuelve el dia de la fecha.
-	int getDay() { return day; }
+	int getDay() const { return day; }
 	// Devuelve el mes de la fecha.
-	int getMonth() { return month; }
+	int getMonth() const { return month; }
 	// Devuelve el anyo de la fecha.
-	int getYear() { return year; }
+	int getYear() const { return year; }
+	// Devuelve el numero de dias del mes dado el mes y el anyo.
+	static int getDaysInMonth(int month, int year);
 };

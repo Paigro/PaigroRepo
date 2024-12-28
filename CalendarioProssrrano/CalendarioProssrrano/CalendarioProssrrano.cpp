@@ -10,7 +10,7 @@ const Date REF_GREG_DATE(2, 11, 2019); // Fecha de referencia para el calendario
 const ProssrranDate REF_PSS_DATE(1, 1, 0, 1); // Fecha de referencia para el calendario Prossrrano.
 
 const int DUR_BISYEAR_GREG = 366; // Duracion en dias del anyo bisiesto Gregoriano.
-const int DUR_YEAR_GREG = 365; // Duracion en dias del anyo Gregoriano.
+const int DUR_YEAR_GREG = 365; // Duracion en dias del anyo no bisiesto Gregoriano.
 
 const int DUR_YEAR_PSS = 364; // Duracion en dias del anyo Prossrrano.
 const int DUR_PHASE_PSS = 91; // Duracion en dias de una etapa Prossrrana.
@@ -405,9 +405,33 @@ int main()
 
 #pragma region 2a region:
 
+static int daysFromStart(const Date& date)
+{
+	int totalDays = 0;
+
+	int baseDays = date.getYear() * 365 + date.getDay(); // Dias base dada la fecha.
+	totalDays += baseDays;
+
+	for (int i = 1; i < date.getMonth(); ++i) // Los meses de ese anyo menos el que ya hemos calculado.
+	{
+		totalDays += date.getDaysInMonth(i, date.getYear());
+	}
+
+	int nBisYears = date.getYear() / 4 - date.getYear() / 100 + date.getYear() / 400; // N anyos bisiestos dado el anyo dado.
+	totalDays += nBisYears;
+
+	return totalDays;
+}
+
+static int dateDifference(const Date& date1, const Date& date2)
+{
+	int daysDiff = daysFromStart(date2) - daysFromStart(date1);
+	return daysDiff;
+}
+
 ProssrranDate convertToProssrran(const Date& date)
 {
-	int daysDiff = Date::dateDifference(REF_GREG_DATE, date);
+	int daysDiff = dateDifference(REF_GREG_DATE, date);
 	ProssrranDate result = REF_PSS_DATE;
 
 	if (daysDiff > 0)
@@ -428,18 +452,15 @@ ProssrranDate convertToProssrran(const Date& date)
 	return result;
 }
 
-int main()
+void convert()
 {
-	message("Buenos dias. Sea bienvenido a este programa para\nconvertir fechas del calendario gregoriano al calendario Prossrrano.");
-	alert("Las fechas calculadas estan bien, las fechas de las agendas\ndel 2020 para arriba tienen un desfase de 2 o mas dias.");
-	separator();
-
 	int day = -1;
 	int month = -1;
 	int year = -1;
-
-
+	
+	separator("CONVERSOR A PROSSRRANO");
 	message("Escriba la fecha que quiera convertir a prossrrano:");
+	
 	std::cin >> day >> month >> year;
 	Date dateToCheck(day, month, year);
 
@@ -454,8 +475,32 @@ int main()
 	std::string fecha = std::to_string(pssDate.getDay()) + "/" + std::to_string(pssDate.getMonth()) + "/" + std::to_string(pssDate.getYear()) + " (" + std::to_string(pssDate.getPhase()) + "/4)";
 
 	message("Fecha prossrrana: " + fecha + ".");
+	jump(1);
+}
 
-	return 0357;
+int main()
+{
+	message("Buenos dias. Sea bienvenido a este programa para\nconvertir fechas del calendario gregoriano al calendario Prossrrano.");
+	alert("Las fechas calculadas estan bien, las fechas de las agendas\ndel 2020 para arriba tienen un desfase de 2 o mas dias.");
+
+	convert();
+
+	char key;
+	do
+	{
+		separator("TECLAS");
+		message("Pulse c para repetir.");
+		alert("Pulse x para salir.");
+		separator();
+		std::cin >> key;
+		key = std::toupper(key);
+		if (key == 'C')
+		{
+			convert();
+		}
+	} while (key != 'X');
+
+	return 0;
 }
 
 #pragma endregion

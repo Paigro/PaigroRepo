@@ -19,7 +19,7 @@ bool Date::isBisiesto(int year)
 	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
-int Date::daysInMonthFor(int month, int year)
+int Date::getDaysInMonth(int month, int year)
 {
 	if (month == 2 && isBisiesto(year)) return 29;
 	return daysInMonth[month - 1];
@@ -28,13 +28,13 @@ int Date::daysInMonthFor(int month, int year)
 bool Date::isCorrect() const
 {
 	if (year < 0 || month < 1 || month > 12 || day < 1) { return false; }
-	return day <= daysInMonthFor(month, year);
+	return day <= getDaysInMonth(month, year);
 }
 
 void Date::operator++()
 {
 	day++;
-	if (day > daysInMonthFor(month, year))
+	if (day > getDaysInMonth(month, year))
 	{
 		day = 1;
 		month++;
@@ -49,13 +49,15 @@ void Date::operator++()
 void Date::operator--()
 {
 	day--;
-	if (day < 1) {
+	if (day < 1) 
+	{
 		month--;
-		if (month < 1) {
+		if (month < 1) 
+		{
 			month = 12;
 			year--;
 		}
-		day = daysInMonthFor(month, year);
+		day = getDaysInMonth(month, year);
 	}
 }
 
@@ -67,19 +69,4 @@ bool Date::operator==(const Date& other) const
 bool Date::operator!=(const Date& other) const
 {
 	return !(*this == other);
-}
-
-int Date::dateDifference(const Date& a, const Date& b)
-{
-	auto daysFromStart = [](const Date& date)
-		{
-			int days = date.year * 365 + date.day;
-			for (int i = 1; i < date.month; ++i)
-			{
-				days += daysInMonthFor(i, date.year);
-			}
-			days += date.year / 4 - date.year / 100 + date.year / 400;
-			return days;
-		};
-	return daysFromStart(b) - daysFromStart(a);
 }

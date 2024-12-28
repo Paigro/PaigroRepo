@@ -29,9 +29,9 @@ public:
 
 	//------Operadores:
 
-	// Operador ++.
+	// Operador ++. Va sumando dias haciendo los cambios necesarios entre meses, etapas y anyos.
 	void operator++();
-	// Operador --.
+	// Operador --. Va restando dias haciendo los cambios necesarios entre meses, etapas y anyos.
 	void operator--();
 
 
