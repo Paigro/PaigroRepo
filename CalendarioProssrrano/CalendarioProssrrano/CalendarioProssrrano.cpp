@@ -472,7 +472,7 @@ void convert()
 		Date dateToCheck(day, month, year);
 	}
 	ProssrranDate pssDate = convertToProssrran(dateToCheck);
-	std::string fecha = std::to_string(pssDate.getDay()) + "/" + std::to_string(pssDate.getMonth()) + "/" + std::to_string(pssDate.getYear()) + " (" + std::to_string(pssDate.getPhase()) + "/4)";
+	std::string fecha = std::to_string(pssDate.getDay()) + "-" + std::to_string(pssDate.getMonth()) + "-" + std::to_string(pssDate.getYear()) + " (" + std::to_string(pssDate.getPhase()) + "/4)";
 
 	message("Fecha prossrrana: " + fecha + ".");
 	jump(1);
